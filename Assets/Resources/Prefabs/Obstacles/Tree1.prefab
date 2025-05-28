@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 8434270057613710278}
   - component: {fileID: 1609506125104706418}
   - component: {fileID: -5225821905700428658}
-  - component: {fileID: 1678576557048626772}
   - component: {fileID: 2374065975991587308}
+  - component: {fileID: 4607922059867619969}
   m_Layer: 0
   m_Name: Tree1
   m_TagString: Untagged
@@ -196,19 +196,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: -1.75}
   m_Radius: 0.73
---- !u!114 &1678576557048626772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 143051503383912999}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a096907aad394214998ad290ad9a55f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  orderOffset: 1
 --- !u!114 &2374065975991587308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,3 +209,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   killOnDisable: 1
+--- !u!114 &4607922059867619969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 143051503383912999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a096907aad394214998ad290ad9a55f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aboveOffset: 1
+  belowOffset: -1

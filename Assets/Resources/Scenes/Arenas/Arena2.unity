@@ -13539,6 +13539,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5485085163093197689, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7684459473974908381, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
       propertyPath: m_Name
       value: Player
@@ -13610,8 +13614,9 @@ PrefabInstance:
     - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
       propertyPath: spriteRenderer
       value: 
-      objectReference: {fileID: 681417052}
-    m_RemovedComponents: []
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2890319151418562424, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -13632,11 +13637,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae4878589b7a14708bf25b0e2d6d9512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!212 &681417052 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 2992285719649780434, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-  m_PrefabInstance: {fileID: 681417049}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &681417053 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
