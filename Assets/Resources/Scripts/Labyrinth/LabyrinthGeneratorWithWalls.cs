@@ -91,6 +91,9 @@ namespace Resources.Scripts.Labyrinth
         private float labyrinthTimer, totalLabyrinthTime;
         private LabyrinthField labyrinth;
 
+        // Для доступа извне
+        public static LabyrinthField CurrentField { get; private set; }
+
         private enum WallOrientation { Top, Bottom, Left, Right }
 
         // Reflection-кэш приватных полей ShadowCaster2D
@@ -145,6 +148,7 @@ namespace Resources.Scripts.Labyrinth
                 clockHand.localRotation = Quaternion.Euler(0f, 0f, -90f);
 
             labyrinth = new LabyrinthField(rows, cols, cellSizeX, cellSizeY);
+            CurrentField = labyrinth;
 
             GenerateWalls();
             PlaceGameplayElements();
@@ -375,7 +379,7 @@ namespace Resources.Scripts.Labyrinth
                 pts3D[i] = pts2D[i];
 
             FiShapePath   .SetValue(sc, pts3D);
-            FiShapePathHash.SetValue(sc, UnityEngine.Random.Range(int.MinValue, int.MaxValue));
+            FiShapePathHash.SetValue(sc, Random.Range(int.MinValue, int.MaxValue));
 
             var mesh = (Mesh)FiMesh.GetValue(sc);
             MiGenerateShadowMesh.Invoke(null, new object[]{ mesh, pts3D });
@@ -398,7 +402,7 @@ namespace Resources.Scripts.Labyrinth
             var available = new List<Vector3>(positions);
             while (placed < count && available.Count > 0)
             {
-                int idx = UnityEngine.Random.Range(0, available.Count);
+                int idx = Random.Range(0, available.Count);
                 Instantiate(prefab, available[idx], Quaternion.identity, transform);
                 placed++;
 
@@ -419,10 +423,9 @@ namespace Resources.Scripts.Labyrinth
             var available = new List<Vector3>(positions);
             while (placed < count && available.Count > 0)
             {
-                int idx = UnityEngine.Random.Range(0, available.Count);
+                int idx = Random.Range(0, available.Count);
                 Vector3 pos = available[idx];
-                var prefab = prefabs[UnityEngine.Random.Range(0, prefabs.Count)];
-                // Спавним без родителя, чтобы враги не были дочерними объектами лабиринта
+                var prefab = prefabs[Random.Range(0, prefabs.Count)];
                 Instantiate(prefab, pos, Quaternion.identity);
                 placed++;
                 available.RemoveAll(p =>

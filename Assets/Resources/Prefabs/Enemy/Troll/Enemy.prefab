@@ -83,6 +83,9 @@ MonoBehaviour:
   walkAnimationName: Walk
   attackAnimationName: Attack
   spriteRenderer: {fileID: 683334096228550543}
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
   debugLog: 0
 --- !u!114 &1120508908474186410
 MonoBehaviour:
@@ -190,7 +193,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 3}
+  m_Size: {x: 1, y: 2.5}
   m_Direction: 0
 --- !u!50 &3854974929808578457
 Rigidbody2D:

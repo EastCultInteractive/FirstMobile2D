@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Resources.Scripts.Player;
+using Resources.Scripts.Labyrinth;
 
 namespace Resources.Scripts.Enemy
 {
@@ -119,6 +121,10 @@ namespace Resources.Scripts.Enemy
 
         public SpriteRenderer spriteRenderer;
 
+        [Header("Detection & Obstacles")]
+        [Tooltip("Маска слоёв для стен и препятствий.")]
+        public LayerMask obstacleMask;
+
         [Header("Debug Settings")]
         public bool debugLog;
 
@@ -131,9 +137,13 @@ namespace Resources.Scripts.Enemy
         private PlayerStatsHandler playerStats;
         private bool isAttacking;
         private float lastAttackTime;
-        private Vector3 spawnPoint;
-        private Vector3 patrolTarget;
-        private bool isPlayerInTrigger;
+
+        private LabyrinthField labField;
+        private List<Vector3> currentPath = new List<Vector3>();
+        private int pathIndex;
+
+        // Флаг, что мы в режиме погони
+        private bool isChasing;
 
         #endregion
 
@@ -144,17 +154,18 @@ namespace Resources.Scripts.Enemy
             rb = GetComponent<Rigidbody2D>();
             var bc = GetComponent<BoxCollider2D>();
             bc.isTrigger = true;
+            // игнорируем столкновения между врагами
+            int layer = gameObject.layer;
+            Physics2D.IgnoreLayerCollision(layer, layer);
         }
 
         private void Start()
         {
-            spawnPoint = transform.position;
             var go = GameObject.FindGameObjectWithTag("Player");
             if (go != null)
             {
                 player = go.GetComponent<PlayerController>();
-                if (player != null)
-                    playerStats = player.GetComponent<PlayerStatsHandler>();
+                playerStats = go.GetComponent<PlayerStatsHandler>();
             }
 
             if (spriteRenderer == null)
@@ -162,135 +173,165 @@ namespace Resources.Scripts.Enemy
             if (animator != null)
                 animator.Play(idleAnimationName);
 
-            patrolTarget = GetRandomPatrolPoint();
+            labField = LabyrinthGeneratorWithWalls.CurrentField;
+            Patrol(); // сразу идём патрулировать
         }
 
         private void Update()
         {
-            // Если игрок отсутствует или мёртв — патрулируем
-            if (player == null || player.IsDead)
+            if (labField == null || player == null || player.IsDead)
             {
+                isChasing = false;
                 Patrol();
                 return;
             }
 
             float dist = Vector3.Distance(transform.position, player.transform.position);
+            bool inDetection = dist <= detectionRange;
+            bool inMeleeRange = (enemyType != EnemyType.Goblin) && dist <= attackRange;
+            bool goblinCanShoot = enemyType == EnemyType.Goblin && HasLineOfSight();
 
-            if (enemyType == EnemyType.DarkSkull || enemyType == EnemyType.Troll)
+            if (inDetection)
             {
-                if (isPlayerInTrigger)
+                // стартуем погоню
+                if (!isChasing)
+                {
+                    isChasing = true;
+                    RecalculatePathToPlayer();
+                }
+
+                // если дошли до конца пути — пересчитать
+                if (pathIndex >= currentPath.Count)
+                {
+                    RecalculatePathToPlayer();
+                }
+
+                // атака ближнего боя
+                if (inMeleeRange && enemyType != EnemyType.Goblin)
+                {
                     AttackPlayer();
-                else if (dist <= detectionRange)
-                    ChasePlayer();
-                else
-                    Patrol();
+                    return;
+                }
+                // гоблин стреляет при LOS
+                if (enemyType == EnemyType.Goblin && goblinCanShoot)
+                {
+                    AttackPlayer();
+                    return;
+                }
+
+                // двигаемся по пути
+                FollowPath();
             }
             else
             {
-                if (dist <= attackRange)
-                    AttackPlayer();
-                else if (dist <= detectionRange)
-                    ChasePlayer();
-                else
+                // выходим из погони
+                if (isChasing)
+                {
+                    isChasing = false;
                     Patrol();
-            }
-        }
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (player != null
-                && (enemyType == EnemyType.DarkSkull || enemyType == EnemyType.Troll)
-                && other.CompareTag("Player"))
-            {
-                isPlayerInTrigger = true;
-            }
-        }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (player != null
-                && (enemyType == EnemyType.DarkSkull || enemyType == EnemyType.Troll)
-                && other.CompareTag("Player"))
-            {
-                isPlayerInTrigger = false;
+                }
+                Patrol();
             }
         }
 
         #endregion
 
-        #region Movement Methods
-
-        private void ChasePlayer()
-        {
-            if (!isAttacking && animator != null
-                              && !animator.GetCurrentAnimatorStateInfo(0).IsName(walkAnimationName))
-                animator.Play(walkAnimationName);
-
-            TurnToTarget(player.transform.position);
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                player.transform.position,
-                speed * Time.deltaTime);
-        }
+        #region Patrol & Chase
 
         private void Patrol()
         {
-            if (!isAttacking && animator != null
-                              && !animator.GetCurrentAnimatorStateInfo(0).IsName(walkAnimationName))
-                animator.Play(walkAnimationName);
-
-            TurnToTarget(patrolTarget);
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                patrolTarget,
-                speed * patrolSpeedMultiplier * Time.deltaTime);
-
-            if (Vector3.Distance(transform.position, patrolTarget) < 0.1f)
-                patrolTarget = GetRandomPatrolPoint();
+            if (currentPath == null || currentPath.Count == 0 || pathIndex >= currentPath.Count)
+            {
+                // запускаем новый случайный маршрут
+                var randomTarget = new Vector2Int(
+                    Random.Range(0, labField.Rows),
+                    Random.Range(0, labField.Cols)
+                );
+                BuildPath(WorldToCell(transform.position), randomTarget);
+            }
+            FollowPath();
         }
 
-        private void TurnToTarget(Vector3 targetPosition)
+        private void RecalculatePathToPlayer()
         {
-            float dx = targetPosition.x - transform.position.x;
+            BuildPath(WorldToCell(transform.position),
+                      WorldToCell(player.transform.position));
+        }
+
+        // общий метод построения пути
+        private void BuildPath(Vector2Int fromCell, Vector2Int toCell)
+        {
+            var cells = labField.FindPath(fromCell, toCell);
+            currentPath = labField.PathToWorld(cells);
+            pathIndex = 0;
+            PlayWalkAnim();
+        }
+
+        private void FollowPath()
+        {
+            if (currentPath == null || pathIndex >= currentPath.Count)
+                return;
+
+            Vector3 goal = currentPath[pathIndex];
+            TurnToTarget(goal);
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                goal,
+                speed * Time.deltaTime
+            );
+            if (Vector3.Distance(transform.position, goal) < 0.05f)
+                pathIndex++;
+        }
+
+        private Vector2Int WorldToCell(Vector3 worldPos)
+        {
+            int col = Mathf.RoundToInt(worldPos.x / labField.CellSizeX);
+            int row = Mathf.RoundToInt(-worldPos.y / labField.CellSizeY);
+            return new Vector2Int(row, col);
+        }
+
+        private void TurnToTarget(Vector3 target)
+        {
+            float dx = target.x - transform.position.x;
             transform.eulerAngles = dx < 0
                 ? Vector3.zero
                 : new Vector3(0, 180, 0);
         }
 
-        private Vector3 GetRandomPatrolPoint()
+        private void PlayWalkAnim()
         {
-            Vector2 rnd = Random.insideUnitCircle * patrolRadius;
-            return spawnPoint + new Vector3(rnd.x, rnd.y, 0);
+            if (animator == null) return;
+            var state = animator.GetCurrentAnimatorStateInfo(0);
+            if (!state.IsName(walkAnimationName))
+                animator.Play(walkAnimationName);
         }
 
         #endregion
 
-        #region Attack Methods
+        #region Attack
 
         private void AttackPlayer()
         {
-            // Если игрок недоступен, мёртв или уже атакуем — выходим
-            if (player == null || player.IsDead || isAttacking) return;
-
-            float sinceLast = Time.time - lastAttackTime;
+            if (isAttacking) return;
+            float since = Time.time - lastAttackTime;
 
             switch (enemyType)
             {
                 case EnemyType.Goblin:
-                    if (sinceLast >= goblinAttackCooldownTime)
-                        StartCoroutine(PerformGoblinAttack());
+                    if (since < goblinAttackCooldownTime) return;
+                    StartCoroutine(PerformGoblinAttack());
                     break;
                 case EnemyType.DarkSkull:
-                    if (sinceLast >= darkSkullAttackCooldownTime)
-                        StartCoroutine(PerformDarkSkullAttack());
+                    if (since < darkSkullAttackCooldownTime) return;
+                    StartCoroutine(PerformDarkSkullAttack());
                     break;
                 case EnemyType.Troll:
-                    if (sinceLast >= trollAttackCooldownTime)
-                        StartCoroutine(PerformTrollAttack());
+                    if (since < trollAttackCooldownTime) return;
+                    StartCoroutine(PerformTrollAttack());
                     break;
                 default:
-                    if (sinceLast >= attackCooldown)
-                        StartCoroutine(PerformStandardAttack());
+                    if (since < attackCooldown) return;
+                    StartCoroutine(PerformStandardAttack());
                     break;
             }
         }
@@ -299,24 +340,23 @@ namespace Resources.Scripts.Enemy
         {
             isAttacking = true;
             lastAttackTime = Time.time;
-            float origSpeed = speed;
+            float oldSpeed = speed;
             speed = 0f;
             animator?.Play(attackAnimationName);
 
             yield return new WaitForSeconds(attackCooldown);
 
-            if (player != null && !player.IsDead)
+            if (!player.IsDead)
             {
                 player.TakeDamage(this);
-                if (debugLog) Debug.Log($"{enemyName} Standard attack.");
                 if (pushPlayer)
                 {
-                    Vector3 dir = (player.transform.position - transform.position).normalized;
+                    var dir = (player.transform.position - transform.position).normalized;
                     player.transform.position += dir * pushForceMultiplier;
                 }
             }
 
-            speed = origSpeed;
+            speed = oldSpeed;
             isAttacking = false;
         }
 
@@ -324,15 +364,16 @@ namespace Resources.Scripts.Enemy
         {
             isAttacking = true;
             lastAttackTime = Time.time;
-            float origSpeed = speed;
+            float oldSpeed = speed;
             speed = 0f;
             animator?.Play(attackAnimationName);
 
             yield return new WaitForSeconds(goblinAttackAnimationDuration);
 
-            SpawnProjectileEvent();
+            if (HasLineOfSight())
+                SpawnProjectileEvent();
 
-            speed = origSpeed;
+            speed = oldSpeed;
             isAttacking = false;
         }
 
@@ -340,7 +381,7 @@ namespace Resources.Scripts.Enemy
         {
             isAttacking = true;
             lastAttackTime = Time.time;
-            float origSpeed = speed;
+            float oldSpeed = speed;
             speed = 0f;
             animator?.Play(attackAnimationName);
 
@@ -348,7 +389,7 @@ namespace Resources.Scripts.Enemy
 
             RegisterDarkSkullHitEvent();
 
-            speed = origSpeed;
+            speed = oldSpeed;
             isAttacking = false;
         }
 
@@ -356,7 +397,7 @@ namespace Resources.Scripts.Enemy
         {
             isAttacking = true;
             lastAttackTime = Time.time;
-            float origSpeed = speed;
+            float oldSpeed = speed;
             speed = 0f;
             animator?.Play(attackAnimationName);
 
@@ -364,23 +405,19 @@ namespace Resources.Scripts.Enemy
 
             RegisterTrollHitEvent();
 
-            speed = origSpeed;
+            speed = oldSpeed;
             isAttacking = false;
         }
 
         #endregion
 
-        #region Animation Events
+        #region Animation Events & Effects
 
         public void SpawnProjectileEvent()
         {
-            if (player == null || player.IsDead) return;
-
-            Vector3 spawnPos = attackPoint != null
-                ? attackPoint.position
-                : transform.position;
-            Vector2 dir = (player.transform.position - spawnPos).normalized;
-
+            if (player.IsDead) return;
+            var origin = attackPoint != null ? attackPoint.position : transform.position;
+            var dir = (player.transform.position - origin).normalized;
             if (goblinProjectileSpreadAngle > 0f)
             {
                 float a = Random.Range(-goblinProjectileSpreadAngle, goblinProjectileSpreadAngle);
@@ -389,16 +426,12 @@ namespace Resources.Scripts.Enemy
 
             if (projectilePrefab != null)
             {
-                var proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+                var proj = Instantiate(projectilePrefab, origin, Quaternion.identity);
                 proj.transform.localScale = goblinProjectileScale;
                 if (proj.TryGetComponent<GoblinProjectile>(out var gp))
-                {
                     gp.SetParameters(dir, projectileSpeed, bindingDuration, goblinProjectileLifeTime, goblinProjectileDamage);
-                }
                 else if (proj.TryGetComponent<Rigidbody2D>(out var prb))
-                {
                     prb.AddForce(dir * projectileSpeed, ForceMode2D.Impulse);
-                }
             }
             else
             {
@@ -408,54 +441,56 @@ namespace Resources.Scripts.Enemy
 
         public void RegisterDarkSkullHitEvent()
         {
-            if (player == null || player.IsDead || !isPlayerInTrigger || playerStats == null) return;
-
-            if (playerStats.TryEvade(transform.position))
-                return;
-
+            if (playerStats.TryEvade(transform.position)) return;
             player.ReceiveDarkSkullHit();
             if (pushPlayer)
             {
-                Vector3 dir = (player.transform.position - transform.position).normalized;
+                var dir = (player.transform.position - transform.position).normalized;
                 player.transform.position += dir * darkSkullPushForce;
             }
         }
 
         public void RegisterTrollHitEvent()
         {
-            if (player == null || player.IsDead || !isPlayerInTrigger || playerStats == null) return;
-
-            if (playerStats.TryEvade(transform.position))
-                return;
-
+            if (playerStats.TryEvade(transform.position)) return;
             player.ReceiveTrollHit();
             if (pushPlayer)
             {
-                Vector3 dir = (player.transform.position - transform.position).normalized;
+                var dir = (player.transform.position - transform.position).normalized;
                 player.transform.position += dir * trollPushForce;
             }
         }
 
-        #endregion
-
-        #region Effects & Animation State
-
-        public void ApplySlow(float slowFactor, float duration)
+        public void ApplySlow(float factor, float duration)
         {
-            StartCoroutine(SlowEffect(slowFactor, duration));
+            StartCoroutine(SlowEffect(factor, duration));
         }
 
-        private IEnumerator SlowEffect(float slowFactor, float duration)
+        private IEnumerator SlowEffect(float factor, float duration)
         {
-            float orig = speed;
-            speed = orig * slowFactor;
+            float old = speed;
+            speed = old * slowMultiplier;
             yield return new WaitForSeconds(duration);
-            speed = orig;
+            speed = old;
         }
 
         public void ApplyPush(Vector2 force)
         {
             rb.AddForce(force, ForceMode2D.Impulse);
+        }
+
+        #endregion
+
+        #region Line of Sight
+
+        private bool HasLineOfSight()
+        {
+            if (attackPoint == null || player == null) return false;
+            var origin = attackPoint.position;
+            var dir = (player.transform.position - origin).normalized;
+            float dist = Vector3.Distance(origin, player.transform.position);
+            var hit = Physics2D.Raycast(origin, dir, dist, obstacleMask);
+            return hit.collider == null;
         }
 
         #endregion

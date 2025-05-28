@@ -1,4 +1,3 @@
-// PlayerController.cs
 using UnityEngine;
 using System;
 using System.Collections;

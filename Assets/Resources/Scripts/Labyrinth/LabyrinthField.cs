@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Resources.Scripts.Labyrinth
 {
@@ -20,6 +20,9 @@ namespace Resources.Scripts.Labyrinth
         private Vector2Int finishCell;
 
         public Vector2Int StartCellCoordinates => startCell;
+        public Vector2Int FinishCellCoordinates => finishCell;
+        public float CellSizeX => cellSizeX;
+        public float CellSizeY => cellSizeY;
 
         public LabyrinthField(int rows, int cols, float cellSizeX, float cellSizeY)
         {
@@ -37,43 +40,32 @@ namespace Resources.Scripts.Labyrinth
         {
             Field = new LabyrinthCell[Rows, Cols];
             for (int row = 0; row < Rows; row++)
-            {
                 for (int col = 0; col < Cols; col++)
-                {
                     Field[row, col] = new LabyrinthCell();
-                }
-            }
         }
 
         private void SetBorders()
         {
             for (int row = 0; row < Rows; row++)
-            {
                 for (int col = 0; col < Cols; col++)
                 {
                     var cell = Field[row, col];
-                    if (row == 0)
-                        cell.TopBorder = true;
-                    if (col == 0)
-                        cell.LeftBorder = true;
-                    if (col == Cols - 1)
-                        cell.RightBorder = true;
+                    if (row == 0) cell.TopBorder = true;
+                    if (col == 0) cell.LeftBorder = true;
+                    if (col == Cols - 1) cell.RightBorder = true;
                 }
-            }
         }
 
         private bool CanSetBottomBorder(int row, int arrayValue)
         {
-            int count = 0;
-            int borderCount = 0;
+            int count = 0, borderCount = 0;
             for (int col = 0; col < Cols; col++)
             {
                 var cell = Field[row, col];
                 if (cell.ArrayValue == arrayValue)
                 {
                     count++;
-                    if (cell.BottomBorder)
-                        borderCount++;
+                    if (cell.BottomBorder) borderCount++;
                 }
             }
             return count - 1 != borderCount;
@@ -82,16 +74,13 @@ namespace Resources.Scripts.Labyrinth
         private void ChangeArrayValues(int row, int oldArrayValue, int newArrayValue)
         {
             for (int col = 0; col < Cols; col++)
-            {
                 if (Field[row, col].ArrayValue == oldArrayValue)
                     Field[row, col].ArrayValue = newArrayValue;
-            }
         }
 
         private void PreprocessRow(int row)
         {
-            if (row == 0)
-                return;
+            if (row == 0) return;
 
             for (int col = 0; col < Cols; col++)
             {
@@ -118,19 +107,12 @@ namespace Resources.Scripts.Labyrinth
             {
                 var cell = Field[row, col];
                 var nextCell = Field[row, col + 1];
-
                 if (cell.ArrayValue == nextCell.ArrayValue && cell.ArrayValue != 0)
-                {
                     cell.RightBorder = true;
-                }
                 else if (Random.Range(0, 2) == 1)
-                {
                     cell.RightBorder = true;
-                }
                 else
-                {
                     nextCell.ArrayValue = cell.ArrayValue;
-                }
             }
 
             for (int col = 0; col < Cols; col++)
@@ -141,8 +123,7 @@ namespace Resources.Scripts.Labyrinth
                     cell.BottomBorder = true;
                     continue;
                 }
-                if (!CanSetBottomBorder(row, cell.ArrayValue))
-                    continue;
+                if (!CanSetBottomBorder(row, cell.ArrayValue)) continue;
                 if (Random.Range(0, 2) == 1)
                     cell.BottomBorder = true;
             }
@@ -199,9 +180,7 @@ namespace Resources.Scripts.Labyrinth
         {
             List<Vector2Int> shortestPath = FindShortestPath();
             foreach (Vector2Int pos in shortestPath)
-            {
                 Field[pos.x, pos.y].IsSolutionPath = true;
-            }
         }
 
         private List<Vector2Int> FindShortestPath()
@@ -279,15 +258,70 @@ namespace Resources.Scripts.Labyrinth
             List<Vector2Int> path = FindShortestPath();
             List<Vector3> worldPath = new List<Vector3>();
             foreach (Vector2Int cell in path)
-            {
                 worldPath.Add(new Vector3(cell.y * cellSizeX, -cell.x * cellSizeY, 0f));
-            }
             return worldPath;
         }
 
         public Vector3 GetStartWorldPosition()
         {
             return new Vector3(startCell.y * cellSizeX, -startCell.x * cellSizeY, 0f);
+        }
+
+        /// <summary>
+        /// Находит кратчайший путь между двумя произвольными клетками.
+        /// </summary>
+        public List<Vector2Int> FindPath(Vector2Int fromCell, Vector2Int toCell)
+        {
+            var queue = new Queue<Vector2Int>();
+            var visited = new bool[Rows, Cols];
+            var prev = new Vector2Int[Rows, Cols];
+
+            for (int i = 0; i < Rows; i++)
+                for (int j = 0; j < Cols; j++)
+                    prev[i, j] = new Vector2Int(-1, -1);
+
+            queue.Enqueue(fromCell);
+            visited[fromCell.x, fromCell.y] = true;
+
+            while (queue.Count > 0)
+            {
+                var cur = queue.Dequeue();
+                if (cur == toCell) break;
+
+                foreach (var nb in GetNeighbors(cur.x, cur.y))
+                {
+                    if (!visited[nb.x, nb.y])
+                    {
+                        visited[nb.x, nb.y] = true;
+                        prev[nb.x, nb.y] = cur;
+                        queue.Enqueue(nb);
+                    }
+                }
+            }
+
+            var path = new List<Vector2Int>();
+            if (!visited[toCell.x, toCell.y])
+                return path;
+
+            var at = toCell;
+            while (at.x != -1)
+            {
+                path.Add(at);
+                at = prev[at.x, at.y];
+            }
+            path.Reverse();
+            return path;
+        }
+
+        /// <summary>
+        /// Переводит список клеток в мировые позиции.
+        /// </summary>
+        public List<Vector3> PathToWorld(List<Vector2Int> cellPath)
+        {
+            var world = new List<Vector3>();
+            foreach (var c in cellPath)
+                world.Add(new Vector3(c.y * cellSizeX, -c.x * cellSizeY, 0f));
+            return world;
         }
     }
 }

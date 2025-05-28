@@ -1,4 +1,3 @@
-// PlayerStatsHandler.cs
 using UnityEngine;
 using TMPro;
 
