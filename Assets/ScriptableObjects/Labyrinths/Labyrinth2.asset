@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rows: 12
   cols: 12
-  cellSizeX: 0.8
-  cellSizeY: 0.8
+  cellSizeX: 1.6
+  cellSizeY: 1.6
   labyrinthTimeLimit: 20
-  cameraPosition: {x: 4.39, y: -4.32, z: -2.271334}
+  cameraPosition: {x: 8.8, y: -8.8, z: -2}
   cameraRotation: {x: 0, y: 0, z: 0}
-  cameraSize: 5
+  cameraSize: 9.7

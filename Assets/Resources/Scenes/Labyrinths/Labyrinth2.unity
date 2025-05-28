@@ -128,7 +128,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5609987}
-  - component: {fileID: 5609988}
   - component: {fileID: 5609989}
   m_Layer: 3
   m_Name: Labyrinth
@@ -146,37 +145,12 @@ Transform:
   m_GameObject: {fileID: 5609986}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10, y: 60, z: 0}
+  m_LocalPosition: {x: -35, y: 35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 836031894}
+  m_Father: {fileID: 477092607}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5609988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5609986}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d0c176fd17543aca71afe4058c0466, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultRows: 12
-  defaultCols: 12
-  defaultCellSizeX: 0.8
-  defaultCellSizeY: 0.8
-  defaultTimeLimit: 15
-  cellPrefab: {fileID: 245492848745350129, guid: 8c70a7e90a3315d459e028a87aa2f6b2, type: 3}
-  bonusPrefab: {fileID: 4851787157202972978, guid: 8a0a50a60819e014388d53fd15014872, type: 3}
-  trapPrefab: {fileID: 4432862800593702859, guid: aa8d140e969d673499c9788afe79c39a, type: 3}
-  minPlacementDistance: 5
-  bonusCount: 5
-  trapCount: 20
-  timerText: {fileID: 0}
-  clockHand: {fileID: 2913262263197063434}
 --- !u!114 &5609989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,8 +175,8 @@ MonoBehaviour:
   leftNoIsoWallPrefab: {fileID: 5082289136535667910, guid: 496a48cc8f4e44e48929686c62c102df, type: 3}
   rightWallPrefab: {fileID: 6459350706025179438, guid: b506b0df65e970449b3476ae9c2b2f88, type: 3}
   rightNoIsoWallPrefab: {fileID: 9025852097395815732, guid: 97fc827e6962e57489706fa7306a857d, type: 3}
-  topWallSpacingY: -0.044
-  bottomWallSpacingY: 0.044
+  topWallSpacingY: -0.088
+  bottomWallSpacingY: 0.095
   leftWallSpacingX: 0
   rightWallSpacingX: 0
   enableWallColliders: 1
@@ -380,6 +354,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5609987}
   - {fileID: 836031894}
   - {fileID: 550712430}
   m_Father: {fileID: 0}
@@ -825,8 +800,7 @@ Transform:
   m_LocalPosition: {x: -25, y: -25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5609987}
+  m_Children: []
   m_Father: {fileID: 477092607}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &836031895

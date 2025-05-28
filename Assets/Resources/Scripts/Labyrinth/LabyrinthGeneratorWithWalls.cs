@@ -232,7 +232,7 @@ namespace Resources.Scripts.Labyrinth
                 go.AddComponent<LabyrinthFinishTrigger>();
             }
 
-            // 4. Мини‑карта
+            // 4. Мини-карта
             if (LabyrinthMapController.Instance != null)
                 LabyrinthMapController.Instance.SetSolutionPath(
                     labyrinth.GetSolutionPathWorldPositions()
@@ -422,7 +422,8 @@ namespace Resources.Scripts.Labyrinth
                 int idx = UnityEngine.Random.Range(0, available.Count);
                 Vector3 pos = available[idx];
                 var prefab = prefabs[UnityEngine.Random.Range(0, prefabs.Count)];
-                Instantiate(prefab, pos, Quaternion.identity, transform);
+                // Спавним без родителя, чтобы враги не были дочерними объектами лабиринта
+                Instantiate(prefab, pos, Quaternion.identity);
                 placed++;
                 available.RemoveAll(p =>
                     Vector3.Distance(p, pos) < minDistance * Mathf.Max(cellSizeX, cellSizeY)

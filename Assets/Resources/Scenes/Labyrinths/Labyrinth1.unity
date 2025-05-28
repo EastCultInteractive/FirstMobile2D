@@ -145,11 +145,11 @@ Transform:
   m_GameObject: {fileID: 5609986}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10, y: 60, z: 0}
+  m_LocalPosition: {x: -35, y: 35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 836031894}
+  m_Father: {fileID: 477092607}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5609989
 MonoBehaviour:
@@ -175,8 +175,8 @@ MonoBehaviour:
   leftNoIsoWallPrefab: {fileID: 5082289136535667910, guid: 496a48cc8f4e44e48929686c62c102df, type: 3}
   rightWallPrefab: {fileID: 6459350706025179438, guid: b506b0df65e970449b3476ae9c2b2f88, type: 3}
   rightNoIsoWallPrefab: {fileID: 9025852097395815732, guid: 97fc827e6962e57489706fa7306a857d, type: 3}
-  topWallSpacingY: -0.044
-  bottomWallSpacingY: 0.044
+  topWallSpacingY: -0.088
+  bottomWallSpacingY: 0.095
   leftWallSpacingX: 0
   rightWallSpacingX: 0
   enableWallColliders: 1
@@ -207,7 +207,7 @@ MonoBehaviour:
   sortingOrderBottomUp: 3
   sortingOrderBottomDown: 1
   sortingOrderLeftIso: 5
-  sortingOrderLeftNoIso: 5
+  sortingOrderLeftNoIso: 3
   sortingOrderRightIso: 5
   sortingOrderRightNoIsoUp: 4
   sortingOrderRightNoIsoDown: 2
@@ -412,6 +412,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5609987}
   - {fileID: 836031894}
   - {fileID: 550712430}
   m_Father: {fileID: 0}
@@ -757,8 +758,7 @@ Transform:
   m_LocalPosition: {x: -25, y: -25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5609987}
+  m_Children: []
   m_Father: {fileID: 477092607}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &836031895
