@@ -1,10 +1,22 @@
 fileFormatVersion: 2
-guid: fe79105c479339e43ac6f80ce9c25d5e
+guid: 761be72c576a8463aadc58ef37430a16
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4754626028765104264
-    second: ClockHand_0
+      213: -1337137472784409059
+    second: yellow foot_0
+  - first:
+      213: -5243858484417977041
+    second: yellow foot_1
+  - first:
+      213: 6834899221258656070
+    second: yellow foot_2
+  - first:
+      213: 3711112934509521621
+    second: yellow foot_3
+  - first:
+      213: 6597667877200132786
+    second: yellow foot_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +87,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -97,7 +109,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Android
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -113,13 +125,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ClockHand_0
+      name: yellow foot_0
       rect:
         serializedVersion: 2
-        x: 142
-        y: 142
-        width: 156
-        height: 156
+        x: 14
+        y: 322
+        width: 183
+        height: 319
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +140,96 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 888ce5c9e23dbf140800000000000000
-      internalID: 4754626028765104264
+      spriteID: d1e52de8d88817de0800000000000000
+      internalID: -1337137472784409059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yellow foot_1
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 383
+        width: 287
+        height: 293
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2529d7dd721a37b0800000000000000
+      internalID: -5243858484417977041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yellow foot_2
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 268
+        width: 260
+        height: 347
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64957bef0a07ade50800000000000000
+      internalID: 6834899221258656070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yellow foot_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 319
+        height: 324
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5da2cc63d85808330800000000000000
+      internalID: 3711112934509521621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yellow foot_4
+      rect:
+        serializedVersion: 2
+        x: 333
+        y: 65
+        width: 302
+        height: 213
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2baf4867aff9f8b50800000000000000
+      internalID: 6597667877200132786
       vertices: []
       indices: 
       edges: []
@@ -148,7 +248,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ClockHand_0: 4754626028765104264
+      yellow foot_0: -1337137472784409059
+      yellow foot_1: -5243858484417977041
+      yellow foot_2: 6834899221258656070
+      yellow foot_3: 3711112934509521621
+      yellow foot_4: 6597667877200132786
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
