@@ -2283,29 +2283,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1225065020}
     - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: audioMixer
-      value: 
-      objectReference: {fileID: 24100000, guid: b1d0072b6d595694cb49e87bd661f784, type: 2}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
       propertyPath: musicSource
       value: 
       objectReference: {fileID: 1225065020}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: tickMaxPitch
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: sfxMixerGroup
-      value: 
-      objectReference: {fileID: 24300002, guid: b1d0072b6d595694cb49e87bd661f784, type: 2}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: startTickInterval
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.size
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
       propertyPath: buttonConfigs.Array.data[0].button
       value: 
@@ -2330,82 +2310,6 @@ PrefabInstance:
       propertyPath: buttonConfigs.Array.data[5].button
       value: 
       objectReference: {fileID: 842805113}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[0].clickClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 755bed4a3ea06764ab06ed5e2cbdf1ab, type: 3}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[0].hoverClip
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[1].clickClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 755bed4a3ea06764ab06ed5e2cbdf1ab, type: 3}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[2].clickClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 755bed4a3ea06764ab06ed5e2cbdf1ab, type: 3}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[3].clickClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 755bed4a3ea06764ab06ed5e2cbdf1ab, type: 3}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[4].clickClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 755bed4a3ea06764ab06ed5e2cbdf1ab, type: 3}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[5].clickClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 755bed4a3ea06764ab06ed5e2cbdf1ab, type: 3}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[0].clickVolume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[0].hoverVolume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[1].clickVolume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[1].hoverVolume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[2].clickVolume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[2].hoverVolume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[3].clickVolume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[3].hoverVolume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[4].clickVolume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[4].hoverVolume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[5].clickVolume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801157582348610192, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
-      propertyPath: buttonConfigs.Array.data[5].hoverVolume
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8305512010364769214, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.3502979
@@ -3232,22 +3136,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 73796394299859957, guid: 7bede4caac20bb444a26e2bfe2cabae5, type: 3}
-      propertyPath: availablePerks.Array.size
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 73796394299859957, guid: 7bede4caac20bb444a26e2bfe2cabae5, type: 3}
-      propertyPath: 'availablePerks.Array.data[12]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 7ad91a6f3c73dd74bafe529d0ba26724, type: 2}
-    - target: {fileID: 73796394299859957, guid: 7bede4caac20bb444a26e2bfe2cabae5, type: 3}
-      propertyPath: 'availablePerks.Array.data[13]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 07beb31afcf8e1246a6f3e4a030b0c5b, type: 2}
-    - target: {fileID: 73796394299859957, guid: 7bede4caac20bb444a26e2bfe2cabae5, type: 3}
-      propertyPath: 'availablePerks.Array.data[14]'
-      value: 
-      objectReference: {fileID: 11400000, guid: dcb0d548b6b09dd4188293167533230c, type: 2}
     - target: {fileID: 3036163794358431572, guid: 7bede4caac20bb444a26e2bfe2cabae5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.5000272

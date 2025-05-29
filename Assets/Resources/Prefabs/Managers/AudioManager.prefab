@@ -45,31 +45,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc251fdc6d1320e41ab785c3615576ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioMixer: {fileID: 0}
+  audioMixer: {fileID: 24100000, guid: b1d0072b6d595694cb49e87bd661f784, type: 2}
   sfxSource: {fileID: 0}
   defaultSfxVolume: 1
-  sfxMixerGroup: {fileID: 0}
+  sfxMixerGroup: {fileID: 24300002, guid: b1d0072b6d595694cb49e87bd661f784, type: 2}
   drawingTickClip: {fileID: 8300000, guid: f9b010a4dcf1a434d8aa7a7b3b3c0fd9, type: 3}
   drawingTickVolume: 1
-  startTickInterval: 1
+  startTickInterval: 0.8
   endTickInterval: 0.2
   tickMinPitch: 1
-  tickMaxPitch: 1.5
+  tickMaxPitch: 2
   musicSource: {fileID: 0}
   musicPlaylist: []
   musicVolume: 1
   crossFadeDuration: 1
   buttonConfigs:
   - button: {fileID: 0}
-    clickClip: {fileID: 8300000, guid: 6e2fa6cbc417b34458c80fd11280011e, type: 3}
-    clickVolume: 0
+    clickClip: {fileID: 8300000, guid: 755bed4a3ea06764ab06ed5e2cbdf1ab, type: 3}
+    clickVolume: 1
     hoverClip: {fileID: 0}
-    hoverVolume: 0
+    hoverVolume: 1
   - button: {fileID: 0}
-    clickClip: {fileID: 8300000, guid: 6e2fa6cbc417b34458c80fd11280011e, type: 3}
-    clickVolume: 0
+    clickClip: {fileID: 8300000, guid: 755bed4a3ea06764ab06ed5e2cbdf1ab, type: 3}
+    clickVolume: 1
     hoverClip: {fileID: 0}
-    hoverVolume: 0
+    hoverVolume: 1
+  - button: {fileID: 0}
+    clickClip: {fileID: 8300000, guid: 755bed4a3ea06764ab06ed5e2cbdf1ab, type: 3}
+    clickVolume: 1
+    hoverClip: {fileID: 0}
+    hoverVolume: 1
+  - button: {fileID: 0}
+    clickClip: {fileID: 8300000, guid: 755bed4a3ea06764ab06ed5e2cbdf1ab, type: 3}
+    clickVolume: 1
+    hoverClip: {fileID: 0}
+    hoverVolume: 1
+  - button: {fileID: 0}
+    clickClip: {fileID: 8300000, guid: 755bed4a3ea06764ab06ed5e2cbdf1ab, type: 3}
+    clickVolume: 1
+    hoverClip: {fileID: 0}
+    hoverVolume: 1
+  - button: {fileID: 0}
+    clickClip: {fileID: 8300000, guid: 755bed4a3ea06764ab06ed5e2cbdf1ab, type: 3}
+    clickVolume: 1
+    hoverClip: {fileID: 0}
+    hoverVolume: 1
 --- !u!114 &8831895777022321174
 MonoBehaviour:
   m_ObjectHideFlags: 0
