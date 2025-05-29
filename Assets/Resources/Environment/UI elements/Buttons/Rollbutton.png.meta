@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 23bcc88ffc1a7b740a34c3edb2dcc3ab
+guid: 50507e5e9ef7a43e08656c7340e34d71
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1541513601985774774
-    second: Roll_0
+      213: -122922281079555898
+    second: somersault yellow_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -97,7 +97,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Android
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Roll_0
+      name: somersault yellow_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 440
-        height: 439
+        width: 2108
+        height: 2109
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a4b7439db817b9ae0800000000000000
-      internalID: -1541513601985774774
+      spriteID: 6c8b54d26da4b4ef0800000000000000
+      internalID: -122922281079555898
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Roll_0: -1541513601985774774
+      somersault yellow_0: -122922281079555898
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
