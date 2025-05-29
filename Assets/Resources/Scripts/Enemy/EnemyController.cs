@@ -153,7 +153,7 @@ namespace Resources.Scripts.Enemy
 
         private void Update()
         {
-            // If player missing or dead, return to patrol/roam
+            // Если игрок отсутствует или уже мёртв — патруль/бродилка
             if (player == null || player.IsDead)
             {
                 isAttacking = false;
@@ -175,6 +175,15 @@ namespace Resources.Scripts.Enemy
                 isChasing = false;
                 if (labField != null) PatrolLabyrinth();
                 else RoamArena();
+            }
+        }
+
+        // Позволяет атаковать игрока через триггер, что особенно полезно в лабиринте
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            if (player != null && !player.IsDead && other.CompareTag("Player"))
+            {
+                AttemptAttack();
             }
         }
 
@@ -268,7 +277,7 @@ namespace Resources.Scripts.Enemy
                 return;
             }
 
-            // Labyrinth chase via pathfinding
+            // Лабиринтное преследование
             if (labField != null)
             {
                 if (!isChasing)
@@ -281,7 +290,7 @@ namespace Resources.Scripts.Enemy
             }
             else
             {
-                // Direct chase on arena
+                // Прямое преследование на арене
                 if (!isChasing)
                 {
                     isChasing = true;
@@ -405,6 +414,7 @@ namespace Resources.Scripts.Enemy
         public void RegisterDarkSkullHitEvent()
         {
             if (playerStats.TryEvade(transform.position)) return;
+            player.PlayDamageAnimation();  // <--- проигрываем анимацию урона
             player.ReceiveDarkSkullHit();
             if (pushPlayer)
                 player.transform.position += (player.transform.position - transform.position).normalized * darkSkullPushForce;
@@ -413,6 +423,7 @@ namespace Resources.Scripts.Enemy
         public void RegisterTrollHitEvent()
         {
             if (playerStats.TryEvade(transform.position)) return;
+            player.PlayDamageAnimation();  // <--- проигрываем анимацию урона
             player.ReceiveTrollHit();
             if (pushPlayer)
                 player.transform.position += (player.transform.position - transform.position).normalized * trollPushForce;

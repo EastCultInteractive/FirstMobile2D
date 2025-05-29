@@ -10,6 +10,7 @@ namespace Resources.Scripts.Labyrinth
 {
     public class LabyrinthGeneratorWithWalls : MonoBehaviour
     {
+        
         [Header("Настройки лабиринта (ScriptableObject)")]
         [SerializeField] private LabyrinthSettings labyrinthSettings;
 

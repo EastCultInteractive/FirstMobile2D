@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06660bec308bbfd4cae07fff3f0589a7, type: 3}
-  m_Name: Labyrinth2
+  m_Name: LabyrinthFirst
   m_EditorClassIdentifier: 
-  rows: 12
-  cols: 12
+  rows: 10
+  cols: 10
   cellSizeX: 1.6
   cellSizeY: 1.6
-  labyrinthTimeLimit: 20
-  cameraPosition: {x: 8.8, y: -8.8, z: -2}
+  labyrinthTimeLimit: 15
+  cameraPosition: {x: 7.2, y: -7.2, z: -2}
   cameraRotation: {x: 0, y: 0, z: 0}
-  cameraSize: 9.7
+  cameraSize: 8.14
