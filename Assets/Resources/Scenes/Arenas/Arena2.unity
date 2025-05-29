@@ -13524,21 +13524,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1451889986}
     - target: {fileID: 1957564526145093592, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: tickMaxPitch
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1957564526145093592, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
       propertyPath: gestureRecognizer
       value: 
       objectReference: {fileID: 2053543740}
-    - target: {fileID: 1957564526145093592, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: startTickInterval
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2992285719649780434, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: m_SortingOrder
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 5485085163093197689, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -13591,32 +13579,7 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 543103349}
-    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: rollSpeed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: rollSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: e6c083e109074e040b89e6b627246fbf, type: 3}
-    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: rollDuration
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: joystickSpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: keyboardSpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: spriteRenderer
-      value: 
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2890319151418562424, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

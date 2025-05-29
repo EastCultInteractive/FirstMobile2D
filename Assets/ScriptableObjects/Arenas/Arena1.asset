@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Arena1
   m_EditorClassIdentifier: 
   survivalTime: 10
-  enemyCount: 0
+  enemyCount: 5
   enemyPrefabs:
   - {fileID: 7260566827850767976, guid: b89c68620d9c2c441b0d4ecce42ea97d, type: 3}
+  - {fileID: 5454972267272251233, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
   fairyCount: 3
   fairyPrefabs:
   - {fileID: 6405068590111382987, guid: ef6d34214eb1c8b4dac7a9f2245ec954, type: 3}

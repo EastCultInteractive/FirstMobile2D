@@ -58,6 +58,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c0ce9bd1c81c9e444a7ae8086c66dd22, type: 2}
   - {fileID: 11400000, guid: b15d4ed55e83a7d4daddd69e9818ee32, type: 2}
   - {fileID: 11400000, guid: 5af0fe4c74d3b6c4a939818e76aab6da, type: 2}
+  - {fileID: 11400000, guid: 7ad91a6f3c73dd74bafe529d0ba26724, type: 2}
+  - {fileID: 11400000, guid: 07beb31afcf8e1246a6f3e4a030b0c5b, type: 2}
+  - {fileID: 11400000, guid: dcb0d548b6b09dd4188293167533230c, type: 2}
   perkSelectionPanelPrefab: {fileID: 5462093637286728995, guid: 95beb444da4fed240812e7f15fea637e, type: 3}
 --- !u!114 &823892174440187899
 MonoBehaviour:
