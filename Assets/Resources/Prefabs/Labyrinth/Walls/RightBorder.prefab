@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 2875995110530702938}
   - component: {fileID: 318308836684835634}
   - component: {fileID: 2824144638875797279}
+  - component: {fileID: -3415523671536615326}
   m_Layer: 3
   m_Name: RightBorder
-  m_TagString: Untagged
+  m_TagString: WallSide
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -148,3 +149,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   killOnDisable: 1
+--- !u!114 &-3415523671536615326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6459350706025179438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27472efb72ad9f3439370a4b26b10842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  belowOffset: -1

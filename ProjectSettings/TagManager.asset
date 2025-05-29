@@ -9,6 +9,9 @@ TagManager:
   - PlayerLight
   - MiniMapLight
   - Start
+  - WallUpTrigger
+  - WallSide
+  - WallBottomTrigger
   layers:
   - Default
   - TransparentFX
@@ -45,6 +48,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Lights
+    uniqueID: 482313113
     locked: 0
   m_RenderingLayers:
   - Default

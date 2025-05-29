@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3911380425191886951}
   - component: {fileID: 4351695515436794671}
   - component: {fileID: -3092035608056770585}
-  - component: {fileID: -3608968783623948841}
   - component: {fileID: 7087793859213758480}
+  - component: {fileID: -5778299523848236421}
   m_Layer: 0
   m_Name: WhiteCactus
   m_TagString: Untagged
@@ -173,19 +173,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: -3.11}
   m_Radius: 1.25
---- !u!114 &-3608968783623948841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7691439864548489602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a096907aad394214998ad290ad9a55f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  orderOffset: 1
 --- !u!114 &7087793859213758480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,3 +186,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   killOnDisable: 1
+--- !u!114 &-5778299523848236421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7691439864548489602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a096907aad394214998ad290ad9a55f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aboveOffset: 1
+  belowOffset: -1
