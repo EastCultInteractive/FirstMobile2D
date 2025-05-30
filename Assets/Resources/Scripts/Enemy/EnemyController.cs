@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Spine;
 using Spine.Unity;
 using Resources.Scripts.Player;
 using Resources.Scripts.Labyrinth;
@@ -54,7 +53,7 @@ namespace Resources.Scripts.Enemy
         public float projectileSpeed = 5f;
         public float goblinProjectileLifeTime = 5f;
         public float goblinProjectileDamage = 1f;
-        public float goblinProjectileSpreadAngle = 0f;
+        public float goblinProjectileSpreadAngle;
         public Vector3 goblinProjectileScale = Vector3.one;
 
         [Header("DarkSkull Attack Settings")]
@@ -74,7 +73,7 @@ namespace Resources.Scripts.Enemy
         public LayerMask obstacleMask;
 
         [Header("Debug Settings")]
-        public bool debugLog = false;
+        public bool debugLog;
 
         #endregion
 
@@ -142,7 +141,6 @@ namespace Resources.Scripts.Enemy
             labField = LabyrinthGeneratorWithWalls.CurrentField;
             roamTimeRemaining = 0f;
 
-            // Sync attackCooldown with animation length
             var sd = skeletonAnimation.SkeletonDataAsset.GetSkeletonData(true);
             var anim = sd.FindAnimation(attackAnim);
             if (anim != null)
@@ -153,7 +151,6 @@ namespace Resources.Scripts.Enemy
 
         private void Update()
         {
-            // Если игрок отсутствует или уже мёртв — патруль/бродилка
             if (player == null || player.IsDead)
             {
                 isAttacking = false;
@@ -166,10 +163,7 @@ namespace Resources.Scripts.Enemy
             float dist = Vector3.Distance(transform.position, player.transform.position);
             bool sees = dist <= detectionRange;
 
-            if (sees)
-            {
-                ChaseBehavior(dist);
-            }
+            if (sees) ChaseBehavior(dist);
             else
             {
                 isChasing = false;
@@ -178,13 +172,11 @@ namespace Resources.Scripts.Enemy
             }
         }
 
-        // Позволяет атаковать игрока через триггер, что особенно полезно в лабиринте
         private void OnTriggerStay2D(Collider2D other)
         {
-            if (player != null && !player.IsDead && other.CompareTag("Player"))
-            {
+            if (player == null || player.IsDead) return;
+            if (other.CompareTag("Player"))
                 AttemptAttack();
-            }
         }
 
         #endregion
@@ -277,7 +269,6 @@ namespace Resources.Scripts.Enemy
                 return;
             }
 
-            // Лабиринтное преследование
             if (labField != null)
             {
                 if (!isChasing)
@@ -290,21 +281,22 @@ namespace Resources.Scripts.Enemy
             }
             else
             {
-                // Прямое преследование на арене
                 if (!isChasing)
                 {
                     isChasing = true;
                     EnsureWalkAnim();
                 }
-                Vector3 target = player.transform.position;
-                Vector3 dir = (target - transform.position).normalized;
+                Vector3 dir = (player.transform.position - transform.position).normalized;
                 TurnToTarget(dir);
-                transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
             }
         }
 
         private void AttemptAttack()
         {
+            if (player == null || player.IsDead) return;
+            if (isAttacking) return;
+
             float since = Time.time - lastAttackTime;
             switch (enemyType)
             {
@@ -327,16 +319,23 @@ namespace Resources.Scripts.Enemy
         {
             isAttacking = true;
             lastAttackTime = Time.time;
-            float old = speed; speed = 0f;
+            float oldSpeed = speed; speed = 0f;
             PlayAttackAnim();
-            yield return new WaitForSeconds(attackCooldown);
+
+            float hitTime = attackCooldown * 0.4f;
+            yield return new WaitForSeconds(hitTime);
             if (!player.IsDead)
             {
                 player.TakeDamage(this);
                 if (pushPlayer)
                     player.transform.position += (player.transform.position - transform.position).normalized * pushForceMultiplier;
             }
-            speed = old; isAttacking = false;
+            yield return new WaitForSeconds(attackCooldown - hitTime);
+
+            speed = oldSpeed;
+            PlayIdleAnim();
+            yield return new WaitForSeconds(0.5f);
+            isAttacking = false;
             EnsureWalkAnim();
         }
 
@@ -344,11 +343,19 @@ namespace Resources.Scripts.Enemy
         {
             isAttacking = true;
             lastAttackTime = Time.time;
-            float old = speed; speed = 0f;
+            float oldSpeed = speed; speed = 0f;
             PlayAttackAnim();
-            yield return new WaitForSeconds(goblinAttackAnimationDuration);
-            if (HasLineOfSight()) SpawnProjectileEvent();
-            speed = old; isAttacking = false;
+
+            float hitTime = goblinAttackAnimationDuration * 0.4f;
+            yield return new WaitForSeconds(hitTime);
+            if (!player.IsDead && HasLineOfSight())
+                SpawnProjectileEvent();
+            yield return new WaitForSeconds(goblinAttackAnimationDuration - hitTime);
+
+            speed = oldSpeed;
+            PlayIdleAnim();
+            yield return new WaitForSeconds(0.5f);
+            isAttacking = false;
             EnsureWalkAnim();
         }
 
@@ -356,11 +363,18 @@ namespace Resources.Scripts.Enemy
         {
             isAttacking = true;
             lastAttackTime = Time.time;
-            float old = speed; speed = 0f;
+            float oldSpeed = speed; speed = 0f;
             PlayAttackAnim();
-            yield return new WaitForSeconds(darkSkullAttackAnimationDuration);
+
+            float hitTime = darkSkullAttackAnimationDuration * 0.4f;
+            yield return new WaitForSeconds(hitTime);
             RegisterDarkSkullHitEvent();
-            speed = old; isAttacking = false;
+            yield return new WaitForSeconds(darkSkullAttackAnimationDuration - hitTime);
+
+            speed = oldSpeed;
+            PlayIdleAnim();
+            yield return new WaitForSeconds(0.5f);
+            isAttacking = false;
             EnsureWalkAnim();
         }
 
@@ -368,11 +382,18 @@ namespace Resources.Scripts.Enemy
         {
             isAttacking = true;
             lastAttackTime = Time.time;
-            float old = speed; speed = 0f;
+            float oldSpeed = speed; speed = 0f;
             PlayAttackAnim();
-            yield return new WaitForSeconds(trollAttackAnimationDuration);
+
+            float hitTime = trollAttackAnimationDuration * 0.4f;
+            yield return new WaitForSeconds(hitTime);
             RegisterTrollHitEvent();
-            speed = old; isAttacking = false;
+            yield return new WaitForSeconds(trollAttackAnimationDuration - hitTime);
+
+            speed = oldSpeed;
+            PlayIdleAnim();
+            yield return new WaitForSeconds(0.5f);
+            isAttacking = false;
             EnsureWalkAnim();
         }
 
@@ -395,7 +416,7 @@ namespace Resources.Scripts.Enemy
 
         public void SpawnProjectileEvent()
         {
-            if (player.IsDead) return;
+            if (player == null || player.IsDead) return;
             var origin = attackPoint != null ? attackPoint.position : transform.position;
             var dir = (player.transform.position - origin).normalized;
             if (goblinProjectileSpreadAngle > 0f)
@@ -413,8 +434,9 @@ namespace Resources.Scripts.Enemy
 
         public void RegisterDarkSkullHitEvent()
         {
+            if (player == null || player.IsDead) return;
             if (playerStats.TryEvade(transform.position)) return;
-            player.PlayDamageAnimation();  // <--- проигрываем анимацию урона
+            player.PlayDamageAnimation();
             player.ReceiveDarkSkullHit();
             if (pushPlayer)
                 player.transform.position += (player.transform.position - transform.position).normalized * darkSkullPushForce;
@@ -422,8 +444,9 @@ namespace Resources.Scripts.Enemy
 
         public void RegisterTrollHitEvent()
         {
+            if (player == null || player.IsDead) return;
             if (playerStats.TryEvade(transform.position)) return;
-            player.PlayDamageAnimation();  // <--- проигрываем анимацию урона
+            player.PlayDamageAnimation();
             player.ReceiveTrollHit();
             if (pushPlayer)
                 player.transform.position += (player.transform.position - transform.position).normalized * trollPushForce;

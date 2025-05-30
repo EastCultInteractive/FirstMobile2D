@@ -14,14 +14,14 @@ namespace Resources.Scripts.Player
         public int FairyCount { get => fairyCount; set => fairyCount = Mathf.Max(0, value); }
 
         [Header("Health Settings")]
-        [SerializeField, Range(5, 50), Tooltip("Текущее здоровье игрока")]        private int health = 20;
-        [SerializeField, Tooltip("Максимальное здоровье игрока")]                 private int maxHealth = 50;
+        [SerializeField, Range(5, 200), Tooltip("Текущее здоровье игрока")]        private int health = 100;
+        [SerializeField, Tooltip("Максимальное здоровье игрока")]                   private int maxHealth = 100;
         public int Health { get => health; set => health = Mathf.Clamp(value, 0, maxHealth); }
 
         [Header("Mana Settings")]
-        [SerializeField, Tooltip("Максимальная мана")]                            private float maxMana = 100f;
-        [SerializeField, Tooltip("Текущая мана")]                                 private float currentMana;
-        [SerializeField, Tooltip("Скорость восстановления маны в секунду")]        private float manaRegenRate = 10f;
+        [SerializeField, Tooltip("Максимальная мана")]                              private float maxMana = 100f;
+        [SerializeField, Tooltip("Текущая мана")]                                   private float currentMana;
+        [SerializeField, Tooltip("Скорость восстановления маны в секунду")]          private float manaRegenRate = 10f;
 
         [Header("Mana Regen Rate Bonus")]
         private float manaRegenRateBonus;
@@ -32,23 +32,24 @@ namespace Resources.Scripts.Player
         private float manaRegenDelayTimer;
         
         [Header("Movement Settings")]
-        [SerializeField, Tooltip("Базовая скорость движения")]                     private float baseMoveSpeed = 5f;
-        [SerializeField, Tooltip("Текущая итоговая скорость (с учётом перков)")]   private float currentMoveSpeed;
+        [SerializeField, Tooltip("Базовая скорость движения")]                       private float baseMoveSpeed = 5f;
+        [SerializeField, Tooltip("Текущая итоговая скорость (с учётом перков)")]     private float currentMoveSpeed;
         private float moveSpeedPercentBonus;
 
         [Header("Fairy Pull Settings")]
-        [SerializeField, Tooltip("Базовый радиус притягивания фей")]               private float basePullRange = 3f;
+        [SerializeField, Tooltip("Базовый радиус притягивания фей")]                 private float basePullRange = 3f;
         private float pullRangePercentBonus;
 
         [Header("Debug (Runtime)")]
-        [SerializeField, Tooltip("Текущий радиус притягивания фей")]              private float debugPullRange;
+        [SerializeField, Tooltip("Текущий радиус притягивания фей")]                private float debugPullRange;
 
         [Header("Evasion Settings")]
-        [SerializeField, Range(0f, 100f), Tooltip("Текущий шанс уклонения (%)")]  private float baseEvasionChance = 10f;
-        [SerializeField, Tooltip("Кулдаун между уклонениями (сек)")]               private float evasionCooldown = 1f;
-        [SerializeField, Tooltip("Префаб UI-текста для отображения уклонения")]    private GameObject evasionTextPrefab;
+        [SerializeField, Range(0f, 100f), Tooltip("Текущий шанс уклонения (%)")]    private float baseEvasionChance = 10f;
+        [SerializeField, Tooltip("Кулдаун между уклонениями (сек)")]                 private float evasionCooldown = 1f;
+        [SerializeField, Tooltip("Префаб UI-текста для отображения уклонения")]      private GameObject evasionTextPrefab;
         private float evasionCooldownTimer;
 
+        // Сохраняем исходные значения для сброса перков и бонусов
         private float defaultMaxMana, defaultManaRegenDelay, defaultBaseMoveSpeed,
                       defaultEvasionChance, defaultBasePullRange;
 
@@ -62,16 +63,23 @@ namespace Resources.Scripts.Player
             defaultEvasionChance      = baseEvasionChance;
             defaultBasePullRange      = basePullRange;
 
+            // Устанавливаем текущее здоровье и ману в максимум
+            health = maxHealth;
             currentMana = maxMana;
+
             UpdateCurrentMoveSpeed();
         }
 
         private void Update()
         {
-            if (manaRegenDelayTimer > 0f) manaRegenDelayTimer -= Time.deltaTime;
-            else RegenerateMana();
+            if (manaRegenDelayTimer > 0f)
+                manaRegenDelayTimer -= Time.deltaTime;
+            else
+                RegenerateMana();
 
-            if (evasionCooldownTimer > 0f) evasionCooldownTimer -= Time.deltaTime;
+            if (evasionCooldownTimer > 0f)
+                evasionCooldownTimer -= Time.deltaTime;
+
             debugPullRange = PullRange;
         }
 
@@ -80,6 +88,9 @@ namespace Resources.Scripts.Player
             currentMana = Mathf.Min(currentMana + manaRegenRate * Time.deltaTime, maxMana);
         }
 
+        /// <summary>
+        /// Потребление маны. Возвращает true, если мана списана успешно.
+        /// </summary>
         public bool UseMana(float amount)
         {
             if (currentMana >= amount)
@@ -96,6 +107,9 @@ namespace Resources.Scripts.Player
             currentMana = Mathf.Min(currentMana + amount, maxMana);
         }
 
+        /// <summary>
+        /// Сбрасывает все бонусы и перки игрока к базовым значениям.
+        /// </summary>
         public void ResetStats()
         {
             maxMana                   = defaultMaxMana;
@@ -111,7 +125,7 @@ namespace Resources.Scripts.Player
             UpdateCurrentMoveSpeed();
         }
 
-        // Новое: пассивное увеличение регена маны
+        // Пассивное увеличение регена маны
         public void ModifyManaRegenRate(float bonus)
         {
             manaRegenRateBonus += bonus;
@@ -119,11 +133,16 @@ namespace Resources.Scripts.Player
         }
 
         public void ModifyMaxMana(float extra)               => maxMana = defaultMaxMana + extra;
-        public void ModifyMoveSpeedPercent(float bonus)      { moveSpeedPercentBonus += bonus; UpdateCurrentMoveSpeed(); }
+        public void ModifyMoveSpeedPercent(float bonus)      
+        { 
+            moveSpeedPercentBonus += bonus; 
+            UpdateCurrentMoveSpeed(); 
+        }
         public void ModifyPullRangePercent(float bonus)      => pullRangePercentBonus += bonus;
         public void ModifyEvasion(float bonus)               => baseEvasionChance += bonus;
 
-        private void UpdateCurrentMoveSpeed()                => currentMoveSpeed = baseMoveSpeed * (1f + moveSpeedPercentBonus / 100f);
+        private void UpdateCurrentMoveSpeed()                
+            => currentMoveSpeed = baseMoveSpeed * (1f + moveSpeedPercentBonus / 100f);
 
         public float PullRange => basePullRange * (1f + pullRangePercentBonus / 100f);
         public float CurrentMana => currentMana;
@@ -134,6 +153,9 @@ namespace Resources.Scripts.Player
         /// </summary>
         public float GetTotalMoveSpeed() => currentMoveSpeed;
 
+        /// <summary>
+        /// Проверяет, удалось ли уклониться от атаки.
+        /// </summary>
         public bool TryEvade(Vector3 worldPosition)
         {
             if (evasionCooldownTimer > 0f) return false;

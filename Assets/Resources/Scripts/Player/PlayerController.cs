@@ -103,6 +103,9 @@ namespace Resources.Scripts.Player
         // Новое: Rigidbody2D для движения
         private Rigidbody2D rb;
         private Vector2 moveInput;  // хранит текущее направление хода
+
+        // Флаг блокировки анимаций при получении урона
+        private bool isTakingDamage;
         #endregion
 
         #region Unity Methods
@@ -147,6 +150,7 @@ namespace Resources.Scripts.Player
         private void Update()
         {
             if (IsDead) return;
+            if (isTakingDamage) return;
 
             // Считываем ввод каждый кадр
             if (!isRolling)
@@ -184,8 +188,8 @@ namespace Resources.Scripts.Player
 
         private void FixedUpdate()
         {
-            // Физическое перемещение
-            if (!IsDead && !isRolling && LabyrinthMapController.Instance?.IsMapActive != true)
+            if (IsDead || isTakingDamage) return;
+            if (!isRolling && LabyrinthMapController.Instance?.IsMapActive != true)
             {
                 float spd = playerStats.GetTotalMoveSpeed() * currentSlowMultiplier;
                 Vector2 vel = moveInput.normalized * spd;
@@ -273,7 +277,7 @@ namespace Resources.Scripts.Player
         #region Dodge Roll
         public void TryRoll()
         {
-            if (canRoll && !isRolling && !IsDead)
+            if (canRoll && !isRolling && !IsDead && !isTakingDamage)
                 StartCoroutine(RollCoroutine());
         }
 
@@ -340,9 +344,18 @@ namespace Resources.Scripts.Player
         public void PlayDamageAnimation()
         {
             if (IsDead) return;
+            isTakingDamage = true;
             var entry = skeletonAnimation.state.SetAnimation(0, DamageAnimationName, false);
+            entry.Complete += trackEntry =>
+            {
+                if (trackEntry.Animation.Name == DamageAnimationName)
+                {
+                    isTakingDamage = false;
+                }
+            };
             skeletonAnimation.state.AddAnimation(0, IdleAnimations[0], true, entry.Animation.Duration);
         }
+
         public void TakeDamage(EnemyController enemy)
         {
             if (isImmortal || isRolling || IsDead || playerStats.TryEvade(transform.position)) return;
@@ -401,10 +414,11 @@ namespace Resources.Scripts.Player
         }
         public void ReceiveDarkSkullHit()
         {
+            if (IsDead) return;
             if (++darkSkullHitCount >= maxDarkSkullHits)
                 Die();
         }
-        public void ReceiveTrollHit() => Die();
+        public void ReceiveTrollHit() { if (!IsDead) Die(); }
         private void Die()
         {
             IsDead = true;

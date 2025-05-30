@@ -1365,7 +1365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fairyCount: 0
-  health: 50
+  health: 100
   maxHealth: 100
   maxMana: 100
   currentMana: 50
@@ -1375,7 +1375,7 @@ MonoBehaviour:
   currentMoveSpeed: 0
   basePullRange: 1
   debugPullRange: 1
-  baseEvasionChance: 33
+  baseEvasionChance: 5
   evasionCooldown: 1
   evasionTextPrefab: {fileID: 1084327597910860270, guid: 13992fd43d387124c95fb9843b30cfae, type: 3}
 --- !u!114 &9034907166800464094
@@ -1786,7 +1786,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 2
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 00000000
@@ -1810,7 +1810,7 @@ MonoBehaviour:
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
-  m_PointLightOuterRadius: 2.29
+  m_PointLightOuterRadius: 6.5
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
