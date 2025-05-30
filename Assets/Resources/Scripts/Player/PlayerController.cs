@@ -3,18 +3,17 @@ using System;
 using System.Collections;
 using Resources.Scripts.Enemy;
 using Resources.Scripts.Misc;
-using UnityEngine.Rendering.Universal;
 using Resources.Scripts.Labyrinth;
 using Spine;
 using Spine.Unity;
 using UObject = UnityEngine.Object;
-
+using UnityEngine.Rendering.Universal;
 namespace Resources.Scripts.Player
 {
     /// <summary>
     /// Controls player movement, light, animation, dodge roll, evasion and traps.
     /// Uses Spine animation instead of Unity Animator / SpriteRenderer.
-    /// Adds a directional motion-blur effect via Shader Graph when running.
+    /// When damaged, player briefly flashes red.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour
@@ -23,7 +22,6 @@ namespace Resources.Scripts.Player
         private const string SlowAnimationName   = "Goes_01_001";
         private const string RunAnimationName    = "Run_02_001";
         private const string JumpAnimationName   = "Jamp_04_001";
-        private const string DamageAnimationName = "Damage_01_003";
         private const string DeathAnimationName  = "Death_04";
         private static readonly string[] IdleAnimations = {
             "Idle_02_003"
@@ -50,12 +48,6 @@ namespace Resources.Scripts.Player
         [Tooltip("Ссылка на Spine SkeletonAnimation (дочерний объект)")]
         [SerializeField] private SkeletonAnimation skeletonAnimation;
 
-        [Header("Motion Blur Settings")]
-        [Tooltip("Shader Graph-шейдер для эффекта размытия")]
-        [SerializeField] private Shader motionBlurShader;                 // назначьте в инспекторе ваш MotionBlur_Sprite
-        [SerializeField, Range(0f, 1f)]    private float maxBlur = 0.8f;  // максимальная сила размытия
-        [SerializeField, Range(0.5f, 5f)]  private float blurLerpSpeed = 3f; // скорость перехода размытия
-
         [Header("DarkSkull / Troll Damage Settings")]
         [SerializeField] private int maxDarkSkullHits = 2;
 
@@ -66,7 +58,6 @@ namespace Resources.Scripts.Player
         private float rollCooldown = 2f;
         [SerializeField, Tooltip("Множитель скорости движения при кувырке (1 = стандартная скорость)"), Range(0.1f, 3f)]
         private float rollSpeedMultiplier = 1f;
-        private float rollDuration;  // восстановлено поле
         #endregion
 
         #region Public Events & Properties
@@ -80,43 +71,38 @@ namespace Resources.Scripts.Player
         private float currentSlowMultiplier = 1f;
         private Coroutine slowCoroutine;
         private bool bonusActive;
-        private float initialDistance = -1f;
         private int darkSkullHitCount;
 
         private Vector2 lastMoveDirection = Vector2.left;
         private bool isRolling;
         private bool canRoll = true;
         private float rollCooldownRemaining;
+        private float rollDuration;
 
         private bool idleCycling;
         private int idleIndex;
 
-        // Motion Blur
-        private Material[] motionBlurMaterials;
-        private float targetBlur;
-        private float currentBlur;
-        private Vector2 blurDirection = Vector2.right;
-
         // Сохраняем исходный ScaleX скелета
         private float initialScaleX;
 
-        // Новое: Rigidbody2D для движения
+        // Rigidbody2D и ввод
         private Rigidbody2D rb;
-        private Vector2 moveInput;  // хранит текущее направление хода
+        private Vector2 moveInput;
 
-        // Флаг блокировки анимаций при получении урона
-        private bool isTakingDamage;
+        // Для светового флеша урона
+        private Coroutine flashCoroutine;
+
+        // Для расчета светового эффекта финиша
+        private float initialDistance = -1f;
         #endregion
 
         #region Unity Methods
         private void Awake()
         {
-            // Rigidbody2D
             rb = GetComponent<Rigidbody2D>();
             rb.gravityScale = 0f;
             rb.freezeRotation = true;
 
-            // ======== Spine setup ========
             if (skeletonAnimation == null)
                 skeletonAnimation = GetComponentInChildren<SkeletonAnimation>();
             if (skeletonAnimation == null)
@@ -127,8 +113,6 @@ namespace Resources.Scripts.Player
 
             initialScaleX = skeletonAnimation.Skeleton.ScaleX;
             skeletonAnimation.state.Complete += HandleAnimationComplete;
-
-            // Присваиваем длительность ролла из анимации
             var anim = skeletonAnimation.Skeleton.Data.FindAnimation(JumpAnimationName);
             rollDuration = anim != null ? anim.Duration : 0.3f;
         }
@@ -137,9 +121,6 @@ namespace Resources.Scripts.Player
         {
             playerStats = GetComponent<PlayerStatsHandler>();
             PlayIdleSequence();
-
-            // Настраиваем Motion Blur уже после того, как Spine всё инициализировал
-            SetupMotionBlur();
 
             if (finishPoint != null)
                 initialDistance = Vector2.Distance(transform.position, finishPoint.position);
@@ -150,36 +131,17 @@ namespace Resources.Scripts.Player
         private void Update()
         {
             if (IsDead) return;
-            if (isTakingDamage) return;
 
-            // Считываем ввод каждый кадр
             if (!isRolling)
             {
                 float h = joystick != null ? joystick.Horizontal : Input.GetAxis("Horizontal");
                 float v = joystick != null ? joystick.Vertical   : Input.GetAxis("Vertical");
                 moveInput = new Vector2(h, v);
-                UpdateMovementAnimationAndBlur(moveInput);
+                UpdateMovementAnimation(moveInput);
             }
 
             UpdateLightOuterRange();
             TickRollCooldown();
-
-            // Плавно меняем текущий blur
-            currentBlur = Mathf.Lerp(currentBlur, targetBlur, Time.deltaTime * blurLerpSpeed);
-
-            // Применяем параметры в шейдер
-            var dir4 = new Vector4(blurDirection.x, blurDirection.y, 0f, 0f);
-            if (motionBlurMaterials != null)
-            {
-                foreach (var mat in motionBlurMaterials)
-                {
-                    mat.SetFloat("_BlurAmount", currentBlur);
-                    mat.SetVector("_BlurDir", dir4);
-                }
-            }
-
-            // Отладка текущего blur
-            Debug.Log($"[MotionBlur] currentBlur={currentBlur:F2}");
 
             if (Input.GetKeyDown(KeyCode.LeftShift)) TryRoll();
             if (!isRolling && Input.GetKeyDown(KeyCode.Space))
@@ -188,96 +150,42 @@ namespace Resources.Scripts.Player
 
         private void FixedUpdate()
         {
-            if (IsDead || isTakingDamage) return;
+            if (IsDead) return;
             if (!isRolling && LabyrinthMapController.Instance?.IsMapActive != true)
             {
                 float spd = playerStats.GetTotalMoveSpeed() * currentSlowMultiplier;
-                Vector2 vel = moveInput.normalized * spd;
-                rb.linearVelocity = vel;
+                rb.linearVelocity = moveInput.normalized * spd;
             }
-        }
-        #endregion
-
-        #region Setup Motion Blur
-        private void SetupMotionBlur()
-        {
-            if (motionBlurShader == null)
-            {
-                Debug.LogError("PlayerController: MotionBlur Shader не назначен!", this);
-                return;
-            }
-
-            var meshRenderer = skeletonAnimation.GetComponent<MeshRenderer>();
-            if (meshRenderer == null)
-            {
-                Debug.LogError("PlayerController: Не найден MeshRenderer на SpineVisual!", this);
-                return;
-            }
-
-            var originalMats = meshRenderer.sharedMaterials;
-            motionBlurMaterials = new Material[originalMats.Length];
-            for (int i = 0; i < originalMats.Length; i++)
-            {
-                var mat = new Material(motionBlurShader);
-                if (originalMats[i].HasProperty("_MainTex"))
-                    mat.SetTexture("_MainTex", originalMats[i].GetTexture("_MainTex"));
-                motionBlurMaterials[i] = mat;
-            }
-
-            meshRenderer.materials = motionBlurMaterials;
-
-            for (int i = 0; i < motionBlurMaterials.Length; i++)
-                Debug.Log($"[MotionBlur] Материал #{i} шейдер = {motionBlurMaterials[i].shader.name}");
-
-            targetBlur = currentBlur = 0f;
         }
         #endregion
 
         #region Movement & Animation Helpers
-        private void UpdateMovementAnimationAndBlur(Vector2 dir)
+        private void UpdateMovementAnimation(Vector2 dir)
         {
             if (LabyrinthMapController.Instance?.IsMapActive == true || dir.magnitude <= IdleThreshold)
             {
                 if (!idleCycling)
-                {
                     PlayIdleSequence();
-                    targetBlur = 0f;
-                }
                 return;
             }
 
             idleCycling = false;
             lastMoveDirection = dir.normalized;
 
-            // Анимация
             PlayAnimation(
                 dir.magnitude < SlowThreshold ? SlowAnimationName : RunAnimationName,
                 true
             );
 
-            // Флип по X
-            if (lastMoveDirection.x != 0f)
-            {
-                float sign = -Mathf.Sign(lastMoveDirection.x);
-                skeletonAnimation.Skeleton.ScaleX = Mathf.Abs(initialScaleX) * sign;
-            }
-
-            // Motion blur
-            bool isRunning = dir.magnitude >= SlowThreshold;
-            targetBlur = isRunning
-                ? Mathf.InverseLerp(SlowThreshold, 1f, dir.magnitude) * maxBlur
-                : 0f;
-            Debug.Log($"[MotionBlur] dir.magnitude={dir.magnitude:F2}, targetBlur={targetBlur:F2}");
-
-            if (dir.sqrMagnitude > IdleThreshold * IdleThreshold)
-                blurDirection = dir.normalized;
+            if (Mathf.Abs(dir.x) > 0.01f)
+                skeletonAnimation.Skeleton.ScaleX = Mathf.Abs(initialScaleX) * -Mathf.Sign(dir.x);
         }
         #endregion
 
         #region Dodge Roll
         public void TryRoll()
         {
-            if (canRoll && !isRolling && !IsDead && !isTakingDamage)
+            if (canRoll && !isRolling && !IsDead)
                 StartCoroutine(RollCoroutine());
         }
 
@@ -291,9 +199,7 @@ namespace Resources.Scripts.Player
             skeletonAnimation.state.SetAnimation(0, JumpAnimationName, false);
 
             float baseSpeed = rollDistance / rollDuration;
-            float effectiveRollSpeed = baseSpeed * rollSpeedMultiplier;
-
-            // Отключаем гравитацию на ролл, чтобы гарантировать прямолинейность
+            float effectiveRollSpeed = baseSpeed * rollSpeedMultiplier;            
             rb.linearVelocity = Vector2.zero;
 
             float elapsed = 0f;
@@ -321,10 +227,11 @@ namespace Resources.Scripts.Player
         #region Light Methods
         private void UpdateLightOuterRange()
         {
-            if (finishPoint == null || playerLight == null || initialDistance <= 0f) return;
+            if (finishPoint == null || playerLight == null || initialDistance < 0f) return;
             float t = 1f - Mathf.Clamp01(Vector2.Distance(transform.position, finishPoint.position) / initialDistance);
             playerLight.pointLightOuterRadius = Mathf.Lerp(baseLightRange, maxLightRange, t);
         }
+
         private IEnumerator WaitForFinishMarker()
         {
             while (finishPoint == null)
@@ -341,31 +248,36 @@ namespace Resources.Scripts.Player
         #endregion
 
         #region Damage and Evasion
-        public void PlayDamageAnimation()
+        public IEnumerator DamageFlash()
         {
-            if (IsDead) return;
-            isTakingDamage = true;
-            var entry = skeletonAnimation.state.SetAnimation(0, DamageAnimationName, false);
-            entry.Complete += trackEntry =>
-            {
-                if (trackEntry.Animation.Name == DamageAnimationName)
-                {
-                    isTakingDamage = false;
-                }
-            };
-            skeletonAnimation.state.AddAnimation(0, IdleAnimations[0], true, entry.Animation.Duration);
+            if (flashCoroutine != null) yield break;
+            flashCoroutine = StartCoroutine(_DamageFlash());
+            yield return flashCoroutine;
+        }
+
+        private IEnumerator _DamageFlash()
+        {
+            var skel = skeletonAnimation.Skeleton;
+            Color orig = skel.GetColor();
+            skel.SetColor(Color.red);
+            yield return new WaitForSeconds(0.3f);
+            skel.SetColor(orig);
+            flashCoroutine = null;
         }
 
         public void TakeDamage(EnemyController enemy)
         {
             if (isImmortal || isRolling || IsDead || playerStats.TryEvade(transform.position)) return;
+
             playerStats.Health -= enemy.GetComponent<EnemyStatsHandler>().Damage;
+            StartCoroutine(DamageFlash());
+
             if (playerStats.Health <= 0f)
             {
                 Die();
                 return;
             }
-            PlayDamageAnimation();
+
             if (enemy.pushPlayer)
                 EntityUtils.MakeDash(transform, transform.position - enemy.transform.position);
         }
@@ -414,16 +326,16 @@ namespace Resources.Scripts.Player
         }
         public void ReceiveDarkSkullHit()
         {
-            if (IsDead) return;
             if (++darkSkullHitCount >= maxDarkSkullHits)
                 Die();
         }
-        public void ReceiveTrollHit() { if (!IsDead) Die(); }
+        public void ReceiveTrollHit() => Die();
         private void Die()
         {
             IsDead = true;
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
             enabled = false;
-            skeletonAnimation.state.Complete -= HandleAnimationComplete;
             skeletonAnimation.state.ClearTracks();
             var entry = skeletonAnimation.state.SetAnimation(0, DeathAnimationName, false);
             entry.Complete += trackEntry =>
@@ -453,10 +365,11 @@ namespace Resources.Scripts.Player
             {
                 idleIndex = (idleIndex + 1) % IdleAnimations.Length;
                 skeletonAnimation.state.SetAnimation(0, IdleAnimations[idleIndex], false);
-                return;
             }
-            if (entry.Animation.Name == JumpAnimationName)
+            else if (entry.Animation.Name == JumpAnimationName)
+            {
                 PlayIdleSequence();
+            }
         }
         private void PlayIdleSequence()
         {
