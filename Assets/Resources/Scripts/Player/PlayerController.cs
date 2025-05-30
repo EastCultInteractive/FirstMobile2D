@@ -8,6 +8,7 @@ using Spine;
 using Spine.Unity;
 using UObject = UnityEngine.Object;
 using UnityEngine.Rendering.Universal;
+
 namespace Resources.Scripts.Player
 {
     /// <summary>
@@ -58,6 +59,12 @@ namespace Resources.Scripts.Player
         private float rollCooldown = 2f;
         [SerializeField, Tooltip("Множитель скорости движения при кувырке (1 = стандартная скорость)"), Range(0.1f, 3f)]
         private float rollSpeedMultiplier = 1f;
+
+        [Header("Damage Flash Settings")]
+        [Tooltip("Цвет мигания при получении урона")]
+        [SerializeField] private Color flashColor = Color.red;
+        [Tooltip("Длительность мигания (секунд)")]
+        [SerializeField, Range(0.05f, 1f)] private float flashDuration = 0.3f;
         #endregion
 
         #region Public Events & Properties
@@ -259,8 +266,9 @@ namespace Resources.Scripts.Player
         {
             var skel = skeletonAnimation.Skeleton;
             Color orig = skel.GetColor();
-            skel.SetColor(Color.red);
-            yield return new WaitForSeconds(0.3f);
+            // Используем настраиваемый цвет и прозрачность
+            skel.SetColor(new Color(flashColor.r, flashColor.g, flashColor.b, flashColor.a));
+            yield return new WaitForSeconds(flashDuration);
             skel.SetColor(orig);
             flashCoroutine = null;
         }
