@@ -47,7 +47,6 @@ namespace Resources.Scripts.Enemy
                 if (player != null && !player.IsDead)
                 {
                     // Проигрываем анимацию удара и связываем
-                    player.PlayDamageAnimation();
                     player.ApplyBinding(bindingDuration);
                 }
 

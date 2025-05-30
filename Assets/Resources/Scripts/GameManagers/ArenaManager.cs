@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 using DG.Tweening;
 using Resources.Scripts.Data;
+using UnityEngine.UI;
 
 namespace Resources.Scripts.GameManagers
 {
@@ -14,7 +14,7 @@ namespace Resources.Scripts.GameManagers
         [SerializeField] private ArenaSettings defaultArenaSettings = null!;
 
         [Header("UI Timer")]
-        [SerializeField] private TextMeshProUGUI timerText = null!;
+        [SerializeField] private Text timerText = null!;
         [SerializeField] private RectTransform clockHand = null!;
 
         [Header("Spawn Parameters")]

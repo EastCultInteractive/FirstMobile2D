@@ -326,6 +326,9 @@ namespace Resources.Scripts.Enemy
             yield return new WaitForSeconds(hitTime);
             if (!player.IsDead)
             {
+                // красное свечение вместо анимации
+                player.StartCoroutine(player.DamageFlash());
+
                 player.TakeDamage(this);
                 if (pushPlayer)
                     player.transform.position += (player.transform.position - transform.position).normalized * pushForceMultiplier;
@@ -368,7 +371,11 @@ namespace Resources.Scripts.Enemy
 
             float hitTime = darkSkullAttackAnimationDuration * 0.4f;
             yield return new WaitForSeconds(hitTime);
-            RegisterDarkSkullHitEvent();
+            // красное свечение
+            player.StartCoroutine(player.DamageFlash());
+            player.ReceiveDarkSkullHit();
+            if (pushPlayer)
+                player.transform.position += (player.transform.position - transform.position).normalized * darkSkullPushForce;
             yield return new WaitForSeconds(darkSkullAttackAnimationDuration - hitTime);
 
             speed = oldSpeed;
@@ -387,7 +394,11 @@ namespace Resources.Scripts.Enemy
 
             float hitTime = trollAttackAnimationDuration * 0.4f;
             yield return new WaitForSeconds(hitTime);
-            RegisterTrollHitEvent();
+            // красное свечение
+            player.StartCoroutine(player.DamageFlash());
+            player.ReceiveTrollHit();
+            if (pushPlayer)
+                player.transform.position += (player.transform.position - transform.position).normalized * trollPushForce;
             yield return new WaitForSeconds(trollAttackAnimationDuration - hitTime);
 
             speed = oldSpeed;
@@ -436,7 +447,8 @@ namespace Resources.Scripts.Enemy
         {
             if (player == null || player.IsDead) return;
             if (playerStats.TryEvade(transform.position)) return;
-            player.PlayDamageAnimation();
+            // красное свечение
+            player.StartCoroutine(player.DamageFlash());
             player.ReceiveDarkSkullHit();
             if (pushPlayer)
                 player.transform.position += (player.transform.position - transform.position).normalized * darkSkullPushForce;
@@ -446,7 +458,8 @@ namespace Resources.Scripts.Enemy
         {
             if (player == null || player.IsDead) return;
             if (playerStats.TryEvade(transform.position)) return;
-            player.PlayDamageAnimation();
+            // красное свечение
+            player.StartCoroutine(player.DamageFlash());
             player.ReceiveTrollHit();
             if (pushPlayer)
                 player.transform.position += (player.transform.position - transform.position).normalized * trollPushForce;
