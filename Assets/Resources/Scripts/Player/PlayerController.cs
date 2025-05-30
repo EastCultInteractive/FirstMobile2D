@@ -222,10 +222,19 @@ namespace Resources.Scripts.Player
                 float v = joystick != null ? joystick.Vertical   : Input.GetAxis("Vertical");
                 Vector2 rawInput = new Vector2(h, v);
 
-                // Сглаживаем ввод, чтобы убрать рывки
-                moveInput = Vector2.SmoothDamp(moveInput, rawInput, ref inputSmoothVelocity, inputSmoothTime);
+                // Мгновенная остановка, если джойстик отпущен
+                if (rawInput.magnitude <= IdleThreshold)
+                {
+                    moveInput = Vector2.zero;
+                    inputSmoothVelocity = Vector2.zero;
+                }
+                else
+                {
+                    // Сглаживаем ввод, чтобы убрать рывки
+                    moveInput = Vector2.SmoothDamp(moveInput, rawInput, ref inputSmoothVelocity, inputSmoothTime);
+                }
 
-                // Анимации всё так же на основе сглаженного moveInput
+                // Анимации всё так же на основе moveInput
                 UpdateMovementAnimation(moveInput);
             }
 
