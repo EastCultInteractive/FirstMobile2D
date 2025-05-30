@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: Spark_03_001_SkeletonData
   m_EditorClassIdentifier: 
   atlasAssets:
-  - {fileID: 11400000, guid: 2e4de72a0075c1c4ea4378831dc5b4cb, type: 2}
+  - {fileID: 11400000, guid: a603ae27a5ce1e14d90b7822d0c5ef77, type: 2}
   scale: 0.01
-  skeletonJSON: {fileID: 4900000, guid: 668308bc93a79e14aba37799c9f4fc04, type: 3}
+  skeletonJSON: {fileID: 4900000, guid: b18487cd29f250f45b41e74367b242fb, type: 3}
   isUpgradingBlendModeMaterials: 0
   blendModeMaterials:
     requiresBlendModeMaterials: 1
     applyAdditiveMaterial: 1
     additiveMaterials:
     - pageName: Spark_03_001.png
-      material: {fileID: 2100000, guid: 196486252b52d484abbb17fafa4854a6, type: 2}
+      material: {fileID: 2100000, guid: 1be71783b7b31d540b4ba8f3b6a6a43c, type: 2}
     multiplyMaterials: []
     screenMaterials: []
   skeletonDataModifiers: []

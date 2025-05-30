@@ -46,10 +46,10 @@ namespace Resources.Scripts.Player
         #endregion
 
         #region Constants
-        private const string SlowAnimationName   = "Goes_01_001";
+        private const string SlowAnimationName   = "Goes_01_002";
         private const string RunAnimationName    = "Run_02_001";
         private const string JumpAnimationName   = "Jamp_04_001";
-        private const string DeathAnimationName  = "Death_04";
+        private const string DeathAnimationName  = "Death_05";
         private static readonly string[] IdleAnimations = {
             "Idle_02_003"
         };
@@ -61,6 +61,9 @@ namespace Resources.Scripts.Player
         [Header("Movement Settings")]
         [SerializeField] private PlayerJoystick joystick;
         [SerializeField] private GameObject trapPrefab;
+        [SerializeField, Tooltip("Время сглаживания ввода (сек)")]
+        private float inputSmoothTime = 0.1f;
+        #endregion
 
         [Header("Light Settings")]
         [SerializeField] private Light2D playerLight;
@@ -91,7 +94,6 @@ namespace Resources.Scripts.Player
         [SerializeField] private Color flashColor = Color.red;
         [Tooltip("Длительность мигания (секунд)")]
         [SerializeField, Range(0.05f, 1f)] private float flashDuration = 0.3f;
-        #endregion
 
         #region Public Events & Properties
         public event Action<float> OnRollCooldownChanged;
@@ -121,6 +123,7 @@ namespace Resources.Scripts.Player
         // Rigidbody2D и ввод
         private Rigidbody2D rb;
         private Vector2 moveInput;
+        private Vector2 inputSmoothVelocity;
 
         // Для светового флеша урона
         private Coroutine flashCoroutine;
@@ -141,6 +144,8 @@ namespace Resources.Scripts.Player
             rb = GetComponent<Rigidbody2D>();
             rb.gravityScale = 0f;
             rb.freezeRotation = true;
+            // Плавная интерполяция между FixedUpdate-рендерами
+            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
 
             if (skeletonAnimation == null)
                 skeletonAnimation = GetComponentInChildren<SkeletonAnimation>();
@@ -212,9 +217,15 @@ namespace Resources.Scripts.Player
 
             if (!isRolling)
             {
+                // Получаем «сырые» значения от джойстика или клавиатуры
                 float h = joystick != null ? joystick.Horizontal : Input.GetAxis("Horizontal");
                 float v = joystick != null ? joystick.Vertical   : Input.GetAxis("Vertical");
-                moveInput = new Vector2(h, v);
+                Vector2 rawInput = new Vector2(h, v);
+
+                // Сглаживаем ввод, чтобы убрать рывки
+                moveInput = Vector2.SmoothDamp(moveInput, rawInput, ref inputSmoothVelocity, inputSmoothTime);
+
+                // Анимации всё так же на основе сглаженного moveInput
                 UpdateMovementAnimation(moveInput);
             }
 
@@ -232,9 +243,17 @@ namespace Resources.Scripts.Player
             if (IsDead) return;
             if (!isRolling && LabyrinthMapController.Instance?.IsMapActive != true)
             {
+                // Движение через MovePosition — согласовано с FixedUpdate и интерполяцией
                 float spd = playerStats.GetTotalMoveSpeed() * currentSlowMultiplier;
-                rb.linearVelocity = moveInput.normalized * spd;
+                Vector2 delta = moveInput.normalized * spd * Time.fixedDeltaTime;
+                rb.MovePosition(rb.position + delta);
             }
+        }
+
+        private void LateUpdate()
+        {
+            // Здесь можно сделать любые чисто визуальные корректировки,
+            // которые нужно применить после интерполяции Rigidbody2D.
         }
         #endregion
 
@@ -264,7 +283,6 @@ namespace Resources.Scripts.Player
         {
             if (trailEmissions == null) return;
 
-            // реальная скорость персонажа в единицах в секунду
             float currentSpeed = playerStats.GetTotalMoveSpeed() * dir.magnitude * currentSlowMultiplier;
             bool running = currentSpeed >= trailSpeedThreshold;
 
