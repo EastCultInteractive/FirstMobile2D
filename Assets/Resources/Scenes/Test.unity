@@ -185,67 +185,6 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 6635823951175761549, guid: 71659ddae525c8b42ac21f2a0013eb79, type: 3}
   m_PrefabInstance: {fileID: 684035624}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &701440007
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1162642558128745149, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.378
-      objectReference: {fileID: 0}
-    - target: {fileID: 1162642558128745149, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.32121307
-      objectReference: {fileID: 0}
-    - target: {fileID: 1162642558128745149, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1162642558128745149, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1162642558128745149, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1162642558128745149, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1162642558128745149, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1162642558128745149, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1162642558128745149, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1162642558128745149, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3787781065419307373, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5454972267272251233, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
-      propertyPath: m_Name
-      value: Enemy
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
 --- !u!1001 &1406937781
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -254,9 +193,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4020807407697199567, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5485085163093197689, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7337834219232878474, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7684459473974908381, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
       propertyPath: m_Name
@@ -306,6 +253,26 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 1670122381}
+    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: trailColor.a
+      value: 0.25490198
+      objectReference: {fileID: 0}
+    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: trailLifetime
+      value: 0.147
+      objectReference: {fileID: 0}
+    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: trailStartSizeMax
+      value: 0.029
+      objectReference: {fileID: 0}
+    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: trailStartSizeMin
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: trailSpeedThreshold
+      value: 1.56
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -642,4 +609,3 @@ SceneRoots:
   - {fileID: 684035624}
   - {fileID: 1896303753}
   - {fileID: 1974937816}
-  - {fileID: 701440007}
