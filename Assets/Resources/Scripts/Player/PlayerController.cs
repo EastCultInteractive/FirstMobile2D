@@ -280,7 +280,7 @@ namespace Resources.Scripts.Player
             lastMoveDirection = dir.normalized;
 
             PlayAnimation(
-                dir.magnitude < SlowThreshold ? SlowAnimationName : RunAnimationName,
+                RunAnimationName,
                 true
             );
 
