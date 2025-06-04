@@ -21,6 +21,13 @@ namespace Resources.Scripts.GameManagers
         [Header("UI панели перков")]
         [SerializeField] private GameObject perkSelectionPanelPrefab = null!;
 
+        [Header("Имена универсальных сцен")]
+        [Tooltip("Имя единственной сцены арены (например, \"Arena\").")]
+        [SerializeField] private string genericArenaSceneName = "Arena";
+
+        [Tooltip("Имя единственной сцены лабиринта (например, \"Labyrinth\").")]
+        [SerializeField] private string genericLabyrinthSceneName = "Labyrinth";
+
         private int currentArenaIndex;
         private readonly List<PerkDefinition> selectedPerks = new();
 
@@ -56,14 +63,22 @@ namespace Resources.Scripts.GameManagers
         {
             var data = GameStageManager.currentStageData;
             if (data == null || idx < 0
-                || idx >= data.arenaSceneNames.Length
                 || idx >= data.arenaSettingsList.Length)
             {
-                Debug.LogError($"Невалидный индекс арены {idx}");
+                Debug.LogError($"StageProgressionManager.LoadArena: неверный индекс арены {idx}");
                 return;
             }
+
+            // Берём настройки арены из SO
             CurrentArenaSettings = data.arenaSettingsList[idx];
-            SceneManager.LoadScene(data.arenaSceneNames[idx]);
+
+            // Загрузим _универсальную_ сцену арены по имени genericArenaSceneName
+            if (string.IsNullOrEmpty(genericArenaSceneName))
+            {
+                Debug.LogError("StageProgressionManager: не задано имя genericArenaSceneName.");
+                return;
+            }
+            SceneManager.LoadScene(genericArenaSceneName);
         }
 
         private void LoadLabyrinth()
@@ -71,10 +86,17 @@ namespace Resources.Scripts.GameManagers
             var data = GameStageManager.currentStageData;
             if (data == null)
             {
-                Debug.LogError("StageData==null");
+                Debug.LogError("StageProgressionManager.LoadLabyrinth: StageData == null");
                 return;
             }
-            SceneManager.LoadScene(data.labyrinthSceneName);
+
+            // Загрузим _универсальную_ сцену лабиринта по имени genericLabyrinthSceneName
+            if (string.IsNullOrEmpty(genericLabyrinthSceneName))
+            {
+                Debug.LogError("StageProgressionManager: не задано имя genericLabyrinthSceneName.");
+                return;
+            }
+            SceneManager.LoadScene(genericLabyrinthSceneName);
         }
 
         public void OnArenaComplete()
@@ -107,7 +129,13 @@ namespace Resources.Scripts.GameManagers
 
             currentArenaIndex++;
             var data = GameStageManager.currentStageData;
-            if (currentArenaIndex < data.arenaSceneNames.Length)
+            if (data == null)
+            {
+                Debug.LogError("StageProgressionManager.OnPerkChosen: StageData == null");
+                return;
+            }
+
+            if (currentArenaIndex < data.arenaSettingsList.Length)
                 LoadArena(currentArenaIndex);
             else
                 LoadLabyrinth();
@@ -132,17 +160,23 @@ namespace Resources.Scripts.GameManagers
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            var data = GameStageManager.currentStageData;
-            if (data != null)
+            // Считаем _валидными_ только две сцены: универсальную арену и универсальный лабиринт.
+            var validScenes = new List<string>
             {
-                var valid = data.arenaSceneNames.Concat(new[] { data.labyrinthSceneName });
-                if (!valid.Contains(scene.name))
-                {
-                    selectedPerks.Clear();
-                    var stats = Object.FindFirstObjectByType<PlayerStatsHandler>();
-                    stats?.ResetStats();
-                }
+                genericArenaSceneName,
+                genericLabyrinthSceneName
+            };
+
+            // Если загрузилась не та, что мы ждём (например, вернулись в главное меню или куда-то ещё),
+            // сбрасываем накопленные перки и статы игрока.
+            if (!validScenes.Contains(scene.name))
+            {
+                selectedPerks.Clear();
+                var stats = Object.FindFirstObjectByType<PlayerStatsHandler>();
+                stats?.ResetStats();
             }
+
+            // После того, как сцена загрузилась, применим все уже выбранные перки.
             StartCoroutine(DelayedApplyAllPerks());
         }
 

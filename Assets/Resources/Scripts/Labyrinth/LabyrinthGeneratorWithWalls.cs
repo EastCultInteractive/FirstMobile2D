@@ -5,13 +5,13 @@ using UnityEngine.Rendering.Universal;
 using TMPro;
 using Resources.Scripts.Data;
 using Resources.Scripts.GameManagers;
+using Resources.Scripts.Tilemap;
 
 namespace Resources.Scripts.Labyrinth
 {
     public class LabyrinthGeneratorWithWalls : MonoBehaviour
     {
-        
-        [Header("Настройки лабиринта (ScriptableObject)")]
+        [Header("Настройки лабиринта (ScriptableObject).\nЕсли оставить поле пустым — будут браться настройки из StageData.")]
         [SerializeField] private LabyrinthSettings labyrinthSettings;
 
         [Header("Резервные параметры")]
@@ -103,6 +103,9 @@ namespace Resources.Scripts.Labyrinth
         private static readonly FieldInfo FiMesh;
         private static readonly MethodInfo MiGenerateShadowMesh;
 
+        // Ссылка на RandomTilemapGenerator в сцене
+        private RandomTilemapGenerator floorGenerator;
+
         static LabyrinthGeneratorWithWalls()
         {
             var scType = typeof(ShadowCaster2D);
@@ -116,31 +119,38 @@ namespace Resources.Scripts.Labyrinth
 
         private void Start()
         {
-            // Загрузка параметров
-            if (labyrinthSettings != null)
+            // 1) Получаем настройки лабиринта преимущественно из StageData
+            var stageData = GameStageManager.currentStageData;
+            if (stageData != null && stageData.labyrinthSettings != null)
             {
-                rows           = labyrinthSettings.rows;
-                cols           = labyrinthSettings.cols;
-                cellSizeX      = labyrinthSettings.cellSizeX;
-                cellSizeY      = labyrinthSettings.cellSizeY;
-                labyrinthTimer = labyrinthSettings.labyrinthTimeLimit;
-            }
-            else if (GameStageManager.currentStageData?.labyrinthSettings != null)
-            {
-                var s = GameStageManager.currentStageData.labyrinthSettings;
+                var s = stageData.labyrinthSettings;
                 rows           = s.rows;
                 cols           = s.cols;
                 cellSizeX      = s.cellSizeX;
                 cellSizeY      = s.cellSizeY;
                 labyrinthTimer = s.labyrinthTimeLimit;
+                // Инициализируем tilemap согласно настройкам из SO
+                InitializeFloorTilemap(s);
+            }
+            else if (labyrinthSettings != null)
+            {
+                // Запуск напрямую (без менеджера этапов)
+                rows           = labyrinthSettings.rows;
+                cols           = labyrinthSettings.cols;
+                cellSizeX      = labyrinthSettings.cellSizeX;
+                cellSizeY      = labyrinthSettings.cellSizeY;
+                labyrinthTimer = labyrinthSettings.labyrinthTimeLimit;
+                InitializeFloorTilemap(labyrinthSettings);
             }
             else
             {
+                // Резервный вариант
                 rows           = defaultRows;
                 cols           = defaultCols;
                 cellSizeX      = defaultCellSizeX;
                 cellSizeY      = defaultCellSizeY;
                 labyrinthTimer = defaultTimeLimit;
+                // Резервная генерация пола не выполняется
             }
 
             totalLabyrinthTime = labyrinthTimer;
@@ -153,6 +163,42 @@ namespace Resources.Scripts.Labyrinth
 
             GenerateWalls();
             PlaceGameplayElements();
+        }
+
+        /// <summary>
+        /// Находит RandomTilemapGenerator в сцене и генерирует пол по настройкам из SO.
+        /// </summary>
+        private void InitializeFloorTilemap(LabyrinthSettings s)
+        {
+            if (s.tilesForThisLabyrinth == null || s.tilesForThisLabyrinth.Length == 0)
+            {
+                Debug.LogWarning("LabyrinthGenerator: tilesForThisLabyrinth не назначены в LabyrinthSettings!");
+                return;
+            }
+
+            // Найдём в сцене компонент RandomTilemapGenerator
+            floorGenerator = Object.FindFirstObjectByType<RandomTilemapGenerator>();
+            if (floorGenerator == null)
+            {
+                Debug.LogError("LabyrinthGenerator: на сцене не найден RandomTilemapGenerator!");
+                return;
+            }
+
+            floorGenerator.floorTiles = s.tilesForThisLabyrinth;
+            floorGenerator.width      = Mathf.Max(1, s.floorWidth);
+            floorGenerator.height     = Mathf.Max(1, s.floorHeight);
+
+            var tilemapComp = floorGenerator.tilemapComponent
+                              ?? floorGenerator.GetComponentInChildren<UnityEngine.Tilemaps.Tilemap>();
+
+            if (tilemapComp == null)
+            {
+                Debug.LogError("LabyrinthGenerator: RandomTilemapGenerator.tilemapComponent не задан!");
+                return;
+            }
+
+            floorGenerator.tilemapComponent = tilemapComp;
+            floorGenerator.GenerateRandomMap();
         }
 
         private void GenerateWalls()
@@ -452,6 +498,7 @@ namespace Resources.Scripts.Labyrinth
             if (labyrinthTimer <= 0f)
             {
                 if (StageProgressionManager.Instance != null)
+                    // Когда время вышло — считаем, что лабиринт пройден и переходим к выбору перков/следующему этапу
                     StageProgressionManager.Instance.OnPerkChosen(null);
                 else
                     Debug.LogWarning("StageProgressionManager отсутствует!");

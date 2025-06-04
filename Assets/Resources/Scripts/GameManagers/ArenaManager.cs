@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 using Resources.Scripts.Data;
 using UnityEngine.UI;
+using Resources.Scripts.Tilemap;
 
 namespace Resources.Scripts.GameManagers
 {
@@ -29,11 +30,15 @@ namespace Resources.Scripts.GameManagers
 
         private void Start()
         {
+            // 1) Берём настройки арены (либо через StageProgressionManager, либо дефолт)
             currentSettings = StageProgressionManager.CurrentArenaSettings
                               ?? defaultArenaSettings;
 
-            timer = currentSettings.survivalTime;
+            // 2) Инициализируем Tilemap на сцене (ищем существующий объект с RandomTilemapGenerator)
+            InitializeTilemap();
 
+            // 3) Настраиваем таймер и UI
+            timer = currentSettings.survivalTime;
             if (clockHand != null)
             {
                 clockHand.localRotation = Quaternion.Euler(0f, 0f, -90f);
@@ -53,8 +58,10 @@ namespace Resources.Scripts.GameManagers
                   .SetId(this);
             }
 
+            // 4) Старт логики спавна
             InitializeArena();
 
+            // 5) Если нужно, сажаем деревья по краю
             if (currentSettings.plantTreesAtEdges)
             {
                 edgeTreesParent = new GameObject("EdgeTrees").transform;
@@ -68,6 +75,50 @@ namespace Resources.Scripts.GameManagers
             DOTween.Kill(this);
         }
 
+        /// <summary>
+        /// Находит RandomTilemapGenerator на сцене, передаёт ему tilesForThisArena и размеры, а затем вызывает генерацию.
+        /// </summary>
+        private void InitializeTilemap()
+        {
+            // 1) Если в настройках вообще нет массива tilesForThisArena, ничего не делаем
+            if (currentSettings.tilesForThisArena == null || currentSettings.tilesForThisArena.Length == 0)
+            {
+                Debug.LogWarning("ArenaManager: tilesForThisArena не назначен или пуст!");
+                return;
+            }
+
+            // 2) Ищем компонент RandomTilemapGenerator где-то в иерархии сцены "Arena"
+            var generator = Object.FindFirstObjectByType<RandomTilemapGenerator>();
+            if (generator == null)
+            {
+                Debug.LogError("ArenaManager: на сцене не найден RandomTilemapGenerator!");
+                return;
+            }
+
+            // 3) Назначаем массив тайлов (floorTiles) и размеры (width, height)
+            generator.floorTiles = currentSettings.tilesForThisArena;
+            generator.width      = Mathf.Max(1, currentSettings.tilemapWidth);
+            generator.height     = Mathf.Max(1, currentSettings.tilemapHeight);
+
+            // 4) Ищем компонент Tilemap на том же GameObject или в его детях
+            var tilemapComp = generator.tilemapComponent
+                              ?? generator.GetComponentInChildren<UnityEngine.Tilemaps.Tilemap>();
+
+            if (tilemapComp == null)
+            {
+                Debug.LogError("ArenaManager: RandomTilemapGenerator.tilemapComponent не назначен и не найден в children!");
+                return;
+            }
+
+            generator.tilemapComponent = tilemapComp;
+
+            // 5) Вызываем генерацию
+            generator.GenerateRandomMap();
+        }
+
+        /// <summary>
+        /// Стартует спавн врагов, фей и препятствий.
+        /// </summary>
         private void InitializeArena()
         {
             Debug.Log("Arena initialized.");

@@ -65,21 +65,21 @@ MonoBehaviour:
   pushPlayer: 0
   pushForceMultiplier: 1
   goblinAttackCooldownTime: 2
+  goblinAttackAnimationDuration: 1
   bindingDuration: 2
-  projectileSpeed: 5
-  goblinProjectileLifeTime: 5
-  goblinProjectileSpreadAngle: 0
-  goblinProjectileScale: {x: 1, y: 1, z: 1}
-  goblinProjectileDamage: 0
   projectilePrefab: {fileID: 0}
   attackPoint: {fileID: 0}
-  goblinAttackAnimationDuration: 1
+  projectileSpeed: 5
+  goblinProjectileLifeTime: 5
+  goblinProjectileDamage: 0
+  goblinProjectileSpreadAngle: 0
+  goblinProjectileScale: {x: 1, y: 1, z: 1}
   darkSkullAttackCooldownTime: 1
-  darkSkullPushForce: 5
   darkSkullAttackAnimationDuration: 2
+  darkSkullPushForce: 5
   trollAttackCooldownTime: 1
-  trollPushForce: 5
   trollAttackAnimationDuration: 1
+  trollPushForce: 5
   skeletonAnimation: {fileID: 843632160230503640}
   obstacleMask:
     serializedVersion: 2
@@ -289,7 +289,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &843632160230503640
 MonoBehaviour:

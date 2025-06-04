@@ -15,10 +15,10 @@ MonoBehaviour:
   stageName: "1 \u044D\u0442\u0430\u043F"
   stageImage: {fileID: 0}
   arenaSceneNames:
-  - Arena1
-  - Arena2
+  - Arena
+  - Arena
   arenaSettingsList:
   - {fileID: 11400000, guid: c9f0ecfe55c4d0b48af3d0004abbf88c, type: 2}
   - {fileID: 11400000, guid: 50e8c44bb8294f642a131d31588aa0a4, type: 2}
-  labyrinthSceneName: Labyrinth1
-  labyrinthSettings: {fileID: 11400000, guid: 702939bdeb212ec498f4019ff898cc0f, type: 2}
+  labyrinthSceneName: Labyrinth
+  labyrinthSettings: {fileID: 11400000, guid: 6a4e0716be97149e291fbf15da4971c4, type: 2}

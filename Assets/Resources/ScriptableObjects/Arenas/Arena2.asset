@@ -51,3 +51,13 @@ MonoBehaviour:
   edgeTreeScaleRange: {x: 0.3, y: 0.3}
   edgeTreeJitterRange: {x: 2, y: 2}
   disableEdgeTreeColliders: 1
+  tilesForThisArena:
+  - {fileID: 11400000, guid: eda83ce72934f764aa575d4c8294e8b8, type: 2}
+  - {fileID: 11400000, guid: 5816ced8d99bd4346891e1bff5bdc65a, type: 2}
+  - {fileID: 11400000, guid: 02f6d023278c7b843b948c10b3bf362d, type: 2}
+  - {fileID: 11400000, guid: 4dcbb9f0f12b0ee4b825288efc51b7d3, type: 2}
+  - {fileID: 11400000, guid: 34a5b59aae1022b4798496e44891400a, type: 2}
+  - {fileID: 11400000, guid: 2f72196470e828b40ab96f6f04e0892d, type: 2}
+  - {fileID: 11400000, guid: 3ba0f217d35562348a41cdd991ef8bbb, type: 2}
+  tilemapWidth: 40
+  tilemapHeight: 40

@@ -220,6 +220,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2968674252301727655, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5485085163093197689, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -299,7 +303,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2094875851611427751, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2094875851611427751, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_AnchorMin.x
@@ -307,7 +311,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2094875851611427751, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2094875851611427751, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_SizeDelta.x
@@ -351,7 +355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2094875851611427751, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 350
+      value: -820
       objectReference: {fileID: 0}
     - target: {fileID: 2094875851611427751, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -571,15 +575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemapComponent: {fileID: 836031896}
-  grassTiles:
-  - {fileID: 11400000, guid: 9f14f51efaff3e34eb411f0b291e768b, type: 2}
-  - {fileID: 11400000, guid: 7555345bbb24eca4489cab0bb8fba963, type: 2}
-  - {fileID: 11400000, guid: 0b451d04c3494564988c9c63a8e14f84, type: 2}
-  - {fileID: 11400000, guid: 228b999d033c60943a67f0056c3980c3, type: 2}
-  - {fileID: 11400000, guid: 8bad50e1611971845996d317e3dcade7, type: 2}
-  - {fileID: 11400000, guid: ee3c7aba6d6c7f247a71b64f6ee754e2, type: 2}
-  - {fileID: 11400000, guid: 769cce3e6c2e495449319c60dd7b614b, type: 2}
-  - {fileID: 11400000, guid: 39f888c5e7b560846b407001dbe6094d, type: 2}
+  floorTiles: []
   width: 50
   height: 50
 --- !u!224 &585834570 stripped

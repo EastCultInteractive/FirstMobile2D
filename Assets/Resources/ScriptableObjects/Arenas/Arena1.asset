@@ -14,9 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   survivalTime: 10
   enemyCount: 5
-  enemyPrefabs:
-  - {fileID: 7260566827850767976, guid: b89c68620d9c2c441b0d4ecce42ea97d, type: 3}
-  - {fileID: 5454972267272251233, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
+  enemyPrefabs: []
   fairyCount: 3
   fairyPrefabs:
   - {fileID: 6405068590111382987, guid: ef6d34214eb1c8b4dac7a9f2245ec954, type: 3}
@@ -43,3 +41,14 @@ MonoBehaviour:
   edgeTreeScaleRange: {x: 0.3, y: 0.4}
   edgeTreeJitterRange: {x: 1, y: 1}
   disableEdgeTreeColliders: 1
+  tilesForThisArena:
+  - {fileID: 11400000, guid: 9f14f51efaff3e34eb411f0b291e768b, type: 2}
+  - {fileID: 11400000, guid: 7555345bbb24eca4489cab0bb8fba963, type: 2}
+  - {fileID: 11400000, guid: 0b451d04c3494564988c9c63a8e14f84, type: 2}
+  - {fileID: 11400000, guid: 228b999d033c60943a67f0056c3980c3, type: 2}
+  - {fileID: 11400000, guid: 8bad50e1611971845996d317e3dcade7, type: 2}
+  - {fileID: 11400000, guid: ee3c7aba6d6c7f247a71b64f6ee754e2, type: 2}
+  - {fileID: 11400000, guid: 769cce3e6c2e495449319c60dd7b614b, type: 2}
+  - {fileID: 11400000, guid: 39f888c5e7b560846b407001dbe6094d, type: 2}
+  tilemapWidth: 40
+  tilemapHeight: 40

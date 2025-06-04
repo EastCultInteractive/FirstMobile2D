@@ -102,12 +102,12 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8cce36f1795bbfd4f89364785ec8e165, type: 2}
-  - {fileID: 2100000, guid: 1be71783b7b31d540b4ba8f3b6a6a43c, type: 2}
-  - {fileID: 2100000, guid: 8cce36f1795bbfd4f89364785ec8e165, type: 2}
-  - {fileID: 2100000, guid: 1be71783b7b31d540b4ba8f3b6a6a43c, type: 2}
-  - {fileID: 2100000, guid: 8cce36f1795bbfd4f89364785ec8e165, type: 2}
-  - {fileID: 2100000, guid: 1be71783b7b31d540b4ba8f3b6a6a43c, type: 2}
+  - {fileID: 2100000, guid: cde33c5a4058ea64a804fb84e13edf89, type: 2}
+  - {fileID: 2100000, guid: 8b986585933afc74781283eec5f7752d, type: 2}
+  - {fileID: 2100000, guid: cde33c5a4058ea64a804fb84e13edf89, type: 2}
+  - {fileID: 2100000, guid: 8b986585933afc74781283eec5f7752d, type: 2}
+  - {fileID: 2100000, guid: cde33c5a4058ea64a804fb84e13edf89, type: 2}
+  - {fileID: 2100000, guid: 8b986585933afc74781283eec5f7752d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -438,14 +438,15 @@ MonoBehaviour:
   trailSpeedThreshold: 1.56
   joystick: {fileID: 0}
   trapPrefab: {fileID: 726999753017517549, guid: 2883cba0652d4754ab1bd2e5e075b41d, type: 3}
+  inputSmoothTime: 0.1
   playerLight: {fileID: 5168581604903604661}
   finishPoint: {fileID: 0}
   baseLightRange: 1
   maxLightRange: 2
-  isImmortal: 0
+  isImmortal: 1
   skeletonAnimation: {fileID: 0}
   maxDarkSkullHits: 2
-  rollDistance: 2
+  rollDistance: 5
   rollCooldown: 2
   rollSpeedMultiplier: 1
   flashColor: {r: 1, g: 0, b: 0, a: 1}
@@ -570,7 +571,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 00000000
@@ -583,9 +584,9 @@ MonoBehaviour:
   m_NormalMapQuality: 2
   m_UseNormalMap: 0
   m_ShadowsEnabled: 1
-  m_ShadowIntensity: 0.75
-  m_ShadowSoftness: 0.3
-  m_ShadowSoftnessFalloffIntensity: 0.5
+  m_ShadowIntensity: 0.5
+  m_ShadowSoftness: 0
+  m_ShadowSoftnessFalloffIntensity: 0
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
@@ -594,7 +595,7 @@ MonoBehaviour:
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
-  m_PointLightOuterRadius: 6.5
+  m_PointLightOuterRadius: 2.33
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1

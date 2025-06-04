@@ -357,7 +357,7 @@ Transform:
   m_GameObject: {fileID: 188324148}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -20, y: -20, z: 0}
+  m_LocalPosition: {x: -20, y: 20, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13164,7 +13164,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1011841305}
   - component: {fileID: 1011841306}
-  - component: {fileID: 1011841307}
   m_Layer: 0
   m_Name: TilemapGenerator
   m_TagString: Untagged
@@ -13200,32 +13199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemapComponent: {fileID: 188324151}
-  grassTiles:
-  - {fileID: 11400000, guid: 9f14f51efaff3e34eb411f0b291e768b, type: 2}
-  - {fileID: 11400000, guid: 7555345bbb24eca4489cab0bb8fba963, type: 2}
-  - {fileID: 11400000, guid: 0b451d04c3494564988c9c63a8e14f84, type: 2}
-  - {fileID: 11400000, guid: 228b999d033c60943a67f0056c3980c3, type: 2}
-  - {fileID: 11400000, guid: 8bad50e1611971845996d317e3dcade7, type: 2}
-  - {fileID: 11400000, guid: ee3c7aba6d6c7f247a71b64f6ee754e2, type: 2}
-  - {fileID: 11400000, guid: 769cce3e6c2e495449319c60dd7b614b, type: 2}
-  - {fileID: 11400000, guid: 39f888c5e7b560846b407001dbe6094d, type: 2}
-  width: 40
-  height: 40
---- !u!114 &1011841307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1011841304}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d1284a474be7de43a7284c7e2d65f41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilemapComponent: {fileID: 188324151}
-  grassTiles:
-  - {fileID: 11400000, guid: 99707ff056a31e04881262b328c36d50, type: 2}
+  floorTiles: []
   width: 40
   height: 40
 --- !u!1001 &1032882435
@@ -13927,14 +13901,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 5168581604903604661, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: m_Intensity
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5485085163093197689, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7684459473974908381, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
       propertyPath: m_Name
       value: Player
@@ -13979,22 +13945,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8871079234456644643, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
       propertyPath: joystick
       value: 
       objectReference: {fileID: 543103349}
-    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: isImmortal
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
-      propertyPath: rollDistance
-      value: 5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

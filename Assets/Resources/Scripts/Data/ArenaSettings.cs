@@ -28,7 +28,7 @@ namespace Resources.Scripts.Data
         [Tooltip("Maximum scale applied on spawn")]
         public float maxScale = 1f;
     }
-    
+
     [CreateAssetMenu(fileName = "ArenaSettings", menuName = "GameSettings/Arena Settings")]
     public sealed class ArenaSettings : ScriptableObject
     {
@@ -89,6 +89,22 @@ namespace Resources.Scripts.Data
 
         [Tooltip("Disable colliders on edge trees")]
         public bool disableEdgeTreeColliders = true;
+
+        #endregion
+
+        #region Tilemap Settings
+
+        [Header("Tilemap Settings")]
+        [Tooltip("Array of TileBase variants to use for this arena (e.g., grass tiles, sand tiles, etc.).")]
+        public UnityEngine.Tilemaps.TileBase[] tilesForThisArena = Array.Empty<UnityEngine.Tilemaps.TileBase>();
+
+        [Tooltip("Width of the generated map")]
+        [Min(1)]
+        public int tilemapWidth = 10;
+
+        [Tooltip("Height of the generated map")]
+        [Min(1)]
+        public int tilemapHeight = 10;
 
         #endregion
     }

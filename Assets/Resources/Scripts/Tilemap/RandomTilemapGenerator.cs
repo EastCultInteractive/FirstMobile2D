@@ -5,21 +5,26 @@ using UT = UnityEngine.Tilemaps;
 namespace Resources.Scripts.Tilemap
 {
     /// <summary>
-    /// Generates a random tilemap by placing grass tiles while avoiding placing the same tile type in adjacent cells.
+    /// Генерирует рандомный Tilemap, выставляя тайл из списка floorTiles, избегая совпадения соседних тайлов.
     /// </summary>
     public class RandomTilemapGenerator : MonoBehaviour
     {
         [Header("Tilemap Settings")]
-        [Tooltip("Reference to the Tilemap component.")]
+        [Tooltip("Ссылка на компонент Tilemap (тот же GameObject или его потомок).")]
         public UT.Tilemap tilemapComponent;
-        [Tooltip("Array of grass tile variants (e.g., 8 different textures).")]
-        public UT.TileBase[] grassTiles;
-        [Tooltip("Width of the generated map.")]
+
+        [Tooltip("Массив вариантов тайлов для данной сцены (floor variants).")]
+        public UT.TileBase[] floorTiles;
+
+        [Tooltip("Ширина генерируемой области (в клетках).")]
+        [Min(1)]
         public int width = 10;
-        [Tooltip("Height of the generated map.")]
+
+        [Tooltip("Высота генерируемой области (в клетках).")]
+        [Min(1)]
         public int height = 10;
 
-        // Directions for checking all 8 neighboring cells.
+        // Направления для проверки всех 8 соседних клеток.
         private readonly Vector3Int[] directions = new Vector3Int[]
         {
             new Vector3Int( 1,  0, 0),
@@ -33,46 +38,52 @@ namespace Resources.Scripts.Tilemap
         };
 
         /// <summary>
-        /// Called before the first frame update.
-        /// Generates the random tilemap.
+        /// Вызывать после того, как поля tilemapComponent, floorTiles, width и height настроены.
         /// </summary>
-        private void Start()
+        public void GenerateRandomMap()
         {
-            GenerateRandomMap();
-        }
+            if (tilemapComponent == null)
+            {
+                Debug.LogError("RandomTilemapGenerator: tilemapComponent не назначен!");
+                return;
+            }
 
-        /// <summary>
-        /// Generates a random map by setting tiles while ensuring that adjacent cells do not have the same grass tile.
-        /// </summary>
-        private void GenerateRandomMap()
-        {
+            if (floorTiles == null || floorTiles.Length == 0)
+            {
+                Debug.LogError("RandomTilemapGenerator: floorTiles пуст или не назначен!");
+                return;
+            }
+
+            // Очищаем предыдущие тайлы (если были).
+            tilemapComponent.ClearAllTiles();
+
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                    // Start with all available grass tiles.
-                    List<UT.TileBase> availableTiles = new List<UT.TileBase>(grassTiles);
-                    Vector3Int currentPos = new Vector3Int(x, y, 0);
+                    // Создаем список доступных вариантов из всех floorTiles.
+                    List<UT.TileBase> availableTiles = new List<UT.TileBase>(floorTiles);
+                    // Обратите внимание: y инвертируется, чтобы верхняя строка на холсте соответствовала y=0 в Tilemap.
+                    Vector3Int currentPos = new Vector3Int(x, -y, 0);
 
-                    // Check all 8 neighboring positions.
+                    // Проверяем всех 8 соседей.
                     foreach (Vector3Int direction in directions)
                     {
                         Vector3Int neighborPos = currentPos + direction;
                         UT.TileBase neighborTile = tilemapComponent.GetTile(neighborPos);
 
-                        // If a neighbor exists, remove that tile type from the available options.
+                        // Если соседний тайл существует, удаляем его тип из доступных вариантов.
                         if (neighborTile != null)
                         {
                             availableTiles.Remove(neighborTile);
                         }
                     }
 
-                    // Choose a tile from the remaining options; if none remain, choose any random tile.
+                    // Выбираем случайный тайл из оставшихся. Если ничего не осталось — случайный из исходного массива.
                     UT.TileBase chosenTile = availableTiles.Count > 0
                         ? availableTiles[Random.Range(0, availableTiles.Count)]
-                        : grassTiles[Random.Range(0, grassTiles.Length)];
+                        : floorTiles[Random.Range(0, floorTiles.Length)];
 
-                    // Place the chosen tile at the current position.
                     tilemapComponent.SetTile(currentPos, chosenTile);
                 }
             }
