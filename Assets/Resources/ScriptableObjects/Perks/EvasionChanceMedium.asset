@@ -15,3 +15,6 @@ MonoBehaviour:
   Type: 3
   Quality: 1
   Value: 10
+  DropChance: 50
+  Icon: {fileID: 0}
+  FrameIcon: {fileID: 21300000, guid: 6e2fa692d3054aa488e69998c9b7f455, type: 3}

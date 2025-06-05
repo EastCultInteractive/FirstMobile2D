@@ -22,9 +22,17 @@ namespace Resources.Scripts.Data
         public PerkQuality Quality;
         public float Value;  // для процентных и числовых бонусов
 
+        [Header("Шанс выпадения перка")]
+        [Tooltip("Вероятность (от 0 до 1), с которой этот перк может выпасть")]
+        public float DropChance;
+
         [Header("Иконка перка")]
         [Tooltip("Иконка, которая будет отображаться в UI при выборе перка")]
         public Sprite Icon;
+
+        [Header("Иконка рамки перка")]
+        [Tooltip("Иконка рамки, которая будет отображаться в UI в зависимости от качества перка")]
+        public Sprite FrameIcon;
 
         public string GetDescription()
         {
@@ -39,7 +47,7 @@ namespace Resources.Scripts.Data
                 PerkType.EvasionChanceIncrease =>
                     $"+{Value:F1}% к шансу уклонения ({Quality})",
                 PerkType.FairyPullRangeIncrease =>
-                    $"+{Value:F1}% к радиусу притягивания фей({Quality})",
+                    $"+{Value:F1}% к радиусу притягивания фей ({Quality})",
                 _ => string.Empty
             };
         }
