@@ -3,6 +3,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using TMPro;
+using UnityEngine.SceneManagement;
 using Resources.Scripts.Data;
 using Resources.Scripts.GameManagers;
 using Resources.Scripts.Tilemap;
@@ -497,11 +498,8 @@ namespace Resources.Scripts.Labyrinth
 
             if (labyrinthTimer <= 0f)
             {
-                if (StageProgressionManager.Instance != null)
-                    // Когда время вышло — считаем, что лабиринт пройден и переходим к выбору перков/следующему этапу
-                    StageProgressionManager.Instance.OnPerkChosen(null);
-                else
-                    Debug.LogWarning("StageProgressionManager отсутствует!");
+                // При истечении времени в лабиринте отправляем игрока в сцену "Menu"
+                SceneManager.LoadScene("Menu");
             }
         }
     }

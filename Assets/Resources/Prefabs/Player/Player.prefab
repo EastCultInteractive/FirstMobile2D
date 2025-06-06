@@ -443,8 +443,8 @@ MonoBehaviour:
   finishPoint: {fileID: 0}
   baseLightRange: 1
   maxLightRange: 2
-  isImmortal: 1
-  skeletonAnimation: {fileID: 0}
+  isImmortal: 0
+  skeletonAnimation: {fileID: 6866550423500817888}
   maxDarkSkullHits: 2
   rollDistance: 5
   rollCooldown: 2

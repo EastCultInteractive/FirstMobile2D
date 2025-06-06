@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3455507cbae837d4987011a85f404a75, type: 3}
   m_Name: Arena2
   m_EditorClassIdentifier: 
-  survivalTime: 15
+  survivalTime: 3
   enemyCount: 5
   enemyPrefabs:
   - {fileID: 7260566827850767976, guid: b89c68620d9c2c441b0d4ecce42ea97d, type: 3}

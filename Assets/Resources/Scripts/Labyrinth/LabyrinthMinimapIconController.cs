@@ -127,7 +127,8 @@ namespace Resources.Scripts.Labyrinth
             else if (startIconPrefab != null)
             {
                 Vector2 uiPos = WorldToUISpace(startCell.transform.position);
-                startIconInstance = Instantiate(startIconPrefab, rawImageRectTransform);
+                // Инстанциируем иконку старта с worldPositionStays = false, чтобы сразу настроить локальную позицию.
+                startIconInstance = Instantiate(startIconPrefab, rawImageRectTransform, false);
                 RectTransform startRect = startIconInstance.GetComponent<RectTransform>();
                 if (startRect == null)
                 {
@@ -143,7 +144,8 @@ namespace Resources.Scripts.Labyrinth
             else if (finishIconPrefab != null)
             {
                 Vector2 uiPos = WorldToUISpace(finishCell.transform.position);
-                finishIconInstance = Instantiate(finishIconPrefab, rawImageRectTransform);
+                // Инстанциируем иконку финиша с worldPositionStays = false, чтобы сразу настроить локальную позицию.
+                finishIconInstance = Instantiate(finishIconPrefab, rawImageRectTransform, false);
                 RectTransform finishRect = finishIconInstance.GetComponent<RectTransform>();
                 if (finishRect == null)
                 {
@@ -156,7 +158,8 @@ namespace Resources.Scripts.Labyrinth
             if (playerTransform != null && playerIconPrefab != null)
             {
                 Vector2 uiPos = WorldToUISpace(playerTransform.position);
-                playerIconInstance = Instantiate(playerIconPrefab, rawImageRectTransform);
+                // Инстанциируем иконку игрока с worldPositionStays = false, чтобы сразу настроить локальную позицию.
+                playerIconInstance = Instantiate(playerIconPrefab, rawImageRectTransform, false);
                 RectTransform playerRect = playerIconInstance.GetComponent<RectTransform>();
                 if (playerRect == null)
                 {
@@ -182,19 +185,24 @@ namespace Resources.Scripts.Labyrinth
 
         /// <summary>
         /// Converts world coordinates to UI coordinates relative to the minimap RawImage using the minimap camera.
+        /// Учитывает реальный размер и Pivot RectTransform для корректного вычисления локальной позиции.
         /// </summary>
         /// <param name="worldPos">World position</param>
         /// <returns>Local coordinates (anchoredPosition) for the RawImage</returns>
         private Vector2 WorldToUISpace(Vector3 worldPos)
         {
-            // Получаем координаты во viewport (значения от 0 до 1)
+            // Получаем координаты во viewport камеры (значения от 0 до 1).
             Vector3 viewportPos = minimapCamera.WorldToViewportPoint(worldPos);
-            // Преобразуем координаты viewport в локальные координаты RawImage.
-            Vector2 uiPos = new Vector2(
-                (viewportPos.x - 0.5f) * rawImageRectTransform.sizeDelta.x,
-                (viewportPos.y - 0.5f) * rawImageRectTransform.sizeDelta.y
-            );
-            return uiPos;
+
+            // Берём размеры Rect самого RawImage.
+            Rect rect = rawImageRectTransform.rect;
+            Vector2 pivot = rawImageRectTransform.pivot;
+
+            // Преобразуем нормализованные координаты в локальные, с учётом Pivot.
+            float x = (viewportPos.x * rect.width) - (rect.width * pivot.x);
+            float y = (viewportPos.y * rect.height) - (rect.height * pivot.y);
+
+            return new Vector2(x, y);
         }
     }
 }
