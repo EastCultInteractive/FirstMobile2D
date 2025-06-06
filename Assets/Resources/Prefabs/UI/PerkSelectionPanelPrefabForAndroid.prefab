@@ -573,7 +573,7 @@ GameObject:
   - component: {fileID: 295418846025165573}
   - component: {fileID: 1108787010729124416}
   m_Layer: 5
-  m_Name: PerkSelectionPanelPrefab
+  m_Name: PerkSelectionPanelPrefabForAndroid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -667,6 +667,7 @@ MonoBehaviour:
   - {fileID: 8940933977356223013}
   - {fileID: 817130734922474120}
   - {fileID: 2437114890478706476}
+  prefabLocalScale: {x: 1, y: 1, z: 1}
 --- !u!114 &1108787010729124416
 MonoBehaviour:
   m_ObjectHideFlags: 0
