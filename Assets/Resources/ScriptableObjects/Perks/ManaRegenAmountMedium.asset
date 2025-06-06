@@ -16,5 +16,5 @@ MonoBehaviour:
   Quality: 1
   Value: 2
   DropChance: 50
-  Icon: {fileID: 21300000, guid: 382e1aefddd7ccf4fa0bc27afd29b565, type: 3}
+  Icon: {fileID: 21300000, guid: c7d44bf5113174411b2db3a144a7024f, type: 3}
   FrameIcon: {fileID: 21300000, guid: 6e2fa692d3054aa488e69998c9b7f455, type: 3}
