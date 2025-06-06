@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 382e1aefddd7ccf4fa0bc27afd29b565
+guid: 3121260c81d3a4403b198b8f92883415
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1730630043527340506
-    second: Increased mana regeneration_0
+      213: 2177709219431216931
+    second: magnet for fairies 2_0
+  - first:
+      213: -9185342512545783199
+    second: magnet for fairies 2_1
+  - first:
+      213: -2334455350991598876
+    second: magnet for fairies 2_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +43,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +81,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -97,7 +103,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Android
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -113,13 +119,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Increased mana regeneration_0
+      name: magnet for fairies 2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 964
-        height: 812
+        x: 180
+        y: 110
+        width: 315
+        height: 295
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +134,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 62e1fe905219bf7e0800000000000000
-      internalID: -1730630043527340506
+      spriteID: 3277a404ff6c83e10800000000000000
+      internalID: 2177709219431216931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: magnet for fairies 2_1
+      rect:
+        serializedVersion: 2
+        x: 457
+        y: 384
+        width: 43
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1622a6f96ab178080800000000000000
+      internalID: -9185342512545783199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: magnet for fairies 2_2
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 128
+        width: 247
+        height: 454
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4eac22c0a395a9fd0800000000000000
+      internalID: -2334455350991598876
       vertices: []
       indices: 
       edges: []
@@ -148,7 +198,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Increased mana regeneration_0: -1730630043527340506
+      magnet for fairies 2_0: 2177709219431216931
+      magnet for fairies 2_1: -9185342512545783199
+      magnet for fairies 2_2: -2334455350991598876
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
