@@ -13952,7 +13952,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7684459473974908381, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1964511371}
   m_SourcePrefab: {fileID: 100100000, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
 --- !u!4 &1964511364 stripped
 Transform:
@@ -13964,10 +13967,26 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2458575810279814847, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
   m_PrefabInstance: {fileID: 1964511363}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1964511366}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae4878589b7a14708bf25b0e2d6d9512, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1964511366 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7684459473974908381, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+  m_PrefabInstance: {fileID: 1964511363}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1964511367 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6866550423500817888, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+  m_PrefabInstance: {fileID: 1964511363}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1964511370 stripped
@@ -13975,12 +13994,47 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
   m_PrefabInstance: {fileID: 1964511363}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1964511366}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a43795d082424d3f97d7fc559e4a940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1964511371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964511366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 748173b36a695d8428c67580aa4a8d18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  motionTrails: []
+  trailStartSizeMin: 0.05
+  trailStartSizeMax: 0.1
+  trailLifetime: 0.15
+  trailColor: {r: 1, g: 1, b: 1, a: 0.31764707}
+  trailEmissionRate: 20
+  trailVelocityMultiplier: 1
+  trailLengthScale: 3
+  trailSpeedThreshold: 1.38
+  trapPrefab: {fileID: 0}
+  inputSmoothTime: 0.1
+  playerLight: {fileID: 0}
+  finishPoint: {fileID: 0}
+  baseLightRange: 1
+  maxLightRange: 2
+  isImmortal: 0
+  skeletonAnimation: {fileID: 1964511367}
+  maxDarkSkullHits: 2
+  rollDistance: 5
+  rollCooldown: 2
+  rollSpeedMultiplier: 1
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  flashDuration: 0.3
 --- !u!1 &1977177257
 GameObject:
   m_ObjectHideFlags: 0
