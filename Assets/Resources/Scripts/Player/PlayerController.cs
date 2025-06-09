@@ -218,8 +218,16 @@ namespace Resources.Scripts.Player
             if (!isRolling)
             {
                 // Получаем «сырые» значения от джойстика или клавиатуры
-                float h = joystick != null ? joystick.Horizontal : Input.GetAxis("Horizontal");
-                float v = joystick != null ? joystick.Vertical   : Input.GetAxis("Vertical");
+                float h = 0f, v = 0f;
+                
+                h = joystick.Horizontal;
+                v = joystick.Vertical;
+                if (h + v == 0f)
+                {
+                    h = Input.GetAxis("Horizontal");
+                    v = Input.GetAxis("Vertical");
+                }
+                
                 Vector2 rawInput = new Vector2(h, v);
 
                 // Мгновенная остановка, если джойстик отпущен
