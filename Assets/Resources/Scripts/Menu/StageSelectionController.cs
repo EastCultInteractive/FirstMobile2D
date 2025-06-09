@@ -35,6 +35,7 @@ namespace Resources.Scripts.Menu
         private void Start()
         {
             UpdateStageDisplay();
+
             leftButton.onClick.AddListener(OnLeftButton);
             rightButton.onClick.AddListener(OnRightButton);
             playButton.onClick.AddListener(OnPlayButton);
@@ -48,39 +49,50 @@ namespace Resources.Scripts.Menu
         {
             if (stages == null || stages.Length == 0) return;
             var stage = stages[currentStageIndex];
-            stageNameText.text   = stage.stageName;
-            stageImage.sprite    = stage.stageImage;
+
+            stageNameText.text = stage.stageName;
+            stageImage.sprite  = stage.stageImage;
+
             leftButton.interactable  = currentStageIndex > 0;
             rightButton.interactable = currentStageIndex < stages.Length - 1;
+
             if (panelBackground != null && currentStageIndex < backgroundSprites.Length)
                 panelBackground.sprite = backgroundSprites[currentStageIndex];
 
-            // анимация смены
-            panelBackground.transform
-                           .DOPunchScale(Vector3.one * 0.05f, 0.3f)
-                           .SetEase(Ease.OutQuad);
-            stageImage.DOFade(0f, 0f);
-            stageImage.DOFade(1f, 0.5f).SetEase(Ease.Linear);
-            stageNameText.DOFade(0f, 0f);
-            stageNameText.DOFade(1f, 0.5f).SetEase(Ease.Linear);
+            // Безопасная перезапись анимации панели
+            var bgTransform = panelBackground.transform;
+            bgTransform.DOKill(true);
+            bgTransform.localScale = Vector3.one;
+            bgTransform
+                .DOPunchScale(Vector3.one * 0.05f, 0.3f)
+                .SetEase(Ease.OutQuad);
+
+            // Плавное проявление картинки и текста
+            stageImage.DOKill();
+            stageImage.color = new Color(1,1,1,0);
+            stageImage
+                .DOFade(1f, 0.5f)
+                .SetEase(Ease.Linear);
+
+            stageNameText.DOKill();
+            stageNameText.color = new Color(1,1,1,0);
+            stageNameText
+                .DOFade(1f, 0.5f)
+                .SetEase(Ease.Linear);
         }
 
         private void OnLeftButton()
         {
-            if (currentStageIndex > 0)
-            {
-                currentStageIndex--;
-                UpdateStageDisplay();
-            }
+            if (currentStageIndex <= 0) return;
+            currentStageIndex--;
+            UpdateStageDisplay();
         }
 
         private void OnRightButton()
         {
-            if (currentStageIndex < stages.Length - 1)
-            {
-                currentStageIndex++;
-                UpdateStageDisplay();
-            }
+            if (currentStageIndex >= stages.Length - 1) return;
+            currentStageIndex++;
+            UpdateStageDisplay();
         }
 
         private void OnPlayButton()
@@ -88,20 +100,19 @@ namespace Resources.Scripts.Menu
             // Показываем панель загрузки
             loadingPanelController?.Show();
 
-            // Анимация кнопки
-            playButton.transform
-                      .DOPunchScale(Vector3.one * 0.1f, 0.3f, 8, 0.5f)
-                      .SetEase(Ease.OutElastic);
+            // Safe punch-анимация кнопки Play
+            var pt = playButton.transform;
+            pt.DOKill(true);
+            pt.localScale = Vector3.one;
+            pt
+                .DOPunchScale(Vector3.one * 0.1f, 0.3f, 8, 0.5f)
+                .SetEase(Ease.OutElastic);
 
             // Устанавливаем выбранный StageData
             if (GameStageManager.Instance != null)
-            {
                 GameStageManager.Instance.InitializeStage(currentStageIndex);
-            }
             else
-            {
                 Debug.LogError("StageSelectionController: GameStageManager.Instance == null");
-            }
 
             // Гарантируем наличие менеджера прогресса
             if (StageProgressionManager.Instance == null)
@@ -122,8 +133,11 @@ namespace Resources.Scripts.Menu
 
         private void OnCloseButton()
         {
-            // плавное скрытие
-            transform
+            // Safe hide анимация панели выбора
+            var t = transform;
+            t.DOKill(true);
+            t.localScale = Vector3.one;
+            t
                 .DOScale(0f, 0.3f)
                 .SetEase(Ease.InBack)
                 .OnComplete(() => gameObject.SetActive(false));
