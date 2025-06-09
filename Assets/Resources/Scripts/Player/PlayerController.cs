@@ -222,6 +222,7 @@ namespace Resources.Scripts.Player
                 
                 h = joystick.Horizontal;
                 v = joystick.Vertical;
+                
                 if (h + v == 0f)
                 {
                     h = Input.GetAxis("Horizontal");
