@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Resources.Scripts.Data
@@ -29,6 +30,22 @@ namespace Resources.Scripts.Data
         [Tooltip("Time limit to complete the labyrinth (in seconds)")]
         [Min(0f)]
         public float labyrinthTimeLimit = 30f;
+
+        #endregion
+
+        #region Tilemap Settings
+
+        [Header("Tilemap Settings")]
+        [Tooltip("Tile variants array to use for this labyrinth floor (e.g., floor tiles, alternative variants).")]
+        public UnityEngine.Tilemaps.TileBase[] tilesForThisLabyrinth = Array.Empty<UnityEngine.Tilemaps.TileBase>();
+
+        [Tooltip("Width (in cells) of the generated floor for this labyrinth")]
+        [Min(1)]
+        public int floorWidth = 10;
+
+        [Tooltip("Height (in cells) of the generated floor for this labyrinth")]
+        [Min(1)]
+        public int floorHeight = 10;
 
         #endregion
 

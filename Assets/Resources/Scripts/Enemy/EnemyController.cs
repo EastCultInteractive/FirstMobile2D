@@ -121,6 +121,11 @@ namespace Resources.Scripts.Enemy
                     walkAnim = "Goes_02_002";
                     attackAnim = "Attack_01_001";
                     break;
+                case EnemyType.Troll:
+                    idleAnim = "Idle_02_004";
+                    walkAnim = "Goes_02_002";
+                    attackAnim = "Attack_01_03";
+                    break;
                 default:
                     idleAnim = "Idle";
                     walkAnim = "Walk";

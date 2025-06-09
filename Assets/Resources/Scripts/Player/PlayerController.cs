@@ -15,15 +15,41 @@ namespace Resources.Scripts.Player
     /// Controls player movement, light, animation, dodge roll, evasion and traps.
     /// Uses Spine animation instead of Unity Animator / SpriteRenderer.
     /// When damaged, player briefly flashes red.
+    /// Добавлен «ветровой» эффект от ушей и ног при беге с помощью ParticleSystem.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour
     {
+        #region Trail Effects (новое)
+        [Header("Trail Effects")]
+        [Tooltip("Системы частиц для эффекта движения (2 для ушей, 2 для ног)")]
+        [SerializeField] private ParticleSystem[] motionTrails;
+
+        [Header("Trail Settings")]
+        [Tooltip("Минимальный стартовый размер частицы")]
+        [SerializeField, Range(0.01f, 0.5f)] private float trailStartSizeMin = 0.05f;
+        [Tooltip("Максимальный стартовый размер частицы")]
+        [SerializeField, Range(0.01f, 0.5f)] private float trailStartSizeMax = 0.1f;
+        [Tooltip("Длительность жизни частицы (сек)")]
+        [SerializeField, Range(0.05f, 1f)] private float trailLifetime = 0.2f;
+        [Tooltip("Цвет частиц")]
+        [SerializeField] private Color trailColor = new Color(1f, 1f, 1f, 0.5f);
+        [Tooltip("Скорость эмиссии частиц (Rate over Distance)")]
+        [SerializeField, Range(0f, 100f)] private float trailEmissionRate = 20f;
+        [Tooltip("Множитель обратной скорости для частиц")]
+        [SerializeField, Range(0.1f, 5f)] private float trailVelocityMultiplier = 1f;
+        [Tooltip("Растяжение частицы по направлению движения")]
+        [SerializeField, Range(1f, 10f)] private float trailLengthScale = 3f;
+        [Header("Trail Trigger")]
+        [Tooltip("Минимальная реальная скорость (ед./с), при которой включается эффект")]
+        [SerializeField, Range(0f, 20f)] private float trailSpeedThreshold = 1f;
+        #endregion
+
         #region Constants
-        private const string SlowAnimationName   = "Goes_01_001";
+        private const string SlowAnimationName   = "Goes_01_002";
         private const string RunAnimationName    = "Run_02_001";
         private const string JumpAnimationName   = "Jamp_04_001";
-        private const string DeathAnimationName  = "Death_04";
+        private const string DeathAnimationName  = "Death_05";
         private static readonly string[] IdleAnimations = {
             "Idle_02_003"
         };
@@ -35,6 +61,9 @@ namespace Resources.Scripts.Player
         [Header("Movement Settings")]
         [SerializeField] private PlayerJoystick joystick;
         [SerializeField] private GameObject trapPrefab;
+        [SerializeField, Tooltip("Время сглаживания ввода (сек)")]
+        private float inputSmoothTime = 0.1f;
+        #endregion
 
         [Header("Light Settings")]
         [SerializeField] private Light2D playerLight;
@@ -65,7 +94,6 @@ namespace Resources.Scripts.Player
         [SerializeField] private Color flashColor = Color.red;
         [Tooltip("Длительность мигания (секунд)")]
         [SerializeField, Range(0.05f, 1f)] private float flashDuration = 0.3f;
-        #endregion
 
         #region Public Events & Properties
         public event Action<float> OnRollCooldownChanged;
@@ -95,12 +123,19 @@ namespace Resources.Scripts.Player
         // Rigidbody2D и ввод
         private Rigidbody2D rb;
         private Vector2 moveInput;
+        private Vector2 inputSmoothVelocity;
 
         // Для светового флеша урона
         private Coroutine flashCoroutine;
 
         // Для расчета светового эффекта финиша
         private float initialDistance = -1f;
+
+        // Trail modules и renderers
+        private ParticleSystem.EmissionModule[] trailEmissions;
+        private ParticleSystem.MainModule[] trailMains;
+        private ParticleSystem.VelocityOverLifetimeModule[] trailVelocities;
+        private ParticleSystemRenderer[] trailRenderers;
         #endregion
 
         #region Unity Methods
@@ -109,6 +144,8 @@ namespace Resources.Scripts.Player
             rb = GetComponent<Rigidbody2D>();
             rb.gravityScale = 0f;
             rb.freezeRotation = true;
+            // Плавная интерполяция между FixedUpdate-рендерами
+            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
 
             if (skeletonAnimation == null)
                 skeletonAnimation = GetComponentInChildren<SkeletonAnimation>();
@@ -122,6 +159,45 @@ namespace Resources.Scripts.Player
             skeletonAnimation.state.Complete += HandleAnimationComplete;
             var anim = skeletonAnimation.Skeleton.Data.FindAnimation(JumpAnimationName);
             rollDuration = anim != null ? anim.Duration : 0.3f;
+
+            // Инициализируем Trail Effects
+            if (motionTrails != null && motionTrails.Length > 0)
+            {
+                int len = motionTrails.Length;
+                trailEmissions   = new ParticleSystem.EmissionModule[len];
+                trailMains       = new ParticleSystem.MainModule[len];
+                trailVelocities  = new ParticleSystem.VelocityOverLifetimeModule[len];
+                trailRenderers   = new ParticleSystemRenderer[len];
+
+                for (int i = 0; i < len; i++)
+                {
+                    var ps = motionTrails[i];
+
+                    // Main
+                    var main = ps.main;
+                    main.startLifetime = trailLifetime;
+                    main.startSize     = new ParticleSystem.MinMaxCurve(trailStartSizeMin, trailStartSizeMax);
+                    main.startColor    = trailColor;
+                    trailMains[i]      = main;
+
+                    // Emission
+                    var em = ps.emission;
+                    em.rateOverDistance = trailEmissionRate;
+                    em.rateOverTime     = 0f;
+                    trailEmissions[i]   = em;
+
+                    // Velocity over Lifetime
+                    var vel = ps.velocityOverLifetime;
+                    vel.enabled         = true;
+                    trailVelocities[i]  = vel;
+
+                    // Renderer: Stretch Billboard
+                    var renderer        = ps.GetComponent<ParticleSystemRenderer>();
+                    renderer.renderMode  = ParticleSystemRenderMode.Stretch;
+                    renderer.lengthScale = trailLengthScale;
+                    trailRenderers[i]    = renderer;
+                }
+            }
         }
 
         private void Start()
@@ -141,14 +217,30 @@ namespace Resources.Scripts.Player
 
             if (!isRolling)
             {
+                // Получаем «сырые» значения от джойстика или клавиатуры
                 float h = joystick != null ? joystick.Horizontal : Input.GetAxis("Horizontal");
                 float v = joystick != null ? joystick.Vertical   : Input.GetAxis("Vertical");
-                moveInput = new Vector2(h, v);
+                Vector2 rawInput = new Vector2(h, v);
+
+                // Мгновенная остановка, если джойстик отпущен
+                if (rawInput.magnitude <= IdleThreshold)
+                {
+                    moveInput = Vector2.zero;
+                    inputSmoothVelocity = Vector2.zero;
+                }
+                else
+                {
+                    // Сглаживаем ввод, чтобы убрать рывки
+                    moveInput = Vector2.SmoothDamp(moveInput, rawInput, ref inputSmoothVelocity, inputSmoothTime);
+                }
+
+                // Анимации всё так же на основе moveInput
                 UpdateMovementAnimation(moveInput);
             }
 
             UpdateLightOuterRange();
             TickRollCooldown();
+            UpdateTrailEffects(moveInput);
 
             if (Input.GetKeyDown(KeyCode.LeftShift)) TryRoll();
             if (!isRolling && Input.GetKeyDown(KeyCode.Space))
@@ -160,9 +252,17 @@ namespace Resources.Scripts.Player
             if (IsDead) return;
             if (!isRolling && LabyrinthMapController.Instance?.IsMapActive != true)
             {
+                // Движение через MovePosition — согласовано с FixedUpdate и интерполяцией
                 float spd = playerStats.GetTotalMoveSpeed() * currentSlowMultiplier;
-                rb.linearVelocity = moveInput.normalized * spd;
+                Vector2 delta = moveInput.normalized * spd * Time.fixedDeltaTime;
+                rb.MovePosition(rb.position + delta);
             }
+        }
+
+        private void LateUpdate()
+        {
+            // Здесь можно сделать любые чисто визуальные корректировки,
+            // которые нужно применить после интерполяции Rigidbody2D.
         }
         #endregion
 
@@ -180,12 +280,33 @@ namespace Resources.Scripts.Player
             lastMoveDirection = dir.normalized;
 
             PlayAnimation(
-                dir.magnitude < SlowThreshold ? SlowAnimationName : RunAnimationName,
+                RunAnimationName,
                 true
             );
 
             if (Mathf.Abs(dir.x) > 0.01f)
                 skeletonAnimation.Skeleton.ScaleX = Mathf.Abs(initialScaleX) * -Mathf.Sign(dir.x);
+        }
+
+        private void UpdateTrailEffects(Vector2 dir)
+        {
+            if (trailEmissions == null) return;
+
+            float currentSpeed = playerStats.GetTotalMoveSpeed() * dir.magnitude * currentSlowMultiplier;
+            bool running = currentSpeed >= trailSpeedThreshold;
+
+            for (int i = 0; i < trailEmissions.Length; i++)
+            {
+                trailEmissions[i].enabled = running;
+                if (running)
+                {
+                    Vector3 baseVel = -new Vector3(dir.normalized.x, dir.normalized.y, 0f)
+                                      * currentSpeed
+                                      * trailVelocityMultiplier;
+                    trailVelocities[i].x = new ParticleSystem.MinMaxCurve(baseVel.x);
+                    trailVelocities[i].y = new ParticleSystem.MinMaxCurve(baseVel.y);
+                }
+            }
         }
         #endregion
 
@@ -266,7 +387,6 @@ namespace Resources.Scripts.Player
         {
             var skel = skeletonAnimation.Skeleton;
             Color orig = skel.GetColor();
-            // Используем настраиваемый цвет и прозрачность
             skel.SetColor(new Color(flashColor.r, flashColor.g, flashColor.b, flashColor.a));
             yield return new WaitForSeconds(flashDuration);
             skel.SetColor(orig);

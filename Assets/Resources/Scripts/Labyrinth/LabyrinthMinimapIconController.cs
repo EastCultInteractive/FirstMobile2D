@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Resources.Scripts.Data;
+using Resources.Scripts.GameManagers;
 
 namespace Resources.Scripts.Labyrinth
 {
@@ -39,7 +40,7 @@ namespace Resources.Scripts.Labyrinth
 
         private void Start()
         {
-            // Получаем RectTransform из RawImage миникарты.
+            // 1) Получаем RectTransform из RawImage миникарты.
             if (minimapImage != null)
             {
                 rawImageRectTransform = minimapImage.GetComponent<RectTransform>();
@@ -50,26 +51,42 @@ namespace Resources.Scripts.Labyrinth
                 return;
             }
 
-            // Проверяем назначение камеры миникарты.
+            // 2) Проверяем назначение камеры миникарты.
             if (minimapCamera == null)
             {
                 Debug.LogWarning("Minimap Camera is not assigned!");
                 return;
             }
 
-            // Если заданы настройки лабиринта, применяем позицию, поворот и размер камеры.
-            if (labyrinthSettings != null)
+            // 3) Теперь сперва пытаемся взять настройки из текущего StageData (SO), если он есть.
+            bool appliedFromSO = false;  // Флаг, что настройки уже применены из StageData
+            var stageData = GameStageManager.currentStageData;
+            if (stageData != null && stageData.labyrinthSettings != null)
             {
-                minimapCamera.transform.position = labyrinthSettings.cameraPosition;
-                minimapCamera.transform.eulerAngles = labyrinthSettings.cameraRotation;
-                minimapCamera.orthographicSize = labyrinthSettings.cameraSize;
-            }
-            else
-            {
-                Debug.LogWarning("LabyrinthSettings not assigned to LabyrinthMinimapIconController!");
+                var s = stageData.labyrinthSettings;
+                minimapCamera.transform.position  = s.cameraPosition;
+                minimapCamera.transform.eulerAngles = s.cameraRotation;
+                minimapCamera.orthographicSize    = s.cameraSize;
+                appliedFromSO = true;  // Из SO взяли параметры
             }
 
-            // Ищем объект игрока по тегу.
+            // 4) Если в SO ничего нет, а в инспекторе заполнили labyrinthSettings — используем его.
+            if (!appliedFromSO)
+            {
+                if (labyrinthSettings != null)
+                {
+                    minimapCamera.transform.position  = labyrinthSettings.cameraPosition;
+                    minimapCamera.transform.eulerAngles = labyrinthSettings.cameraRotation;
+                    minimapCamera.orthographicSize    = labyrinthSettings.cameraSize;
+                }
+                else
+                {
+                    Debug.LogWarning("LabyrinthSettings not assigned to LabyrinthMinimapIconController " +
+                                     "and StageData.labyrinthSettings is null!");
+                }
+            }
+
+            // 5) Ищем объект игрока по тегу.
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null)
             {
@@ -80,7 +97,7 @@ namespace Resources.Scripts.Labyrinth
                 Debug.LogWarning("Player object not found!");
             }
 
-            // Запускаем корутину ожидания появления ячеек с тегами "Start" и "Finish".
+            // 6) Запускаем корутину ожидания появления ячеек с тегами "Start" и "Finish".
             StartCoroutine(InitializeIconsCoroutine());
         }
 
@@ -110,7 +127,8 @@ namespace Resources.Scripts.Labyrinth
             else if (startIconPrefab != null)
             {
                 Vector2 uiPos = WorldToUISpace(startCell.transform.position);
-                startIconInstance = Instantiate(startIconPrefab, rawImageRectTransform);
+                // Инстанциируем иконку старта с worldPositionStays = false, чтобы сразу настроить локальную позицию.
+                startIconInstance = Instantiate(startIconPrefab, rawImageRectTransform, false);
                 RectTransform startRect = startIconInstance.GetComponent<RectTransform>();
                 if (startRect == null)
                 {
@@ -126,7 +144,8 @@ namespace Resources.Scripts.Labyrinth
             else if (finishIconPrefab != null)
             {
                 Vector2 uiPos = WorldToUISpace(finishCell.transform.position);
-                finishIconInstance = Instantiate(finishIconPrefab, rawImageRectTransform);
+                // Инстанциируем иконку финиша с worldPositionStays = false, чтобы сразу настроить локальную позицию.
+                finishIconInstance = Instantiate(finishIconPrefab, rawImageRectTransform, false);
                 RectTransform finishRect = finishIconInstance.GetComponent<RectTransform>();
                 if (finishRect == null)
                 {
@@ -139,7 +158,8 @@ namespace Resources.Scripts.Labyrinth
             if (playerTransform != null && playerIconPrefab != null)
             {
                 Vector2 uiPos = WorldToUISpace(playerTransform.position);
-                playerIconInstance = Instantiate(playerIconPrefab, rawImageRectTransform);
+                // Инстанциируем иконку игрока с worldPositionStays = false, чтобы сразу настроить локальную позицию.
+                playerIconInstance = Instantiate(playerIconPrefab, rawImageRectTransform, false);
                 RectTransform playerRect = playerIconInstance.GetComponent<RectTransform>();
                 if (playerRect == null)
                 {
@@ -165,19 +185,24 @@ namespace Resources.Scripts.Labyrinth
 
         /// <summary>
         /// Converts world coordinates to UI coordinates relative to the minimap RawImage using the minimap camera.
+        /// Учитывает реальный размер и Pivot RectTransform для корректного вычисления локальной позиции.
         /// </summary>
         /// <param name="worldPos">World position</param>
         /// <returns>Local coordinates (anchoredPosition) for the RawImage</returns>
         private Vector2 WorldToUISpace(Vector3 worldPos)
         {
-            // Получаем координаты во viewport (значения от 0 до 1)
+            // Получаем координаты во viewport камеры (значения от 0 до 1).
             Vector3 viewportPos = minimapCamera.WorldToViewportPoint(worldPos);
-            // Преобразуем координаты viewport в локальные координаты RawImage.
-            Vector2 uiPos = new Vector2(
-                (viewportPos.x - 0.5f) * rawImageRectTransform.sizeDelta.x,
-                (viewportPos.y - 0.5f) * rawImageRectTransform.sizeDelta.y
-            );
-            return uiPos;
+
+            // Берём размеры Rect самого RawImage.
+            Rect rect = rawImageRectTransform.rect;
+            Vector2 pivot = rawImageRectTransform.pivot;
+
+            // Преобразуем нормализованные координаты в локальные, с учётом Pivot.
+            float x = (viewportPos.x * rect.width) - (rect.width * pivot.x);
+            float y = (viewportPos.y * rect.height) - (rect.height * pivot.y);
+
+            return new Vector2(x, y);
         }
     }
 }
