@@ -34,7 +34,7 @@ namespace Resources.Scripts.Player
         [SerializeField, Range(0.05f, 1f)] private float trailLifetime = 0.2f;
         [Tooltip("Цвет частиц")]
         [SerializeField] private Color trailColor = new Color(1f, 1f, 1f, 0.5f);
-        [Tooltip("Скорость эмиссии частиц (Rate over Distance)")]
+        [Tooltip("Скорость эмиссии частиц (Rate over Time)")]
         [SerializeField, Range(0f, 100f)] private float trailEmissionRate = 20f;
         [Tooltip("Множитель обратной скорости для частиц")]
         [SerializeField, Range(0.1f, 5f)] private float trailVelocityMultiplier = 1f;
@@ -144,7 +144,7 @@ namespace Resources.Scripts.Player
             rb = GetComponent<Rigidbody2D>();
             rb.gravityScale = 0f;
             rb.freezeRotation = true;
-            // Плавная интерполяция между FixedUpdate-рендерами
+            
             rb.interpolation = RigidbodyInterpolation2D.Interpolate;
 
             if (skeletonAnimation == null)
@@ -175,27 +175,31 @@ namespace Resources.Scripts.Player
 
                     // Main
                     var main = ps.main;
-                    main.startLifetime = trailLifetime;
-                    main.startSize     = new ParticleSystem.MinMaxCurve(trailStartSizeMin, trailStartSizeMax);
-                    main.startColor    = trailColor;
-                    trailMains[i]      = main;
-
-                    // Emission
+                    main.startLifetime      = trailLifetime;
+                    main.startSize          = new ParticleSystem.MinMaxCurve(trailStartSizeMin, trailStartSizeMax);
+                    main.startColor         = trailColor;
+                    main.simulationSpace    = ParticleSystemSimulationSpace.World; 
+                    trailMains[i]           = main;
+                    
                     var em = ps.emission;
-                    em.rateOverDistance = trailEmissionRate;
-                    em.rateOverTime     = 0f;
-                    trailEmissions[i]   = em;
-
-                    // Velocity over Lifetime
+                    em.rateOverDistance     = 0f;                 
+                    em.rateOverTime         = trailEmissionRate;  
+                    trailEmissions[i]       = em;
+                    
+                    var shape = ps.shape;
+                    shape.enabled           = true;
+                    
                     var vel = ps.velocityOverLifetime;
-                    vel.enabled         = true;
-                    trailVelocities[i]  = vel;
+                    vel.enabled             = true;
+                    trailVelocities[i]      = vel;
 
-                    // Renderer: Stretch Billboard
-                    var renderer        = ps.GetComponent<ParticleSystemRenderer>();
-                    renderer.renderMode  = ParticleSystemRenderMode.Stretch;
-                    renderer.lengthScale = trailLengthScale;
-                    trailRenderers[i]    = renderer;
+                    // Renderer: Stretch Billboard + сортировка над спрайтом
+                    var renderer            = ps.GetComponent<ParticleSystemRenderer>();
+                    renderer.renderMode     = ParticleSystemRenderMode.Stretch;
+                    renderer.lengthScale    = trailLengthScale;
+                    renderer.sortingLayerName = "Default"; 
+                    renderer.sortingOrder     = 10;
+                    trailRenderers[i]         = renderer;
                 }
             }
         }
@@ -217,7 +221,6 @@ namespace Resources.Scripts.Player
 
             if (!isRolling)
             {
-                // Получаем «сырые» значения от джойстика или клавиатуры
                 float h = 0f, v = 0f;
                 
                 h = joystick.Horizontal;
@@ -239,11 +242,9 @@ namespace Resources.Scripts.Player
                 }
                 else
                 {
-                    // Сглаживаем ввод, чтобы убрать рывки
                     moveInput = Vector2.SmoothDamp(moveInput, rawInput, ref inputSmoothVelocity, inputSmoothTime);
                 }
-
-                // Анимации всё так же на основе moveInput
+                
                 UpdateMovementAnimation(moveInput);
             }
 
@@ -266,12 +267,6 @@ namespace Resources.Scripts.Player
                 Vector2 delta = moveInput.normalized * spd * Time.fixedDeltaTime;
                 rb.MovePosition(rb.position + delta);
             }
-        }
-
-        private void LateUpdate()
-        {
-            // Здесь можно сделать любые чисто визуальные корректировки,
-            // которые нужно применить после интерполяции Rigidbody2D.
         }
         #endregion
 
@@ -314,6 +309,7 @@ namespace Resources.Scripts.Player
                                       * trailVelocityMultiplier;
                     trailVelocities[i].x = new ParticleSystem.MinMaxCurve(baseVel.x);
                     trailVelocities[i].y = new ParticleSystem.MinMaxCurve(baseVel.y);
+                    Debug.Log($"[Trail] PS#{i} emitting, speed = {currentSpeed:F2}");
                 }
             }
         }

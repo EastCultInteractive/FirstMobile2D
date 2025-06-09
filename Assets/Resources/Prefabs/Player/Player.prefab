@@ -435,7 +435,7 @@ MonoBehaviour:
   trailEmissionRate: 20
   trailVelocityMultiplier: 1
   trailLengthScale: 3
-  trailSpeedThreshold: 1.56
+  trailSpeedThreshold: 1
   joystick: {fileID: 0}
   trapPrefab: {fileID: 726999753017517549, guid: 2883cba0652d4754ab1bd2e5e075b41d, type: 3}
   inputSmoothTime: 0.1
@@ -614,6 +614,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3518168608704256040}
     m_Modifications:
+    - target: {fileID: 2287797582449094803, guid: b5974732d8c1ec34dad93f80124f6fd2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2287797582449094803, guid: b5974732d8c1ec34dad93f80124f6fd2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 4769128326009674844, guid: b5974732d8c1ec34dad93f80124f6fd2, type: 3}
       propertyPath: m_Name
       value: MotionTrail_PS
@@ -681,6 +689,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7565923662995683966}
     m_Modifications:
+    - target: {fileID: 2287797582449094803, guid: b5974732d8c1ec34dad93f80124f6fd2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2287797582449094803, guid: b5974732d8c1ec34dad93f80124f6fd2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 4769128326009674844, guid: b5974732d8c1ec34dad93f80124f6fd2, type: 3}
       propertyPath: m_Name
       value: MotionTrail_PS
@@ -748,6 +764,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5149790134309577807}
     m_Modifications:
+    - target: {fileID: 2287797582449094803, guid: b5974732d8c1ec34dad93f80124f6fd2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2287797582449094803, guid: b5974732d8c1ec34dad93f80124f6fd2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 4769128326009674844, guid: b5974732d8c1ec34dad93f80124f6fd2, type: 3}
       propertyPath: m_Name
       value: MotionTrail_PS
@@ -815,6 +839,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7773282510803949899}
     m_Modifications:
+    - target: {fileID: 2287797582449094803, guid: b5974732d8c1ec34dad93f80124f6fd2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4769128326009674844, guid: b5974732d8c1ec34dad93f80124f6fd2, type: 3}
       propertyPath: m_Name
       value: MotionTrail_PS
