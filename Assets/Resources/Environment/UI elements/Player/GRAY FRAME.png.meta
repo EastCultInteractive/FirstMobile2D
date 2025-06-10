@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ba10a3ad5b0f44e459b6e39ce5672883
+guid: cbe04be4ac82f452daef24082020aa94
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3932852581989657273
-    second: mana 1_0
+      213: -2771592710654245243
+    second: GRAY FRAME_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mana 1_0
+      name: GRAY FRAME_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 3304
-        height: 509
+        width: 3400
+        height: 633
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7455780f963bb69c0800000000000000
-      internalID: -3932852581989657273
+      spriteID: 586446b3d135989d0800000000000000
+      internalID: -2771592710654245243
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      mana 1_0: -3932852581989657273
+      GRAY FRAME_0: -2771592710654245243
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
