@@ -27505,6 +27505,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1393368860}
   m_CullTransparentMesh: 1
+--- !u!1 &1397925532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1397925533}
+  m_Layer: 0
+  m_Name: Lights
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1397925533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397925532}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.1621255}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1486014249063229810}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1517480118 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8366241949577512254, guid: ff234cc042c8d904f93c19ac96c2c54a, type: 3}
@@ -28490,11 +28522,11 @@ Transform:
   m_GameObject: {fileID: 6651057718986405021}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1833.127, y: -2070.9233, z: 255.21864}
-  m_LocalScale: {x: 1160.0846, y: 1160.0846, z: 1160.0846}
+  m_LocalPosition: {x: 0, y: 0, z: 0.005444646}
+  m_LocalScale: {x: 6.307136, y: 6.307136, z: 6.307136}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8872021194807820088}
+  m_Father: {fileID: 1397925533}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1721898337097272968
 Transform:
@@ -28910,7 +28942,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.3
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 00000000
@@ -28982,7 +29014,7 @@ GameObject:
   - component: {fileID: 1486014249063229810}
   - component: {fileID: 5444953334845700417}
   m_Layer: 6
-  m_Name: Light 2D
+  m_Name: GlobalLight
   m_TagString: MiniMapLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29364,8 +29396,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1486014249063229810}
+  m_Children: []
   m_Father: {fileID: 1723277194025838884}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -29385,3 +29416,4 @@ SceneRoots:
   - {fileID: 477092607}
   - {fileID: 2022742634}
   - {fileID: 543567999}
+  - {fileID: 1397925533}

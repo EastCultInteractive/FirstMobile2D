@@ -62,12 +62,12 @@ namespace Resources.Scripts.GameManagers
             InitializeArena();
 
             // 5) Если нужно, сажаем деревья по краю
-            if (currentSettings.plantTreesAtEdges)
-            {
-                edgeTreesParent = new GameObject("EdgeTrees").transform;
-                edgeTreesParent.SetParent(transform, false);
-                PlantEdgeTrees();
-            }
+            // if (currentSettings.plantTreesAtEdges)
+            // {
+            //     edgeTreesParent = new GameObject("EdgeTrees").transform;
+            //     edgeTreesParent.SetParent(transform, false);
+            //     PlantEdgeTrees();
+            // }
         }
 
         private void OnDestroy()
@@ -188,7 +188,7 @@ namespace Resources.Scripts.GameManagers
                     var pos = obstacleSpawnPositions[index];
                     obstacleSpawnPositions.RemoveAt(index);
 
-                    var instance = Instantiate(os.obstaclePrefab, pos, Quaternion.identity);
+                    var instance = Instantiate(os.obstaclePrefab, pos, Quaternion.identity, transform);
                     float scale = Random.Range(os.minScale, os.maxScale);
                     instance.transform.localScale = Vector3.one * scale;
                 }
