@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 4233255029795141768}
   - component: {fileID: 6948787992371831065}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: SkullKnife
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
