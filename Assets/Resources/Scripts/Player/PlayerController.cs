@@ -47,7 +47,7 @@ namespace Resources.Scripts.Player
 
         #region Constants
         private const string SlowAnimationName   = "Goes_01_002";
-        private const string RunAnimationName    = "Run_02_001";
+        private const string RunAnimationName    = "Run_03_001";
         private const string JumpAnimationName   = "Jamp_04_001";
         private const string DeathAnimationName  = "Death_05";
         private static readonly string[] IdleAnimations = {

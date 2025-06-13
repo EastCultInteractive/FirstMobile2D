@@ -14566,10 +14566,42 @@ PrefabInstance:
       propertyPath: gestureRecognizer
       value: 
       objectReference: {fileID: 2053543740}
+    - target: {fileID: 2618385127196049911, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5473e8de836edef4986ebffed3efe1e8, type: 2}
+    - target: {fileID: 2618385127196049911, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d13fdc7b4716cfc468afb1b3ebc5c412, type: 2}
+    - target: {fileID: 2618385127196049911, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5473e8de836edef4986ebffed3efe1e8, type: 2}
+    - target: {fileID: 2618385127196049911, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: 'm_Materials.Array.data[3]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d13fdc7b4716cfc468afb1b3ebc5c412, type: 2}
+    - target: {fileID: 2618385127196049911, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: 'm_Materials.Array.data[4]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5473e8de836edef4986ebffed3efe1e8, type: 2}
+    - target: {fileID: 2618385127196049911, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: 'm_Materials.Array.data[5]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d13fdc7b4716cfc468afb1b3ebc5c412, type: 2}
     - target: {fileID: 2968674252301727655, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6866550423500817888, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: updateTiming
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6866550423500817888, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: skeletonDataAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ea14cf0c722dd904dbd790271087e705, type: 2}
     - target: {fileID: 7684459473974908381, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
       propertyPath: m_Name
       value: Player
@@ -14622,6 +14654,10 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 543103349}
+    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: drawingManager
+      value: 
+      objectReference: {fileID: 1964511374}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14652,6 +14688,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a43795d082424d3f97d7fc559e4a940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1964511374 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1957564526145093592, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+  m_PrefabInstance: {fileID: 1964511363}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 587778a18e16bb7459d7604eb4885d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1977177257
