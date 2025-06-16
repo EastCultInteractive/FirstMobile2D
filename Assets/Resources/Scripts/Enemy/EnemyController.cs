@@ -126,6 +126,11 @@ namespace Resources.Scripts.Enemy
                     walkAnim = "Goes_02_002";
                     attackAnim = "Attack_01_03";
                     break;
+                case EnemyType.DarkSkull:
+                    idleAnim = "idle_02_003";
+                    walkAnim = "Походка_02_003";
+                    attackAnim = "attack_02_002";
+                    break;
                 default:
                     idleAnim = "Idle";
                     walkAnim = "Walk";
@@ -331,9 +336,7 @@ namespace Resources.Scripts.Enemy
             yield return new WaitForSeconds(hitTime);
             if (!player.IsDead)
             {
-                // красное свечение вместо анимации
                 player.StartCoroutine(player.DamageFlash());
-
                 player.TakeDamage(this);
                 if (pushPlayer)
                     player.transform.position += (player.transform.position - transform.position).normalized * pushForceMultiplier;
@@ -376,12 +379,14 @@ namespace Resources.Scripts.Enemy
 
             float hitTime = darkSkullAttackAnimationDuration * 0.4f;
             yield return new WaitForSeconds(hitTime);
-            // красное свечение
             player.StartCoroutine(player.DamageFlash());
             player.ReceiveDarkSkullHit();
             if (pushPlayer)
                 player.transform.position += (player.transform.position - transform.position).normalized * darkSkullPushForce;
             yield return new WaitForSeconds(darkSkullAttackAnimationDuration - hitTime);
+
+            // Снимаем атаку с трека, чтобы точно переключиться в Idle
+            skeletonAnimation.state.ClearTrack(0);
 
             speed = oldSpeed;
             PlayIdleAnim();
@@ -399,7 +404,6 @@ namespace Resources.Scripts.Enemy
 
             float hitTime = trollAttackAnimationDuration * 0.4f;
             yield return new WaitForSeconds(hitTime);
-            // красное свечение
             player.StartCoroutine(player.DamageFlash());
             player.ReceiveTrollHit();
             if (pushPlayer)
@@ -452,7 +456,6 @@ namespace Resources.Scripts.Enemy
         {
             if (player == null || player.IsDead) return;
             if (playerStats.TryEvade(transform.position)) return;
-            // красное свечение
             player.StartCoroutine(player.DamageFlash());
             player.ReceiveDarkSkullHit();
             if (pushPlayer)
@@ -463,7 +466,6 @@ namespace Resources.Scripts.Enemy
         {
             if (player == null || player.IsDead) return;
             if (playerStats.TryEvade(transform.position)) return;
-            // красное свечение
             player.StartCoroutine(player.DamageFlash());
             player.ReceiveTrollHit();
             if (pushPlayer)

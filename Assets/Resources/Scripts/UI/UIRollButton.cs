@@ -32,14 +32,20 @@ namespace Resources.Scripts.UI
 
         private void Start()
         {
-            // нажатие по кнопке вызывает TryRoll() + анимация “пунча” масштаба
             btn.onClick.AddListener(() =>
             {
                 player?.TryRoll();
-                btn.transform.DOPunchScale(Vector3.one * 0.1f, 0.3f).SetEase(Ease.OutElastic);
+
+                // Убираем старые твины и сбрасываем масштаб
+                var t = btn.transform;
+                t.DOKill(true);
+                t.localScale = Vector3.one;
+
+                // Пунч-анимация нажатия
+                t.DOPunchScale(Vector3.one * 0.1f, 0.3f).SetEase(Ease.OutElastic);
             });
 
-            // подписываемся на изменение кулдауна
+            // Подписываемся на изменение кулдауна
             if (player != null)
                 player.OnRollCooldownChanged += SetCooldownUI;
         }
@@ -57,12 +63,12 @@ namespace Resources.Scripts.UI
         {
             cooldownImage.fillAmount = value;
 
-            // пересчитываем секунды
+            // Пересчитываем секунды
             float seconds = value * player.RollCooldownDuration;
             int secInt = Mathf.CeilToInt(seconds);
             cooldownText.text = secInt.ToString();
 
-            // скрываем текст, когда нет кулдауна
+            // Скрываем текст, когда нет кулдауна
             cooldownText.enabled = value > 0f;
         }
     }

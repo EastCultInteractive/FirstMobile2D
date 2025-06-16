@@ -45,36 +45,39 @@ namespace Resources.Scripts.UI
         }
 
         /// <summary>
-        /// Находит все кнопки в сцене и вешает на них анимацию.
+        /// Находит все кнопки в сцене и навешивает на них анимацию.
         /// </summary>
         public void AnimateAllSceneButtons()
         {
             var buttons = FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             foreach (var btn in buttons)
             {
-                if (animatedButtons.Contains(btn)) continue;
+                if (animatedButtons.Contains(btn)) 
+                    continue;
+
                 AddAnimation(btn);
                 animatedButtons.Add(btn);
             }
         }
 
         /// <summary>
-        /// Добавляет анимацию к переданной кнопке.
+        /// Добавляет анимацию нажатия к кнопке.
         /// </summary>
         private void AddAnimation(Button button)
         {
-            // Удаляем старую анимацию, если была
-            button.onClick.RemoveListener(() => Animate(button.transform));
-            // Добавляем новую
             button.onClick.AddListener(() => Animate(button.transform));
         }
 
         /// <summary>
-        /// Выполняет анимацию нажатия.
+        /// Запускает пунч-анимацию: перед этим убираем все старые твины и сбрасываем масштаб.
         /// </summary>
         private void Animate(Transform target)
         {
-            target.DOKill(); // Убираем текущие анимации
+            // Завершить все текущие твины сразу и вернуть объект в исходное состояние
+            target.DOKill(true);
+            target.localScale = Vector3.one;
+
+            // Выполнить «пунч»-анимацию масштаба
             target.DOPunchScale(Vector3.one * punchScale, duration, vibrato, elasticity);
         }
     }
