@@ -140,7 +140,7 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
-  bundleVersion: 1.0
+  bundleVersion: 2.0
   preloadedAssets:
   - {fileID: 11400000, guid: b1e0ce2b6a5bb4988a82ee065cc21749, type: 2}
   - {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
@@ -165,6 +165,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.4
   androidMinAspectRatio: 1
   applicationIdentifier:
+    Android: com.EastCult.FirstMobile2D
     Standalone: com.DefaultCompany.2D-URP
   buildNumber:
     Standalone: 0
@@ -172,7 +173,7 @@ PlayerSettings:
     iPhone: 0
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 1
+  AndroidBundleVersionCode: 2
   AndroidMinSdkVersion: 23
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -266,7 +267,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 2
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/pc/Documents/MyKeysForUnity/user.keystore
+  AndroidKeystoreName: /Users/ynggstr/user.keystore
   AndroidKeyaliasName: 2dfirstgame
   AndroidEnableArmv9SecurityFeatures: 0
   AndroidEnableArm64MTE: 0
