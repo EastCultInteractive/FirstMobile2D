@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 519569140936119150}
   - component: {fileID: -1742142241879717157}
   m_Layer: 3
-  m_Name: LeftIsoBorder
+  m_Name: LeftNoIsoBorder
   m_TagString: WallSide
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,4 +161,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27472efb72ad9f3439370a4b26b10842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  belowOffset: -1
+  sideOffset: -1

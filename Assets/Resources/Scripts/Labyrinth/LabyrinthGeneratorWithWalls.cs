@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using Resources.Scripts.Data;
 using Resources.Scripts.GameManagers;
 using Resources.Scripts.Tilemap;
+using Object = UnityEngine.Object;
 
 namespace Resources.Scripts.Labyrinth
 {
@@ -93,19 +94,22 @@ namespace Resources.Scripts.Labyrinth
         private float labyrinthTimer, totalLabyrinthTime;
         private LabyrinthField labyrinth;
 
-        // Для доступа извне
         public static LabyrinthField CurrentField { get; private set; }
 
         private enum WallOrientation { Top, Bottom, Left, Right }
 
-        // Reflection-кэш приватных полей ShadowCaster2D
         private static readonly FieldInfo FiShapePath;
         private static readonly FieldInfo FiShapePathHash;
         private static readonly FieldInfo FiMesh;
         private static readonly MethodInfo MiGenerateShadowMesh;
 
-        // Ссылка на RandomTilemapGenerator в сцене
         private RandomTilemapGenerator floorGenerator;
+
+        // Для предотвращения одинаковых подряд спрайтов
+        private Sprite _lastTopUp, _lastTopDown,
+                       _lastBottomUp, _lastBottomDown,
+                       _lastLeft, _lastLeftIso,
+                       _lastRight, _lastRightIsoUp, _lastRightIsoDown;
 
         static LabyrinthGeneratorWithWalls()
         {
@@ -120,38 +124,18 @@ namespace Resources.Scripts.Labyrinth
 
         private void Start()
         {
-            // 1) Получаем настройки лабиринта преимущественно из StageData
             var stageData = GameStageManager.currentStageData;
             if (stageData != null && stageData.labyrinthSettings != null)
             {
-                var s = stageData.labyrinthSettings;
-                rows           = s.rows;
-                cols           = s.cols;
-                cellSizeX      = s.cellSizeX;
-                cellSizeY      = s.cellSizeY;
-                labyrinthTimer = s.labyrinthTimeLimit;
-                // Инициализируем tilemap согласно настройкам из SO
-                InitializeFloorTilemap(s);
+                ApplySettings(stageData.labyrinthSettings);
             }
             else if (labyrinthSettings != null)
             {
-                // Запуск напрямую (без менеджера этапов)
-                rows           = labyrinthSettings.rows;
-                cols           = labyrinthSettings.cols;
-                cellSizeX      = labyrinthSettings.cellSizeX;
-                cellSizeY      = labyrinthSettings.cellSizeY;
-                labyrinthTimer = labyrinthSettings.labyrinthTimeLimit;
-                InitializeFloorTilemap(labyrinthSettings);
+                ApplySettings(labyrinthSettings);
             }
             else
             {
-                // Резервный вариант
-                rows           = defaultRows;
-                cols           = defaultCols;
-                cellSizeX      = defaultCellSizeX;
-                cellSizeY      = defaultCellSizeY;
-                labyrinthTimer = defaultTimeLimit;
-                // Резервная генерация пола не выполняется
+                ApplyDefaults();
             }
 
             totalLabyrinthTime = labyrinthTimer;
@@ -166,9 +150,25 @@ namespace Resources.Scripts.Labyrinth
             PlaceGameplayElements();
         }
 
-        /// <summary>
-        /// Находит RandomTilemapGenerator в сцене и генерирует пол по настройкам из SO.
-        /// </summary>
+        private void ApplySettings(LabyrinthSettings s)
+        {
+            rows           = s.rows;
+            cols           = s.cols;
+            cellSizeX      = s.cellSizeX;
+            cellSizeY      = s.cellSizeY;
+            labyrinthTimer = s.labyrinthTimeLimit;
+            InitializeFloorTilemap(s);
+        }
+
+        private void ApplyDefaults()
+        {
+            rows           = defaultRows;
+            cols           = defaultCols;
+            cellSizeX      = defaultCellSizeX;
+            cellSizeY      = defaultCellSizeY;
+            labyrinthTimer = defaultTimeLimit;
+        }
+
         private void InitializeFloorTilemap(LabyrinthSettings s)
         {
             if (s.tilesForThisLabyrinth == null || s.tilesForThisLabyrinth.Length == 0)
@@ -177,7 +177,6 @@ namespace Resources.Scripts.Labyrinth
                 return;
             }
 
-            // Найдём в сцене компонент RandomTilemapGenerator
             floorGenerator = Object.FindFirstObjectByType<RandomTilemapGenerator>();
             if (floorGenerator == null)
             {
@@ -189,8 +188,9 @@ namespace Resources.Scripts.Labyrinth
             floorGenerator.width      = Mathf.Max(1, s.floorWidth);
             floorGenerator.height     = Mathf.Max(1, s.floorHeight);
 
-            var tilemapComp = floorGenerator.tilemapComponent
-                              ?? floorGenerator.GetComponentInChildren<UnityEngine.Tilemaps.Tilemap>();
+            UnityEngine.Tilemaps.Tilemap tilemapComp =
+                floorGenerator.tilemapComponent
+                ?? floorGenerator.GetComponentInChildren<UnityEngine.Tilemaps.Tilemap>();
 
             if (tilemapComp == null)
             {
@@ -256,41 +256,6 @@ namespace Resources.Scripts.Labyrinth
             PlaceEnemies(enemyPrefabs, enemyCount, enemyPositions, minEnemySpawnDistance);
         }
 
-        private void PlaceGameplayElements()
-        {
-            // 1. Вычисляем старт/финиш
-            Vector3 startPos  = labyrinth.GetStartWorldPosition();
-            Vector3 finishPos = labyrinth.GetFinishWorldPosition();
-
-            // 2. Ставим игрока в старт
-            var player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
-                player.transform.position = startPos;
-
-            // 3. Маркеры
-            if (startMarkerPrefab != null)
-            {
-                var go = Instantiate(startMarkerPrefab, startPos, Quaternion.identity, transform);
-                go.tag = "Start";
-            }
-
-            if (finishMarkerPrefab != null)
-            {
-                var go = Instantiate(finishMarkerPrefab, finishPos, Quaternion.identity, transform);
-                go.tag = "Finish";
-                var col = go.AddComponent<BoxCollider2D>();
-                col.isTrigger = true;
-                col.size = new Vector2(cellSizeX, cellSizeY);
-                go.AddComponent<LabyrinthFinishTrigger>();
-            }
-
-            // 4. Мини-карта
-            if (LabyrinthMapController.Instance != null)
-                LabyrinthMapController.Instance.SetSolutionPath(
-                    labyrinth.GetSolutionPathWorldPositions()
-                );
-        }
-
         private GameObject CreateWall(
             GameObject prefab,
             WallOrientation ori,
@@ -302,15 +267,72 @@ namespace Resources.Scripts.Labyrinth
         {
             var go = Instantiate(prefab, center + offset, Quaternion.identity, transform);
             go.name = $"{ori}Wall_R{r}_C{c}";
+
+            // Локальная функция выбора варианта без совпадений
+            Sprite Choose(ref Sprite last, Sprite[] variants)
+            {
+                if (variants == null || variants.Length == 0) return null;
+                Sprite pick;
+                int attempts = 0;
+                do
+                {
+                    pick = variants[UnityEngine.Random.Range(0, variants.Length)];
+                    attempts++;
+                } while (pick == last && attempts < 10);
+                last = pick;
+                return pick;
+            }
+
+            if (labyrinthSettings != null)
+            {
+                switch (ori)
+                {
+                    case WallOrientation.Top:
+                        var upTop   = go.transform.Find("Up");
+                        var downTop = go.transform.Find("Down");
+                        if (upTop   != null) upTop  .GetComponent<SpriteRenderer>().sprite = Choose(ref _lastTopUp,   labyrinthSettings.topWallUpVariants);
+                        if (downTop != null) downTop.GetComponent<SpriteRenderer>().sprite = Choose(ref _lastTopDown, labyrinthSettings.topWallDownVariants);
+                        break;
+                    case WallOrientation.Bottom:
+                        var upBot   = go.transform.Find("Up");
+                        var downBot = go.transform.Find("Down");
+                        if (upBot   != null) upBot  .GetComponent<SpriteRenderer>().sprite = Choose(ref _lastBottomUp,   labyrinthSettings.bottomWallUpVariants);
+                        if (downBot != null) downBot.GetComponent<SpriteRenderer>().sprite = Choose(ref _lastBottomDown, labyrinthSettings.bottomWallDownVariants);
+                        break;
+                    case WallOrientation.Left:
+                        var srLeft = go.GetComponent<SpriteRenderer>();
+                        bool isoL = prefab == leftNoIsoWallPrefab;
+                        srLeft.sprite = isoL
+                            ? Choose(ref _lastLeftIso, labyrinthSettings.leftIsoWallVariants)
+                            : Choose(ref _lastLeft,    labyrinthSettings.leftWallVariants);
+                        break;
+                    case WallOrientation.Right:
+                        bool isoR = prefab == rightNoIsoWallPrefab;
+                        if (isoR)
+                        {
+                            var upRNo   = go.transform.Find("Up");
+                            var downRNo = go.transform.Find("Down");
+                            if (upRNo   != null) upRNo  .GetComponent<SpriteRenderer>().sprite = Choose(ref _lastRightIsoUp,   labyrinthSettings.rightIsoUpVariants);
+                            if (downRNo != null) downRNo.GetComponent<SpriteRenderer>().sprite = Choose(ref _lastRightIsoDown, labyrinthSettings.rightIsoDownVariants);
+                        }
+                        else
+                        {
+                            go.GetComponent<SpriteRenderer>().sprite = Choose(ref _lastRight, labyrinthSettings.rightWallVariants);
+                        }
+                        break;
+                }
+            }
+
             SetLayerRecursively(go, labyrinthUnityLayer);
 
+            // Sorting order
             switch (ori)
             {
                 case WallOrientation.Top:
                     {
                         var up   = go.transform.Find("Up");
                         var down = go.transform.Find("Down");
-                        if (up   != null) up.GetComponent<SpriteRenderer>().sortingOrder = sortingOrderTopUp;
+                        if (up   != null) up  .GetComponent<SpriteRenderer>().sortingOrder = sortingOrderTopUp;
                         if (down != null) down.GetComponent<SpriteRenderer>().sortingOrder = sortingOrderTopDown;
                     }
                     break;
@@ -318,25 +340,25 @@ namespace Resources.Scripts.Labyrinth
                     {
                         var up   = go.transform.Find("Up");
                         var down = go.transform.Find("Down");
-                        if (up   != null) up.GetComponent<SpriteRenderer>().sortingOrder = sortingOrderBottomUp;
+                        if (up   != null) up  .GetComponent<SpriteRenderer>().sortingOrder = sortingOrderBottomUp;
                         if (down != null) down.GetComponent<SpriteRenderer>().sortingOrder = sortingOrderBottomDown;
                     }
                     break;
                 case WallOrientation.Left:
                     {
-                        var sr = go.GetComponent<SpriteRenderer>();
-                        bool noIso = prefab == leftNoIsoWallPrefab;
-                        sr.sortingOrder = noIso ? sortingOrderLeftNoIso : sortingOrderLeftIso;
+                        var sr   = go.GetComponent<SpriteRenderer>();
+                        bool iso = prefab == leftNoIsoWallPrefab;
+                        sr.sortingOrder = iso ? sortingOrderLeftNoIso : sortingOrderLeftIso;
                     }
                     break;
                 case WallOrientation.Right:
                     {
-                        bool noIso = prefab == rightNoIsoWallPrefab;
-                        if (noIso)
+                        bool iso = prefab == rightNoIsoWallPrefab;
+                        if (iso)
                         {
                             var up   = go.transform.Find("Up");
                             var down = go.transform.Find("Down");
-                            if (up   != null) up.GetComponent<SpriteRenderer>().sortingOrder = sortingOrderRightNoIsoUp;
+                            if (up   != null) up  .GetComponent<SpriteRenderer>().sortingOrder = sortingOrderRightNoIsoUp;
                             if (down != null) down.GetComponent<SpriteRenderer>().sortingOrder = sortingOrderRightNoIsoDown;
                         }
                         else
@@ -427,7 +449,7 @@ namespace Resources.Scripts.Labyrinth
                 pts3D[i] = pts2D[i];
 
             FiShapePath   .SetValue(sc, pts3D);
-            FiShapePathHash.SetValue(sc, Random.Range(int.MinValue, int.MaxValue));
+            FiShapePathHash.SetValue(sc, UnityEngine.Random.Range(int.MinValue, int.MaxValue));
 
             var mesh = (Mesh)FiMesh.GetValue(sc);
             MiGenerateShadowMesh.Invoke(null, new object[]{ mesh, pts3D });
@@ -450,7 +472,7 @@ namespace Resources.Scripts.Labyrinth
             var available = new List<Vector3>(positions);
             while (placed < count && available.Count > 0)
             {
-                int idx = Random.Range(0, available.Count);
+                int idx = UnityEngine.Random.Range(0, available.Count);
                 Instantiate(prefab, available[idx], Quaternion.identity, transform);
                 placed++;
 
@@ -471,15 +493,50 @@ namespace Resources.Scripts.Labyrinth
             var available = new List<Vector3>(positions);
             while (placed < count && available.Count > 0)
             {
-                int idx = Random.Range(0, available.Count);
+                int idx = UnityEngine.Random.Range(0, available.Count);
                 Vector3 pos = available[idx];
-                var prefab = prefabs[Random.Range(0, prefabs.Count)];
+                var prefab = prefabs[UnityEngine.Random.Range(0, prefabs.Count)];
                 Instantiate(prefab, pos, Quaternion.identity);
                 placed++;
                 available.RemoveAll(p =>
                     Vector3.Distance(p, pos) < minDistance * Mathf.Max(cellSizeX, cellSizeY)
                 );
             }
+        }
+
+        private void PlaceGameplayElements()
+        {
+            // 1. Вычисляем старт/финиш
+            Vector3 startPos  = labyrinth.GetStartWorldPosition();
+            Vector3 finishPos = labyrinth.GetFinishWorldPosition();
+
+            // 2. Ставим игрока в старт
+            var player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+                player.transform.position = startPos;
+
+            // 3. Маркеры
+            if (startMarkerPrefab != null)
+            {
+                var go = Instantiate(startMarkerPrefab, startPos, Quaternion.identity, transform);
+                go.tag = "Start";
+            }
+
+            if (finishMarkerPrefab != null)
+            {
+                var go = Instantiate(finishMarkerPrefab, finishPos, Quaternion.identity, transform);
+                go.tag = "Finish";
+                var col = go.AddComponent<BoxCollider2D>();
+                col.isTrigger = true;
+                col.size = new Vector2(cellSizeX, cellSizeY);
+                go.AddComponent<LabyrinthFinishTrigger>();
+            }
+
+            // 4. Мини-карта
+            if (LabyrinthMapController.Instance != null)
+                LabyrinthMapController.Instance.SetSolutionPath(
+                    labyrinth.GetSolutionPathWorldPositions()
+                );
         }
 
         private void Update()
@@ -498,7 +555,6 @@ namespace Resources.Scripts.Labyrinth
 
             if (labyrinthTimer <= 0f)
             {
-                // При истечении времени в лабиринте отправляем игрока в сцену "Menu"
                 SceneManager.LoadScene("Menu");
             }
         }

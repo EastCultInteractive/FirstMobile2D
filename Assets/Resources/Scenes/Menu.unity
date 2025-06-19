@@ -2509,6 +2509,52 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61667428f6defbd4a998efbcc2c4a007, type: 3}
+--- !u!1 &1617688539
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1617688540}
+  - component: {fileID: 1617688541}
+  m_Layer: 5
+  m_Name: GameOverManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1617688540
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617688539}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1617688541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617688539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59e3fcbf5d5965843b6e52cf10ebf24f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arenaFailPrefab: {fileID: 5939508040325121158, guid: 21885acf704fcd94e80b742430f8b856, type: 3}
+  labyrinthFailPrefab: {fileID: 5939508040325121158, guid: 21885acf704fcd94e80b742430f8b856, type: 3}
 --- !u!1 &1679689454
 GameObject:
   m_ObjectHideFlags: 0
@@ -3359,3 +3405,4 @@ SceneRoots:
   - {fileID: 750006208}
   - {fileID: 394596090}
   - {fileID: 1029084724}
+  - {fileID: 1617688540}

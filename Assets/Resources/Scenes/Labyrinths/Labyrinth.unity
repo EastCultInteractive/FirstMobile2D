@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9df50f40c47421045b73e25e00198676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  labyrinthSettings: {fileID: 11400000, guid: 702939bdeb212ec498f4019ff898cc0f, type: 2}
+  labyrinthSettings: {fileID: 11400000, guid: 6a4e0716be97149e291fbf15da4971c4, type: 2}
   defaultRows: 12
   defaultCols: 12
   defaultCellSizeX: 1

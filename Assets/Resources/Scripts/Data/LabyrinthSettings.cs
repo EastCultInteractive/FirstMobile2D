@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace Resources.Scripts.Data
 {
@@ -37,7 +38,7 @@ namespace Resources.Scripts.Data
 
         [Header("Tilemap Settings")]
         [Tooltip("Tile variants array to use for this labyrinth floor (e.g., floor tiles, alternative variants).")]
-        public UnityEngine.Tilemaps.TileBase[] tilesForThisLabyrinth = Array.Empty<UnityEngine.Tilemaps.TileBase>();
+        public TileBase[] tilesForThisLabyrinth = Array.Empty<TileBase>();
 
         [Tooltip("Width (in cells) of the generated floor for this labyrinth")]
         [Min(1)]
@@ -61,6 +62,34 @@ namespace Resources.Scripts.Data
         [Tooltip("Orthographic size of the camera for this labyrinth")]
         [Min(0.1f)]
         public float cameraSize = 5f;
+
+        #endregion
+
+        #region Wall Sprites Variants
+
+        [Header("Wall Sprites Variants")]
+
+        [Tooltip("Variants for top wall 'Up' part")]
+        public Sprite[] topWallUpVariants = Array.Empty<Sprite>();
+        [Tooltip("Variants for top wall 'Down' part")]
+        public Sprite[] topWallDownVariants = Array.Empty<Sprite>();
+
+        [Tooltip("Variants for bottom wall 'Up' part")]
+        public Sprite[] bottomWallUpVariants = Array.Empty<Sprite>();
+        [Tooltip("Variants for bottom wall 'Down' part")]
+        public Sprite[] bottomWallDownVariants = Array.Empty<Sprite>();
+
+        [Tooltip("Variants for left wall (non-iso)")]
+        public Sprite[] leftWallVariants = Array.Empty<Sprite>();
+        [Tooltip("Variants for left iso wall")]
+        public Sprite[] leftIsoWallVariants = Array.Empty<Sprite>();
+
+        [Tooltip("Variants for right wall (non-iso)")]
+        public Sprite[] rightWallVariants = Array.Empty<Sprite>();
+        [Tooltip("Variants for right iso wall 'Up' part")]
+        public Sprite[] rightIsoUpVariants = Array.Empty<Sprite>();
+        [Tooltip("Variants for right iso wall 'Down' part")]
+        public Sprite[] rightIsoDownVariants = Array.Empty<Sprite>();
 
         #endregion
     }
