@@ -5,7 +5,9 @@ using UT = UnityEngine.Tilemaps;
 namespace Resources.Scripts.Tilemap
 {
     /// <summary>
-    /// Генерирует рандомный Tilemap, выставляя тайл из списка floorTiles, избегая совпадения соседних тайлов.
+    /// Генерирует рандомный Tilemap, выставляя тайл из списка floorTiles,
+    /// избегая совпадения соседних тайлов. Позиции тайлов центрированы в (0,0).
+    /// При width=20,height=20 тайлы займут диапазон X:[-10…+9], Y:[-10…+9].
     /// </summary>
     public class RandomTilemapGenerator : MonoBehaviour
     {
@@ -38,7 +40,40 @@ namespace Resources.Scripts.Tilemap
         };
 
         /// <summary>
-        /// Вызывать после того, как поля tilemapComponent, floorTiles, width и height настроены.
+        /// Сбрасываем все смещения до старта сцены
+        /// и жёстко фиксируем culling‑границы.
+        /// </summary>
+        private void Awake()
+        {
+            if (tilemapComponent == null)
+            {
+                Debug.LogError("RandomTilemapGenerator: tilemapComponent не назначен!");
+                return;
+            }
+
+            // Якорь тайлов в левом-нижнем углу клетки
+            tilemapComponent.tileAnchor = Vector3.zero;
+
+            // Сбрасываем позицию GameObject'а Tilemap
+            tilemapComponent.transform.localPosition = Vector3.zero;
+
+            // Переводим рендерер в Manual‑режим расчёта culling‑границ
+            var renderer = tilemapComponent.GetComponent<UT.TilemapRenderer>();
+            if (renderer != null)
+            {
+                renderer.detectChunkCullingBounds = UT.TilemapRenderer.DetectChunkCullingBounds.Manual;
+                // Размер области, в которой тайлы будут рендериться (от центра пивота)
+                renderer.chunkCullingBounds = new Vector3(
+                    width * tilemapComponent.layoutGrid.cellSize.x / 2f,
+                    height * tilemapComponent.layoutGrid.cellSize.y / 2f,
+                    0f
+                );
+            }
+        }
+
+        /// <summary>
+        /// Вызывать после настройки полей tilemapComponent, floorTiles, width и height.
+        /// Генерация центрируется в (0,0).
         /// </summary>
         public void GenerateRandomMap()
         {
@@ -54,37 +89,38 @@ namespace Resources.Scripts.Tilemap
                 return;
             }
 
-            // Очищаем предыдущие тайлы (если были).
+            // Очищаем предыдущие тайлы
             tilemapComponent.ClearAllTiles();
 
-            for (int x = 0; x < width; x++)
+            // Смещение начала генерации, чтобы выровнять центр в (0,0)
+            int xStart = -width  / 2;
+            int yStart = -height / 2;
+
+            for (int ix = 0; ix < width; ix++)
             {
-                for (int y = 0; y < height; y++)
+                for (int iy = 0; iy < height; iy++)
                 {
-                    // Создаем список доступных вариантов из всех floorTiles.
-                    List<UT.TileBase> availableTiles = new List<UT.TileBase>(floorTiles);
-                    // Обратите внимание: y инвертируется, чтобы верхняя строка на холсте соответствовала y=0 в Tilemap.
-                    Vector3Int currentPos = new Vector3Int(x, -y, 0);
+                    Vector3Int currentPos = new Vector3Int(
+                        xStart + ix,
+                        yStart + iy,
+                        0
+                    );
 
-                    // Проверяем всех 8 соседей.
-                    foreach (Vector3Int direction in directions)
+                    // Собираем доступные варианты тайлов
+                    var available = new List<UT.TileBase>(floorTiles);
+                    foreach (var dir in directions)
                     {
-                        Vector3Int neighborPos = currentPos + direction;
-                        UT.TileBase neighborTile = tilemapComponent.GetTile(neighborPos);
-
-                        // Если соседний тайл существует, удаляем его тип из доступных вариантов.
-                        if (neighborTile != null)
-                        {
-                            availableTiles.Remove(neighborTile);
-                        }
+                        var neigh = tilemapComponent.GetTile(currentPos + dir);
+                        if (neigh != null)
+                            available.Remove(neigh);
                     }
 
-                    // Выбираем случайный тайл из оставшихся. Если ничего не осталось — случайный из исходного массива.
-                    UT.TileBase chosenTile = availableTiles.Count > 0
-                        ? availableTiles[Random.Range(0, availableTiles.Count)]
+                    // Выбор случайного тайла
+                    UT.TileBase chosen = available.Count > 0
+                        ? available[Random.Range(0, available.Count)]
                         : floorTiles[Random.Range(0, floorTiles.Length)];
 
-                    tilemapComponent.SetTile(currentPos, chosenTile);
+                    tilemapComponent.SetTile(currentPos, chosen);
                 }
             }
         }
