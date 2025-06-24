@@ -65,31 +65,17 @@ namespace Resources.Scripts.Data
 
         #endregion
 
-        #region Wall Sprites Variants
+        #region Wall Sprite Variants
 
-        [Header("Wall Sprites Variants")]
+        [Header("Wall Sprite Variants")]
+        [Tooltip("Variants for Top/Bottom walls")]
+        public Sprite[] topBottomVariants = Array.Empty<Sprite>();
 
-        [Tooltip("Variants for top wall 'Up' part")]
-        public Sprite[] topWallUpVariants = Array.Empty<Sprite>();
-        [Tooltip("Variants for top wall 'Down' part")]
-        public Sprite[] topWallDownVariants = Array.Empty<Sprite>();
+        [Tooltip("Variants for non-isometric walls (LeftNoIso/RightNoIso)")]
+        public Sprite[] noIsoVariants = Array.Empty<Sprite>();
 
-        [Tooltip("Variants for bottom wall 'Up' part")]
-        public Sprite[] bottomWallUpVariants = Array.Empty<Sprite>();
-        [Tooltip("Variants for bottom wall 'Down' part")]
-        public Sprite[] bottomWallDownVariants = Array.Empty<Sprite>();
-
-        [Tooltip("Variants for left wall (non-iso)")]
-        public Sprite[] leftWallVariants = Array.Empty<Sprite>();
-        [Tooltip("Variants for left iso wall")]
-        public Sprite[] leftIsoWallVariants = Array.Empty<Sprite>();
-
-        [Tooltip("Variants for right wall (non-iso)")]
-        public Sprite[] rightWallVariants = Array.Empty<Sprite>();
-        [Tooltip("Variants for right iso wall 'Up' part")]
-        public Sprite[] rightIsoUpVariants = Array.Empty<Sprite>();
-        [Tooltip("Variants for right iso wall 'Down' part")]
-        public Sprite[] rightIsoDownVariants = Array.Empty<Sprite>();
+        [Tooltip("Variants for isometric walls (LeftIso/RightIso)")]
+        public Sprite[] isoVariants = Array.Empty<Sprite>();
 
         #endregion
     }

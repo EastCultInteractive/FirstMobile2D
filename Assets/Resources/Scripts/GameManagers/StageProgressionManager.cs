@@ -1,6 +1,6 @@
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
@@ -21,10 +21,13 @@ namespace Resources.Scripts.GameManagers
         [Header("UI панели перков")]
         [SerializeField] private GameObject perkSelectionPanelPrefab = null!;
 
+        [Header("Game Over UI")]
+        [Tooltip("Префаб панели Game Over с Legacy-текстом и двумя кнопками (RestartButton, ExitButton)")]
+        [SerializeField] private GameObject gameOverPanelPrefab = null!;
+
         [Header("Имена универсальных сцен")]
         [Tooltip("Имя единственной сцены арены (например, \"Arena\").")]
         [SerializeField] private string genericArenaSceneName = "Arena";
-
         [Tooltip("Имя единственной сцены лабиринта (например, \"Labyrinth\").")]
         [SerializeField] private string genericLabyrinthSceneName = "Labyrinth";
 
@@ -33,7 +36,7 @@ namespace Resources.Scripts.GameManagers
 
         private void Awake()
         {
-            if (Instance != null)
+            if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
                 return;
@@ -45,7 +48,7 @@ namespace Resources.Scripts.GameManagers
 
         private void OnDestroy()
         {
-            DOTween.Kill(this);
+            DOTween.Kill(gameObject);
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
@@ -54,6 +57,8 @@ namespace Resources.Scripts.GameManagers
         /// </summary>
         public void StartStage()
         {
+            Time.timeScale = 1f;
+
             currentArenaIndex = 0;
             selectedPerks.Clear();
             LoadArena(currentArenaIndex);
@@ -62,17 +67,13 @@ namespace Resources.Scripts.GameManagers
         private void LoadArena(int idx)
         {
             var data = GameStageManager.currentStageData;
-            if (data == null || idx < 0
-                || idx >= data.arenaSettingsList.Length)
+            if (data == null || idx < 0 || idx >= data.arenaSettingsList.Length)
             {
                 Debug.LogError($"StageProgressionManager.LoadArena: неверный индекс арены {idx}");
                 return;
             }
 
-            // Берём настройки арены из SO
             CurrentArenaSettings = data.arenaSettingsList[idx];
-
-            // Загрузим _универсальную_ сцену арены по имени genericArenaSceneName
             if (string.IsNullOrEmpty(genericArenaSceneName))
             {
                 Debug.LogError("StageProgressionManager: не задано имя genericArenaSceneName.");
@@ -89,14 +90,57 @@ namespace Resources.Scripts.GameManagers
                 Debug.LogError("StageProgressionManager.LoadLabyrinth: StageData == null");
                 return;
             }
-
-            // Загрузим _универсальную_ сцену лабиринта по имени genericLabyrinthSceneName
             if (string.IsNullOrEmpty(genericLabyrinthSceneName))
             {
                 Debug.LogError("StageProgressionManager: не задано имя genericLabyrinthSceneName.");
                 return;
             }
             SceneManager.LoadScene(genericLabyrinthSceneName);
+        }
+
+        /// <summary>
+        /// Вызывается при провале арены или смерти в лабиринте.
+        /// Показывает панель Game Over и останавливает игру.
+        /// </summary>
+        public void ShowGameOver()
+        {
+            Time.timeScale = 0f;
+
+            if (gameOverPanelPrefab == null)
+            {
+                Debug.LogError("StageProgressionManager.ShowGameOver: не назначен gameOverPanelPrefab!");
+                return;
+            }
+
+            var canvas = Object.FindFirstObjectByType<Canvas>();
+            var panel = Instantiate(
+                gameOverPanelPrefab,
+                canvas != null ? canvas.transform : null,
+                false);
+            
+            var text = panel.GetComponentInChildren<UnityEngine.UI.Text>();
+            if (text != null)
+                text.text = "Вы проиграли...";
+            
+            foreach (var btn in panel.GetComponentsInChildren<UnityEngine.UI.Button>())
+            {
+                if (btn.name == "RestartButton")
+                {
+                    btn.onClick.AddListener(() =>
+                    {
+                        Time.timeScale = 1f;
+                        StartStage();
+                    });
+                }
+                else if (btn.name == "ExitButton")
+                {
+                    btn.onClick.AddListener(() =>
+                    {
+                        Time.timeScale = 1f;
+                        SceneManager.LoadScene("Menu");
+                    });
+                }
+            }
         }
 
         public void OnArenaComplete()
@@ -141,42 +185,24 @@ namespace Resources.Scripts.GameManagers
                 LoadLabyrinth();
         }
 
-        /// <summary>
-        /// Вызывается после прохождения лабиринта.
-        /// Пытаемся перейти к следующему StageData и запустить его.
-        /// </summary>
         public void OnLabyrinthCompleted()
         {
             bool hasNext = GameStageManager.Instance.LoadNextStage();
             if (hasNext)
-            {
                 StartStage();
-            }
             else
-            {
                 Debug.Log("Поздравляем! Все этапы пройдены.");
-            }
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            // Считаем _валидными_ только две сцены: универсальную арену и универсальный лабиринт.
-            var validScenes = new List<string>
-            {
-                genericArenaSceneName,
-                genericLabyrinthSceneName
-            };
-
-            // Если загрузилась не та, что мы ждём (например, вернулись в главное меню или куда-то ещё),
-            // сбрасываем накопленные перки и статы игрока.
-            if (!validScenes.Contains(scene.name))
+            var valid = new List<string> { genericArenaSceneName, genericLabyrinthSceneName };
+            if (!valid.Contains(scene.name))
             {
                 selectedPerks.Clear();
                 var stats = Object.FindFirstObjectByType<PlayerStatsHandler>();
                 stats?.ResetStats();
             }
-
-            // После того, как сцена загрузилась, применим все уже выбранные перки.
             StartCoroutine(DelayedApplyAllPerks());
         }
 
@@ -190,7 +216,6 @@ namespace Resources.Scripts.GameManagers
         {
             var stats = Object.FindFirstObjectByType<PlayerStatsHandler>();
             if (stats == null) return;
-
             stats.ResetStats();
             foreach (var p in selectedPerks)
                 p.Apply(stats);

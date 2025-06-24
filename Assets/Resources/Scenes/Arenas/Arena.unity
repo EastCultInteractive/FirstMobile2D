@@ -12729,6 +12729,7 @@ MonoBehaviour:
   timerText: {fileID: 0}
   clockHand: {fileID: 7304570839191027151}
   spawnArea: 15
+  gameOverPanelPrefab: {fileID: 4251641535702579254, guid: 1328262c91ff9dd4298f6243e8250273, type: 3}
 --- !u!114 &543103349 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8125011222821322946, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}

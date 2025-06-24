@@ -22,6 +22,10 @@ namespace Resources.Scripts.GameManagers
         [Tooltip("Half size of the spawn area (e.g., 50 means range from -50 to 50)")]
         [SerializeField] private float spawnArea = 50f;
 
+        [Header("Game Over UI")]
+        [Tooltip("Префаб панели Game Over с Legacy-текстом и двумя кнопками (RestartButton, ExitButton)")]
+        [SerializeField] private GameObject gameOverPanelPrefab = null!;
+
         private ArenaSettings currentSettings;
         private float timer;
         private bool playerSurvived;
@@ -406,10 +410,48 @@ namespace Resources.Scripts.GameManagers
             }
         }
 
+        /// <summary>
+        /// Вызывается при гибели игрока.
+        /// Показывает панель Game Over вместо мгновенной перезагрузки.
+        /// </summary>
         public void OnPlayerDeath()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Time.timeScale = 0f;
+
+            if (gameOverPanelPrefab != null)
+            {
+                var canvas = Object.FindFirstObjectByType<Canvas>();
+                var panel = Instantiate(
+                    gameOverPanelPrefab,
+                    canvas != null ? canvas.transform : null,
+                    false);
+                
+                var text = panel.GetComponentInChildren<Text>();
+                if (text != null)
+                    text.text = "Вы проиграли...";
+                
+                foreach (var btn in panel.GetComponentsInChildren<Button>())
+                {
+                    if (btn.name == "RestartButton")
+                        btn.onClick.AddListener(() =>
+                        {
+                            Time.timeScale = 1f;
+                            StageProgressionManager.Instance.StartStage();
+                        });
+                    else if (btn.name == "ExitButton")
+                        btn.onClick.AddListener(() =>
+                        {
+                            Time.timeScale = 1f;
+                            SceneManager.LoadScene("Menu");
+                        });
+                }
+            }
+            else
+            {
+                Time.timeScale = 0f;
+            }
         }
+
     }
 
     public static class Extensions

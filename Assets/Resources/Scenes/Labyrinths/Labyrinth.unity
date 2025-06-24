@@ -169,23 +169,13 @@ MonoBehaviour:
   defaultCellSizeX: 1
   defaultCellSizeY: 1
   defaultTimeLimit: 30
-  topWallPrefab: {fileID: 9187151119874588691, guid: f673001af7cdd3546b948f733a0b8f44, type: 3}
-  bottomWallPrefab: {fileID: 6476023305480796975, guid: e293fdedf158cb14b82e528062ec84a7, type: 3}
-  leftWallPrefab: {fileID: 6127058919286614785, guid: 5bda52dba5c1a2c43b08c65e0569a684, type: 3}
-  leftNoIsoWallPrefab: {fileID: 5082289136535667910, guid: 496a48cc8f4e44e48929686c62c102df, type: 3}
-  rightWallPrefab: {fileID: 6459350706025179438, guid: b506b0df65e970449b3476ae9c2b2f88, type: 3}
-  rightNoIsoWallPrefab: {fileID: 9025852097395815732, guid: 97fc827e6962e57489706fa7306a857d, type: 3}
+  wallPrefabTopBottom: {fileID: 9187151119874588691, guid: f673001af7cdd3546b948f733a0b8f44, type: 3}
+  wallPrefabIso: {fileID: 6127058919286614785, guid: 5bda52dba5c1a2c43b08c65e0569a684, type: 3}
+  wallPrefabNoIso: {fileID: 5082289136535667910, guid: 496a48cc8f4e44e48929686c62c102df, type: 3}
   topWallSpacingY: -0.088
   bottomWallSpacingY: 0.095
-  leftWallSpacingX: 0
-  rightWallSpacingX: 0
-  enableWallColliders: 1
-  horizontalColliderSize: {x: 8, y: 1.5}
-  topColliderOffset: {x: 0, y: 0.3}
-  bottomColliderOffset: {x: 0, y: 0.3}
-  verticalColliderSize: {x: 0.8, y: 7.8}
-  leftColliderOffset: {x: 0, y: 0}
-  rightColliderOffset: {x: 0, y: 0}
+  leftWallSpacingX: 0.088
+  rightWallSpacingX: 0.088
   bonusPrefab: {fileID: 4851787157202972978, guid: 8a0a50a60819e014388d53fd15014872, type: 3}
   trapPrefab: {fileID: 4432862800593702859, guid: aa8d140e969d673499c9788afe79c39a, type: 3}
   minPlacementDistance: 5
@@ -201,15 +191,12 @@ MonoBehaviour:
   clockHand: {fileID: 0}
   shadowWidthOffset: 0.1
   shadowHeightOffset: 0.1
-  sortingOrderTopUp: 0
-  sortingOrderTopDown: 1
-  sortingOrderBottomUp: 3
-  sortingOrderBottomDown: 1
-  sortingOrderLeftIso: 5
-  sortingOrderLeftNoIso: 3
-  sortingOrderRightIso: 5
-  sortingOrderRightNoIsoUp: 4
-  sortingOrderRightNoIsoDown: 2
+  sortingOrderTop: 0
+  sortingOrderBottom: 0
+  sortingOrderLeftIso: 0
+  sortingOrderLeftNoIso: 0
+  sortingOrderRightIso: 0
+  sortingOrderRightNoIso: 0
   labyrinthUnityLayer: 3
 --- !u!1 &349064263
 GameObject:
@@ -28757,7 +28744,7 @@ MonoBehaviour:
   minimapCamera: {fileID: 1044330674}
   minimapImage: {fileID: 47820646028700234}
   maxIconWaitTime: 5
-  labyrinthSettings: {fileID: 11400000, guid: 702939bdeb212ec498f4019ff898cc0f, type: 2}
+  labyrinthSettings: {fileID: 11400000, guid: 6a4e0716be97149e291fbf15da4971c4, type: 2}
 --- !u!1001 &1048496236510458284
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28960,7 +28947,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &2118105474833970636
 GameObject:
   m_ObjectHideFlags: 0

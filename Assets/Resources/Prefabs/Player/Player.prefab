@@ -167,7 +167,7 @@ MonoBehaviour:
   physicsPositionInheritanceFactor: {x: 1, y: 1}
   physicsRotationInheritanceFactor: 1
   physicsMovementRelativeTo: {fileID: 0}
-  updateTiming: 3
+  updateTiming: 1
   unscaledTime: 0
   _animationName: 
   loop: 0

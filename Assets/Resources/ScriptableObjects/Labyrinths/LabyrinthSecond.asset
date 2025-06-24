@@ -30,3 +30,6 @@ MonoBehaviour:
   cameraPosition: {x: 8.8, y: -8.8, z: -3}
   cameraRotation: {x: 0, y: 0, z: 0}
   cameraSize: 9.7
+  topBottomVariants: []
+  noIsoVariants: []
+  isoVariants: []

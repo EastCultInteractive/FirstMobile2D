@@ -12,7 +12,9 @@ namespace Resources.Scripts.GameManagers
         private void OnDisable()
         {
             if (killOnDisable)
+            {
                 DOTween.Kill(gameObject, complete: false);
+            }
         }
 
         private void OnDestroy()

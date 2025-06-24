@@ -6,9 +6,8 @@ using Resources.Scripts.Misc;
 using Resources.Scripts.Labyrinth;
 using Spine;
 using Spine.Unity;
-using UObject = UnityEngine.Object;
 using UnityEngine.Rendering.Universal;
-
+using Resources.Scripts.GameManagers;
 namespace Resources.Scripts.Player
 {
     /// <summary>
@@ -309,7 +308,6 @@ namespace Resources.Scripts.Player
                                       * trailVelocityMultiplier;
                     trailVelocities[i].x = new ParticleSystem.MinMaxCurve(baseVel.x);
                     trailVelocities[i].y = new ParticleSystem.MinMaxCurve(baseVel.y);
-                    Debug.Log($"[Trail] PS#{i} emitting, speed = {currentSpeed:F2}");
                 }
             }
         }
@@ -466,21 +464,18 @@ namespace Resources.Scripts.Player
         private void Die()
         {
             IsDead = true;
-            rb.linearVelocity = Vector2.zero;
-            rb.angularVelocity = 0f;
-            enabled = false;
-            skeletonAnimation.state.ClearTracks();
+            // …
             var entry = skeletonAnimation.state.SetAnimation(0, DeathAnimationName, false);
             entry.Complete += trackEntry =>
             {
                 if (trackEntry.Animation.Name == DeathAnimationName)
                 {
-                    foreach (var canvas in UObject.FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-                        canvas.gameObject.SetActive(false);
+                    StageProgressionManager.Instance.ShowGameOver();
                     Destroy(gameObject);
                 }
             };
         }
+
         #endregion
 
         #region Spine Helper
