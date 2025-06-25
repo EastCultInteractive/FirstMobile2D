@@ -8,6 +8,7 @@ using Spine;
 using Spine.Unity;
 using UnityEngine.Rendering.Universal;
 using Resources.Scripts.GameManagers;
+
 namespace Resources.Scripts.Player
 {
     /// <summary>
@@ -39,21 +40,32 @@ namespace Resources.Scripts.Player
         [SerializeField, Range(0.1f, 5f)] private float trailVelocityMultiplier = 1f;
         [Tooltip("Растяжение частицы по направлению движения")]
         [SerializeField, Range(1f, 10f)] private float trailLengthScale = 3f;
+
         [Header("Trail Trigger")]
         [Tooltip("Минимальная реальная скорость (ед./с), при которой включается эффект")]
         [SerializeField, Range(0f, 20f)] private float trailSpeedThreshold = 1f;
         #endregion
 
-        #region Constants
-        private const string SlowAnimationName   = "relevant/step";
-        private const string RunAnimationName    = "relevant/run";
-        private const string JumpAnimationName   = "relevant/Jump";
-        private const string DeathAnimationName  = "relevant/death";
-        private static readonly string[] IdleAnimations = {
-            "relevant/Idle",
-        };
-        private const float SlowThreshold = 0.5f;
-        private const float IdleThreshold = 0.1f;
+        #region Animation Names (публичные поля)
+        [Header("Animation Names")]
+        [Tooltip("Название анимации для беглого передвижения")]
+        [SerializeField] private string runAnimationName = "Run_03_001";
+        [Tooltip("Название анимации для медленного передвижения")]
+        [SerializeField] private string slowAnimationName = "Goes_01_002";
+        [Tooltip("Название анимации для прыжка / кувырка")]
+        [SerializeField] private string jumpAnimationName = "Jamp_04_001";
+        [Tooltip("Название анимации для смерти")]
+        [SerializeField] private string deathAnimationName = "Death_05";
+        [Tooltip("Названия анимаций для простоя (будет переключаться по очереди)")]
+        [SerializeField] private string[] idleAnimations = { "Idle_02_003" };
+        [Tooltip("Название анимации для режима черчения (Drawing Mode)")]
+        [SerializeField] private string drawingAnimationName = "Draw_06_001";
+
+        [Header("Animation Thresholds")]
+        [Tooltip("Порог скорости для медленной анимации")]
+        [SerializeField, Range(0f, 2f)] private float slowThreshold = 0.5f;
+        [Tooltip("Порог для переключения в простой")]
+        [SerializeField, Range(0f, 1f)] private float idleThreshold = 0.1f;
         #endregion
 
         #region Inspector Fields
@@ -94,6 +106,11 @@ namespace Resources.Scripts.Player
         [Tooltip("Длительность мигания (секунд)")]
         [SerializeField, Range(0.05f, 1f)] private float flashDuration = 0.3f;
 
+        [Header("Drawing Mode Settings")]
+        [Tooltip("Макс. время рисования, с.")]
+        [SerializeField, Range(0.1f, 10f)] private float maxDrawingTime = 5f;
+        
+
         #region Public Events & Properties
         public event Action<float> OnRollCooldownChanged;
         public float RollCooldownDuration => rollCooldown;
@@ -115,6 +132,9 @@ namespace Resources.Scripts.Player
 
         private bool idleCycling;
         private int idleIndex;
+
+        // Для режима черчения
+        private bool isDrawing;
 
         // Сохраняем исходный ScaleX скелета
         private float initialScaleX;
@@ -143,7 +163,6 @@ namespace Resources.Scripts.Player
             rb = GetComponent<Rigidbody2D>();
             rb.gravityScale = 0f;
             rb.freezeRotation = true;
-            
             rb.interpolation = RigidbodyInterpolation2D.Interpolate;
 
             if (skeletonAnimation == null)
@@ -156,7 +175,7 @@ namespace Resources.Scripts.Player
 
             initialScaleX = skeletonAnimation.Skeleton.ScaleX;
             skeletonAnimation.state.Complete += HandleAnimationComplete;
-            var anim = skeletonAnimation.Skeleton.Data.FindAnimation(JumpAnimationName);
+            var anim = skeletonAnimation.Skeleton.Data.FindAnimation(jumpAnimationName);
             rollDuration = anim != null ? anim.Duration : 0.3f;
 
             // Инициализируем Trail Effects
@@ -179,15 +198,15 @@ namespace Resources.Scripts.Player
                     main.startColor         = trailColor;
                     main.simulationSpace    = ParticleSystemSimulationSpace.World; 
                     trailMains[i]           = main;
-                    
+
                     var em = ps.emission;
-                    em.rateOverDistance     = 0f;                 
-                    em.rateOverTime         = trailEmissionRate;  
+                    em.rateOverDistance     = 0f;
+                    em.rateOverTime         = trailEmissionRate;
                     trailEmissions[i]       = em;
-                    
+
                     var shape = ps.shape;
                     shape.enabled           = true;
-                    
+
                     var vel = ps.velocityOverLifetime;
                     vel.enabled             = true;
                     trailVelocities[i]      = vel;
@@ -196,7 +215,7 @@ namespace Resources.Scripts.Player
                     var renderer            = ps.GetComponent<ParticleSystemRenderer>();
                     renderer.renderMode     = ParticleSystemRenderMode.Stretch;
                     renderer.lengthScale    = trailLengthScale;
-                    renderer.sortingLayerName = "Default"; 
+                    renderer.sortingLayerName = "Default";
                     renderer.sortingOrder     = 10;
                     trailRenderers[i]         = renderer;
                 }
@@ -216,25 +235,23 @@ namespace Resources.Scripts.Player
 
         private void Update()
         {
-            if (IsDead) return;
+            if (IsDead || isDrawing) return;
 
             if (!isRolling)
             {
-                float h = 0f, v = 0f;
-                
-                h = joystick.Horizontal;
-                v = joystick.Vertical;
-                
-                if (h + v == 0f)
+                float h = joystick != null ? joystick.Horizontal : 0f;
+                float v = joystick != null ? joystick.Vertical : 0f;
+
+                if (Mathf.Approximately(h + v, 0f))
                 {
                     h = Input.GetAxis("Horizontal");
                     v = Input.GetAxis("Vertical");
                 }
-                
+
                 Vector2 rawInput = new Vector2(h, v);
 
                 // Мгновенная остановка, если джойстик отпущен
-                if (rawInput.magnitude <= IdleThreshold)
+                if (rawInput.magnitude <= idleThreshold)
                 {
                     moveInput = Vector2.zero;
                     inputSmoothVelocity = Vector2.zero;
@@ -243,7 +260,7 @@ namespace Resources.Scripts.Player
                 {
                     moveInput = Vector2.SmoothDamp(moveInput, rawInput, ref inputSmoothVelocity, inputSmoothTime);
                 }
-                
+
                 UpdateMovementAnimation(moveInput);
             }
 
@@ -253,15 +270,18 @@ namespace Resources.Scripts.Player
 
             if (Input.GetKeyDown(KeyCode.LeftShift)) TryRoll();
             if (!isRolling && Input.GetKeyDown(KeyCode.Space))
-                PlayAnimation(JumpAnimationName, false);
+                PlayAnimation(jumpAnimationName, false);
+
+            // Вход в режим черчения
+            if (Input.GetButtonDown("SpellModeButton"))
+                StartCoroutine(DrawingCoroutine());
         }
 
         private void FixedUpdate()
         {
-            if (IsDead) return;
+            if (IsDead || isDrawing) return;
             if (!isRolling && LabyrinthMapController.Instance?.IsMapActive != true)
             {
-                // Движение через MovePosition — согласовано с FixedUpdate и интерполяцией
                 float spd = playerStats.GetTotalMoveSpeed() * currentSlowMultiplier;
                 Vector2 delta = moveInput.normalized * spd * Time.fixedDeltaTime;
                 rb.MovePosition(rb.position + delta);
@@ -272,7 +292,7 @@ namespace Resources.Scripts.Player
         #region Movement & Animation Helpers
         private void UpdateMovementAnimation(Vector2 dir)
         {
-            if (LabyrinthMapController.Instance?.IsMapActive == true || dir.magnitude <= IdleThreshold)
+            if (LabyrinthMapController.Instance?.IsMapActive == true || dir.magnitude <= idleThreshold)
             {
                 if (!idleCycling)
                     PlayIdleSequence();
@@ -282,10 +302,7 @@ namespace Resources.Scripts.Player
             idleCycling = false;
             lastMoveDirection = dir.normalized;
 
-            PlayAnimation(
-                RunAnimationName,
-                true
-            );
+            PlayAnimation(runAnimationName, true);
 
             if (Mathf.Abs(dir.x) > 0.01f)
                 skeletonAnimation.Skeleton.ScaleX = Mathf.Abs(initialScaleX) * -Mathf.Sign(dir.x);
@@ -313,10 +330,26 @@ namespace Resources.Scripts.Player
         }
         #endregion
 
+        #region Drawing Mode
+        private IEnumerator DrawingCoroutine()
+        {
+            isDrawing = true;
+            // Запускаем анимацию черчения, без зацикливания
+            skeletonAnimation.state.SetAnimation(0, drawingAnimationName, false);
+
+            // Ожидаем окончания или максимальное время
+            yield return new WaitForSeconds(maxDrawingTime);
+
+            // Возвращаемся в простой
+            PlayIdleSequence();
+            isDrawing = false;
+        }
+        #endregion
+
         #region Dodge Roll
         public void TryRoll()
         {
-            if (canRoll && !isRolling && !IsDead)
+            if (canRoll && !isRolling && !IsDead && !isDrawing)
                 StartCoroutine(RollCoroutine());
         }
 
@@ -327,10 +360,10 @@ namespace Resources.Scripts.Player
             rollCooldownRemaining = rollCooldown;
             OnRollCooldownChanged?.Invoke(1f);
 
-            skeletonAnimation.state.SetAnimation(0, JumpAnimationName, false);
+            skeletonAnimation.state.SetAnimation(0, jumpAnimationName, false);
 
             float baseSpeed = rollDistance / rollDuration;
-            float effectiveRollSpeed = baseSpeed * rollSpeedMultiplier;            
+            float effectiveRollSpeed = baseSpeed * rollSpeedMultiplier;
             rb.linearVelocity = Vector2.zero;
 
             float elapsed = 0f;
@@ -398,7 +431,7 @@ namespace Resources.Scripts.Player
 
         public void TakeDamage(EnemyController enemy)
         {
-            if (isImmortal || isRolling || IsDead || playerStats.TryEvade(transform.position)) return;
+            if (isImmortal || isRolling || IsDead || isDrawing || playerStats.TryEvade(transform.position)) return;
 
             playerStats.Health -= enemy.GetComponent<EnemyStatsHandler>().Damage;
             StartCoroutine(DamageFlash());
@@ -464,24 +497,22 @@ namespace Resources.Scripts.Player
         private void Die()
         {
             IsDead = true;
-            // …
-            var entry = skeletonAnimation.state.SetAnimation(0, DeathAnimationName, false);
+            var entry = skeletonAnimation.state.SetAnimation(0, deathAnimationName, false);
             entry.Complete += trackEntry =>
             {
-                if (trackEntry.Animation.Name == DeathAnimationName)
+                if (trackEntry.Animation.Name == deathAnimationName)
                 {
                     StageProgressionManager.Instance.ShowGameOver();
                     Destroy(gameObject);
                 }
             };
         }
-
         #endregion
 
         #region Spine Helper
         private void PlayAnimation(string animName, bool loop)
         {
-            if (Array.IndexOf(IdleAnimations, animName) < 0)
+            if (Array.IndexOf(idleAnimations, animName) < 0)
                 idleCycling = false;
             var current = skeletonAnimation.state.GetCurrent(0);
             if (current?.Animation.Name == animName) return;
@@ -489,12 +520,12 @@ namespace Resources.Scripts.Player
         }
         private void HandleAnimationComplete(TrackEntry entry)
         {
-            if (idleCycling && entry.Animation.Name == IdleAnimations[idleIndex])
+            if (idleCycling && entry.Animation.Name == idleAnimations[idleIndex])
             {
-                idleIndex = (idleIndex + 1) % IdleAnimations.Length;
-                skeletonAnimation.state.SetAnimation(0, IdleAnimations[idleIndex], false);
+                idleIndex = (idleIndex + 1) % idleAnimations.Length;
+                skeletonAnimation.state.SetAnimation(0, idleAnimations[idleIndex], false);
             }
-            else if (entry.Animation.Name == JumpAnimationName)
+            else if (entry.Animation.Name == jumpAnimationName)
             {
                 PlayIdleSequence();
             }
@@ -503,7 +534,7 @@ namespace Resources.Scripts.Player
         {
             idleCycling = true;
             idleIndex = 0;
-            skeletonAnimation.state.SetAnimation(0, IdleAnimations[idleIndex], false);
+            skeletonAnimation.state.SetAnimation(0, idleAnimations[idleIndex], false);
         }
         #endregion
     }
