@@ -1,0 +1,845 @@
+fileFormatVersion: 2
+guid: 13d51d2f5f24dd144b802f467703189f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2058034557083815448
+    second: Goblin_Topor_02_001_0
+  - first:
+      213: -2373031512343156730
+    second: Goblin_Topor_02_001_1
+  - first:
+      213: -4126592729743396903
+    second: Goblin_Topor_02_001_2
+  - first:
+      213: 6298689233983359118
+    second: Goblin_Topor_02_001_3
+  - first:
+      213: 8589661722634421906
+    second: Goblin_Topor_02_001_4
+  - first:
+      213: 183896380333476975
+    second: Goblin_Topor_02_001_5
+  - first:
+      213: 9191547759433259404
+    second: Goblin_Topor_02_001_6
+  - first:
+      213: -3504367650171887899
+    second: Goblin_Topor_02_001_7
+  - first:
+      213: -4961257585219316075
+    second: Goblin_Topor_02_001_8
+  - first:
+      213: -6962024891928634268
+    second: Goblin_Topor_02_001_9
+  - first:
+      213: 4761791476345443979
+    second: Goblin_Topor_02_001_10
+  - first:
+      213: -8468643875820571550
+    second: Goblin_Topor_02_001_11
+  - first:
+      213: 6519161904379440087
+    second: Goblin_Topor_02_001_12
+  - first:
+      213: 3277300815562276623
+    second: Goblin_Topor_02_001_13
+  - first:
+      213: -7249786226947114904
+    second: Goblin_Topor_02_001_14
+  - first:
+      213: -1736568160357983675
+    second: Goblin_Topor_02_001_15
+  - first:
+      213: -8792759934334527757
+    second: Goblin_Topor_02_001_16
+  - first:
+      213: 6657619333285888789
+    second: Goblin_Topor_02_001_17
+  - first:
+      213: 1461062033393670199
+    second: Goblin_Topor_02_001_18
+  - first:
+      213: -4292572901652185382
+    second: Goblin_Topor_02_001_19
+  - first:
+      213: -2566433456117474576
+    second: Goblin_Topor_02_001_20
+  - first:
+      213: -7761767729981348030
+    second: Goblin_Topor_02_001_21
+  - first:
+      213: 6848659643584038868
+    second: Goblin_Topor_02_001_22
+  - first:
+      213: -8238828074141254945
+    second: Goblin_Topor_02_001_23
+  - first:
+      213: 5588672630911911539
+    second: Goblin_Topor_02_001_24
+  - first:
+      213: 778054868892154456
+    second: Goblin_Topor_02_001_25
+  - first:
+      213: 4364140518374670418
+    second: Goblin_Topor_02_001_26
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 0
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 570
+        width: 55
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81e8576968b9f8c10800000000000000
+      internalID: 2058034557083815448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_1
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 489
+        width: 143
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6086af1996c411fd0800000000000000
+      internalID: -2373031512343156730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_2
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 531
+        width: 67
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9df6fe2a6c56bb6c0800000000000000
+      internalID: -4126592729743396903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_3
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 528
+        width: 58
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e88c7268c70796750800000000000000
+      internalID: 6298689233983359118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_4
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 574
+        width: 42
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2960566a3db943770800000000000000
+      internalID: 8589661722634421906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_5
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 521
+        width: 194
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6cc14998c45d8200800000000000000
+      internalID: 183896380333476975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_6
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 564
+        width: 56
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c899e010dffee8f70800000000000000
+      internalID: 9191547759433259404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_7
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 354
+        width: 113
+        height: 134
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ee5229603cfd5fc0800000000000000
+      internalID: -3504367650171887899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_8
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 474
+        width: 161
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5965ac91382162bb0800000000000000
+      internalID: -4961257585219316075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_9
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 351
+        width: 167
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46c9a274f3be16f90800000000000000
+      internalID: -6962024891928634268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_10
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 481
+        width: 91
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b869d026e18451240800000000000000
+      internalID: 4761791476345443979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_11
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 391
+        width: 110
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2647d648345597a80800000000000000
+      internalID: -8468643875820571550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_12
+      rect:
+        serializedVersion: 2
+        x: 444
+        y: 456
+        width: 165
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7dbabc74637b87a50800000000000000
+      internalID: 6519161904379440087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_13
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 134
+        width: 282
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0fffa55abf4b7d20800000000000000
+      internalID: 3277300815562276623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_14
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 332
+        width: 137
+        height: 123
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8683c4d66d5936b90800000000000000
+      internalID: -7249786226947114904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_15
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 133
+        width: 130
+        height: 217
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54adb99757876e7e0800000000000000
+      internalID: -1736568160357983675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_16
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 133
+        width: 86
+        height: 258
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f614befc67d9f580800000000000000
+      internalID: -8792759934334527757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_17
+      rect:
+        serializedVersion: 2
+        x: 508
+        y: 281
+        width: 101
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5134742928d946c50800000000000000
+      internalID: 6657619333285888789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_18
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 223
+        width: 77
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7385d37ad2cb64410800000000000000
+      internalID: 1461062033393670199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_19
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 133
+        width: 40
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adebd8060b7bd64c0800000000000000
+      internalID: -4292572901652185382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_20
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 133
+        width: 10
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fa90748e52326cd0800000000000000
+      internalID: -2566433456117474576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_21
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 133
+        width: 8
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2472f598f59a84490800000000000000
+      internalID: -7761767729981348030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_22
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 133
+        width: 55
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d7416bf8a35b0f50800000000000000
+      internalID: 6848659643584038868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_23
+      rect:
+        serializedVersion: 2
+        x: 476
+        y: 45
+        width: 129
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fda7b4b848dc9ad80800000000000000
+      internalID: -8238828074141254945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_24
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 142
+        width: 52
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 376c373d524fe8d40800000000000000
+      internalID: 5588672630911911539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_25
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 474
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85a741ce7c43cca00800000000000000
+      internalID: 778054868892154456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin_Topor_02_001_26
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 4
+        width: 100
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2508c93edaa809c30800000000000000
+      internalID: 4364140518374670418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Goblin_Topor_02_001_0: 2058034557083815448
+      Goblin_Topor_02_001_1: -2373031512343156730
+      Goblin_Topor_02_001_10: 4761791476345443979
+      Goblin_Topor_02_001_11: -8468643875820571550
+      Goblin_Topor_02_001_12: 6519161904379440087
+      Goblin_Topor_02_001_13: 3277300815562276623
+      Goblin_Topor_02_001_14: -7249786226947114904
+      Goblin_Topor_02_001_15: -1736568160357983675
+      Goblin_Topor_02_001_16: -8792759934334527757
+      Goblin_Topor_02_001_17: 6657619333285888789
+      Goblin_Topor_02_001_18: 1461062033393670199
+      Goblin_Topor_02_001_19: -4292572901652185382
+      Goblin_Topor_02_001_2: -4126592729743396903
+      Goblin_Topor_02_001_20: -2566433456117474576
+      Goblin_Topor_02_001_21: -7761767729981348030
+      Goblin_Topor_02_001_22: 6848659643584038868
+      Goblin_Topor_02_001_23: -8238828074141254945
+      Goblin_Topor_02_001_24: 5588672630911911539
+      Goblin_Topor_02_001_25: 778054868892154456
+      Goblin_Topor_02_001_26: 4364140518374670418
+      Goblin_Topor_02_001_3: 6298689233983359118
+      Goblin_Topor_02_001_4: 8589661722634421906
+      Goblin_Topor_02_001_5: 183896380333476975
+      Goblin_Topor_02_001_6: 9191547759433259404
+      Goblin_Topor_02_001_7: -3504367650171887899
+      Goblin_Topor_02_001_8: -4961257585219316075
+      Goblin_Topor_02_001_9: -6962024891928634268
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

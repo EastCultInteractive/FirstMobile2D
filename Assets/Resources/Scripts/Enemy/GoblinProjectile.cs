@@ -12,8 +12,9 @@ namespace Resources.Scripts.Enemy
         private Rigidbody2D rb;
 
         [Tooltip("Lifetime of the projectile in seconds.")]
-        [SerializeField] private float lifeTime = 5f;
-        
+        [SerializeField]
+        private float lifeTime = 5f;
+
         /// <summary>
         /// Устанавливает параметры полёта и связывания.
         /// </summary>
@@ -23,7 +24,7 @@ namespace Resources.Scripts.Enemy
             speed = projectileSpeed;
             bindingDuration = bindDuration;
             lifeTime = projectileLifeTime;
-            // projectileDamage передаётся, но тут не используется, т.к. урон снаряд не наносит
+            // projectileDamage передаётся, но снаряд его не наносит напрямую
 
             Destroy(gameObject, lifeTime);
         }
@@ -44,12 +45,10 @@ namespace Resources.Scripts.Enemy
             if (collision.CompareTag("Player"))
             {
                 var player = collision.GetComponent<PlayerController>();
-                if (player != null && !player.isDead)
+                if (player != null && !player.IsDead)
                 {
-                    // Проигрываем анимацию удара и связываем
                     player.ApplyBinding(bindingDuration);
                 }
-
                 Destroy(gameObject);
             }
             else if (!collision.CompareTag("Enemy"))

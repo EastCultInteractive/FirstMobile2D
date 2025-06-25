@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
-  m_Name: Cherep_Nog_02_001_SkeletonData
+  m_Name: Goblin_Topor_02_001_SkeletonData
   m_EditorClassIdentifier: 
   atlasAssets:
-  - {fileID: 11400000, guid: 2fdd9c2d16d9af043b52d3a7623b862c, type: 2}
+  - {fileID: 11400000, guid: 7631f7c9b78ec0940b692a82078019e4, type: 2}
   scale: 0.01
-  skeletonJSON: {fileID: 4900000, guid: e80aafbfae030da46bc798a083ccf2db, type: 3}
+  skeletonJSON: {fileID: 4900000, guid: f7c4d006f78d2be46b456f44afb0a5fc, type: 3}
   isUpgradingBlendModeMaterials: 0
   blendModeMaterials:
     requiresBlendModeMaterials: 1
     applyAdditiveMaterial: 1
     additiveMaterials:
-    - pageName: Cherep_Nog_02_001.png
-      material: {fileID: 2100000, guid: 93e6837c1a9972644b2246e7f9a77f06, type: 2}
+    - pageName: Goblin_Topor_02_001.png
+      material: {fileID: 2100000, guid: 8274be3bcdfe5c34bb7ea0613414e686, type: 2}
     multiplyMaterials: []
     screenMaterials: []
   skeletonDataModifiers: []

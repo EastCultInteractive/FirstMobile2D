@@ -14,12 +14,13 @@ namespace Resources.Scripts.Enemy
         DarkSkull,
         Troll,
         Gremlin,
-        ScullKnife
+        ScullKnife,
+        GoblinAxe,
+        
     }
 
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
-    [RequireComponent(typeof(SkeletonAnimation))]
     public class EnemyController : MonoBehaviour
     {
         #region Inspector Fields
@@ -66,9 +67,6 @@ namespace Resources.Scripts.Enemy
         public float trollAttackAnimationDuration = 1f;
         public float trollPushForce = 5f;
 
-        [Header("Spine Animation Settings")]
-        public SkeletonAnimation skeletonAnimation;
-
         [Header("Detection & Obstacles")]
         public LayerMask obstacleMask;
 
@@ -77,7 +75,30 @@ namespace Resources.Scripts.Enemy
 
         #endregion
 
-        #region Private Fields
+        #region Private Types & Fields
+
+        private struct AnimData
+        {
+            public string Idle;
+            public string Walk;
+            public string Attack;
+            public AnimData(string idle, string walk, string attack)
+            {
+                Idle = idle;
+                Walk = walk;
+                Attack = attack;
+            }
+        }
+
+        private static readonly Dictionary<EnemyType, AnimData> animationMap = new Dictionary<EnemyType, AnimData>
+        {
+            { EnemyType.Standard,   new AnimData("Idle",          "Walk",           "Attack") },
+            { EnemyType.Goblin,     new AnimData("idle_goblin",   "walk_goblin",    "attack_goblin") },
+            { EnemyType.DarkSkull,  new AnimData("idle_02_003",   "Походка_02_003", "attack_02_002") },
+            { EnemyType.Troll,      new AnimData("Idle_02_004",   "Goes_02_002",    "Attack_01_03") },
+            { EnemyType.Gremlin,    new AnimData("idle_01_002",   "Goes_01_002",    "Attack_01_002") },
+            { EnemyType.ScullKnife, new AnimData("Idle_02_001",   "Goes_02_002",    "Attack_01_001") },
+        };
 
         private Rigidbody2D rb;
         private PlayerController player;
@@ -94,6 +115,8 @@ namespace Resources.Scripts.Enemy
         private Vector2 roamDirection;
         private float roamTimeRemaining;
 
+        private SkeletonAnimation skeletonAnimation;
+
         #endregion
 
         #region Unity Methods
@@ -105,38 +128,24 @@ namespace Resources.Scripts.Enemy
             bc.isTrigger = true;
             Physics2D.IgnoreLayerCollision(gameObject.layer, gameObject.layer);
 
-            skeletonAnimation = GetComponent<SkeletonAnimation>();
-            if (skeletonAnimation == null)
-                Debug.LogError($"[{enemyName}] Missing SkeletonAnimation");
-
-            switch (enemyType)
+            // Перенос Spine на дочерний объект SpineVisual
+            var spineChild = transform.Find("SpineVisual");
+            if (spineChild == null)
             {
-                case EnemyType.Gremlin:
-                    idleAnim = "idle_01_002";
-                    walkAnim = "Goes_01_002";
-                    attackAnim = "Attack_01_002";
-                    break;
-                case EnemyType.ScullKnife:
-                    idleAnim = "Idle_02_001";
-                    walkAnim = "Goes_02_002";
-                    attackAnim = "Attack_01_001";
-                    break;
-                case EnemyType.Troll:
-                    idleAnim = "Idle_02_004";
-                    walkAnim = "Goes_02_002";
-                    attackAnim = "Attack_01_03";
-                    break;
-                case EnemyType.DarkSkull:
-                    idleAnim = "idle_02_003";
-                    walkAnim = "Походка_02_003";
-                    attackAnim = "attack_02_002";
-                    break;
-                default:
-                    idleAnim = "Idle";
-                    walkAnim = "Walk";
-                    attackAnim = "Attack";
-                    break;
+                Debug.LogError($"[{enemyName}] Отсутствует дочерний объект SpineVisual");
+                return;
             }
+            skeletonAnimation = spineChild.GetComponent<SkeletonAnimation>();
+            if (skeletonAnimation == null)
+                Debug.LogError($"[{enemyName}] Отсутствует SkeletonAnimation на SpineVisual");
+
+            // Получаем анимации из словаря
+            if (!animationMap.TryGetValue(enemyType, out var animData))
+                animData = animationMap[EnemyType.Standard];
+
+            idleAnim   = animData.Idle;
+            walkAnim   = animData.Walk;
+            attackAnim = animData.Attack;
         }
 
         private void Start()
@@ -151,6 +160,7 @@ namespace Resources.Scripts.Enemy
             labField = LabyrinthGeneratorWithWalls.CurrentField;
             roamTimeRemaining = 0f;
 
+            // Корректируем задержку атаки под длительность анимации
             var sd = skeletonAnimation.SkeletonDataAsset.GetSkeletonData(true);
             var anim = sd.FindAnimation(attackAnim);
             if (anim != null)
@@ -161,7 +171,7 @@ namespace Resources.Scripts.Enemy
 
         private void Update()
         {
-            if (player == null || player.isDead)
+            if (player == null || player.IsDead)
             {
                 isAttacking = false;
                 isChasing = false;
@@ -184,14 +194,14 @@ namespace Resources.Scripts.Enemy
 
         private void OnTriggerStay2D(Collider2D other)
         {
-            if (player == null || player.isDead) return;
+            if (player == null || player.IsDead) return;
             if (other.CompareTag("Player"))
                 AttemptAttack();
         }
 
         #endregion
 
-        #region Arena Roaming
+        #region Arena Roaming and Patrol
 
         private void RoamArena()
         {
@@ -206,14 +216,10 @@ namespace Resources.Scripts.Enemy
             }
 
             roamTimeRemaining -= Time.deltaTime;
-            Vector3 move = roamDirection * speed * Time.deltaTime;
+            Vector3 move = new Vector3(roamDirection.x, roamDirection.y, 0f) * speed * Time.deltaTime;
             transform.position += move;
             TurnToTarget(move);
         }
-
-        #endregion
-
-        #region Labyrinth Patrol
 
         private void PatrolLabyrinth()
         {
@@ -234,12 +240,6 @@ namespace Resources.Scripts.Enemy
             currentPath = labField.PathToWorld(cells);
             pathIndex = 0;
             PlayWalkAnim();
-        }
-
-        private void RecalculatePathToPlayer()
-        {
-            if (labField == null) return;
-            BuildPath(WorldToCell(transform.position), WorldToCell(player.transform.position));
         }
 
         private void FollowPath()
@@ -302,9 +302,15 @@ namespace Resources.Scripts.Enemy
             }
         }
 
+        private void RecalculatePathToPlayer()
+        {
+            if (labField == null) return;
+            BuildPath(WorldToCell(transform.position), WorldToCell(player.transform.position));
+        }
+
         private void AttemptAttack()
         {
-            if (player == null || player.isDead) return;
+            if (player == null || player.IsDead) return;
             if (isAttacking) return;
 
             float since = Time.time - lastAttackTime;
@@ -334,7 +340,7 @@ namespace Resources.Scripts.Enemy
 
             float hitTime = attackCooldown * 0.4f;
             yield return new WaitForSeconds(hitTime);
-            if (!player.isDead)
+            if (!player.IsDead)
             {
                 player.StartCoroutine(player.DamageFlash());
                 player.TakeDamage(this);
@@ -359,7 +365,7 @@ namespace Resources.Scripts.Enemy
 
             float hitTime = goblinAttackAnimationDuration * 0.4f;
             yield return new WaitForSeconds(hitTime);
-            if (!player.isDead && HasLineOfSight())
+            if (!player.IsDead && HasLineOfSight())
                 SpawnProjectileEvent();
             yield return new WaitForSeconds(goblinAttackAnimationDuration - hitTime);
 
@@ -385,7 +391,6 @@ namespace Resources.Scripts.Enemy
                 player.transform.position += (player.transform.position - transform.position).normalized * darkSkullPushForce;
             yield return new WaitForSeconds(darkSkullAttackAnimationDuration - hitTime);
 
-            // Снимаем атаку с трека, чтобы точно переключиться в Idle
             skeletonAnimation.state.ClearTrack(0);
 
             speed = oldSpeed;
@@ -421,14 +426,14 @@ namespace Resources.Scripts.Enemy
 
         #region Spine Animation Control
 
-        private void PlayIdleAnim() => skeletonAnimation?.state.SetAnimation(0, idleAnim, true);
-        private void PlayWalkAnim() => skeletonAnimation?.state.SetAnimation(0, walkAnim, true);
+        private void PlayIdleAnim()     => skeletonAnimation?.state.SetAnimation(0, idleAnim, true);
+        private void PlayWalkAnim()     => skeletonAnimation?.state.SetAnimation(0, walkAnim, true);
         private void EnsureWalkAnim()
         {
             var c = skeletonAnimation?.state.GetCurrent(0);
             if (c == null || c.Animation.Name != walkAnim) PlayWalkAnim();
         }
-        private void PlayAttackAnim() => skeletonAnimation?.state.SetAnimation(0, attackAnim, false);
+        private void PlayAttackAnim()   => skeletonAnimation?.state.SetAnimation(0, attackAnim, false);
 
         #endregion
 
@@ -436,7 +441,7 @@ namespace Resources.Scripts.Enemy
 
         public void SpawnProjectileEvent()
         {
-            if (player == null || player.isDead) return;
+            if (player == null || player.IsDead) return;
             var origin = attackPoint != null ? attackPoint.position : transform.position;
             var dir = (player.transform.position - origin).normalized;
             if (goblinProjectileSpreadAngle > 0f)
@@ -454,7 +459,7 @@ namespace Resources.Scripts.Enemy
 
         public void RegisterDarkSkullHitEvent()
         {
-            if (player == null || player.isDead) return;
+            if (player == null || player.IsDead) return;
             if (playerStats.TryEvade(transform.position)) return;
             player.StartCoroutine(player.DamageFlash());
             player.ReceiveDarkSkullHit();
@@ -464,7 +469,7 @@ namespace Resources.Scripts.Enemy
 
         public void RegisterTrollHitEvent()
         {
-            if (player == null || player.isDead) return;
+            if (player == null || player.IsDead) return;
             if (playerStats.TryEvade(transform.position)) return;
             player.StartCoroutine(player.DamageFlash());
             player.ReceiveTrollHit();
@@ -475,7 +480,8 @@ namespace Resources.Scripts.Enemy
         public void ApplySlow(float f, float d) => StartCoroutine(SlowEffect(f, d));
         private IEnumerator SlowEffect(float f, float d)
         {
-            float old = speed; speed = old * slowMultiplier;
+            float old = speed;
+            speed = old * slowMultiplier;
             yield return new WaitForSeconds(d);
             speed = old;
         }
