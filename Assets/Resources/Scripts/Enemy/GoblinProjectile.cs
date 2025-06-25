@@ -44,7 +44,7 @@ namespace Resources.Scripts.Enemy
             if (collision.CompareTag("Player"))
             {
                 var player = collision.GetComponent<PlayerController>();
-                if (player != null && !player.IsDead)
+                if (player != null && !player.isDead)
                 {
                     // Проигрываем анимацию удара и связываем
                     player.ApplyBinding(bindingDuration);

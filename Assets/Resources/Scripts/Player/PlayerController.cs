@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using AYellowpaper.SerializedCollections;
 using Resources.Scripts.Enemy;
 using Resources.Scripts.Misc;
 using Resources.Scripts.Labyrinth;
@@ -20,46 +21,21 @@ namespace Resources.Scripts.Player
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour
     {
-        #region Trail Effects (новое)
-        [Header("Trail Effects")]
-        [Tooltip("Системы частиц для эффекта движения (2 для ушей, 2 для ног)")]
-        [SerializeField] private ParticleSystem[] motionTrails;
-
-        [Header("Trail Settings")]
-        [Tooltip("Минимальный стартовый размер частицы")]
-        [SerializeField, Range(0.01f, 0.5f)] private float trailStartSizeMin = 0.05f;
-        [Tooltip("Максимальный стартовый размер частицы")]
-        [SerializeField, Range(0.01f, 0.5f)] private float trailStartSizeMax = 0.1f;
-        [Tooltip("Длительность жизни частицы (сек)")]
-        [SerializeField, Range(0.05f, 1f)] private float trailLifetime = 0.2f;
-        [Tooltip("Цвет частиц")]
-        [SerializeField] private Color trailColor = new Color(1f, 1f, 1f, 0.5f);
-        [Tooltip("Скорость эмиссии частиц (Rate over Time)")]
-        [SerializeField, Range(0f, 100f)] private float trailEmissionRate = 20f;
-        [Tooltip("Множитель обратной скорости для частиц")]
-        [SerializeField, Range(0.1f, 5f)] private float trailVelocityMultiplier = 1f;
-        [Tooltip("Растяжение частицы по направлению движения")]
-        [SerializeField, Range(1f, 10f)] private float trailLengthScale = 3f;
-
-        [Header("Trail Trigger")]
-        [Tooltip("Минимальная реальная скорость (ед./с), при которой включается эффект")]
-        [SerializeField, Range(0f, 20f)] private float trailSpeedThreshold = 1f;
-        #endregion
+        public enum PlayerAnimationName
+        {
+            Run,
+            Step,
+            Jump,
+            Death,
+            Idle,
+            Draw
+        }
 
         #region Animation Names (публичные поля)
-        [Header("Animation Names")]
-        [Tooltip("Название анимации для беглого передвижения")]
-        [SerializeField] private string runAnimationName = "Run_03_001";
-        [Tooltip("Название анимации для медленного передвижения")]
-        [SerializeField] private string slowAnimationName = "Goes_01_002";
-        [Tooltip("Название анимации для прыжка / кувырка")]
-        [SerializeField] private string jumpAnimationName = "Jamp_04_001";
-        [Tooltip("Название анимации для смерти")]
-        [SerializeField] private string deathAnimationName = "Death_05";
-        [Tooltip("Названия анимаций для простоя (будет переключаться по очереди)")]
-        [SerializeField] private string[] idleAnimations = { "Idle_02_003" };
-        [Tooltip("Название анимации для режима черчения (Drawing Mode)")]
-        [SerializeField] private string drawingAnimationName = "Draw_06_001";
+
+        [Header("Animations")]
+        [SerializedDictionary("Animation Code", "Value")]
+        public SerializedDictionary<PlayerAnimationName, string> animations;
 
         [Header("Animation Thresholds")]
         [Tooltip("Порог скорости для медленной анимации")]
@@ -114,7 +90,7 @@ namespace Resources.Scripts.Player
         #region Public Events & Properties
         public event Action<float> OnRollCooldownChanged;
         public float RollCooldownDuration => rollCooldown;
-        public bool IsDead { get; private set; }
+        public bool isDead { get; private set; }
         #endregion
 
         #region Private Fields
@@ -129,9 +105,6 @@ namespace Resources.Scripts.Player
         private bool canRoll = true;
         private float rollCooldownRemaining;
         private float rollDuration;
-
-        private bool idleCycling;
-        private int idleIndex;
 
         // Для режима черчения
         private bool isDrawing;
@@ -149,12 +122,6 @@ namespace Resources.Scripts.Player
 
         // Для расчета светового эффекта финиша
         private float initialDistance = -1f;
-
-        // Trail modules и renderers
-        private ParticleSystem.EmissionModule[] trailEmissions;
-        private ParticleSystem.MainModule[] trailMains;
-        private ParticleSystem.VelocityOverLifetimeModule[] trailVelocities;
-        private ParticleSystemRenderer[] trailRenderers;
         #endregion
 
         #region Unity Methods
@@ -175,51 +142,8 @@ namespace Resources.Scripts.Player
 
             initialScaleX = skeletonAnimation.Skeleton.ScaleX;
             skeletonAnimation.state.Complete += HandleAnimationComplete;
-            var anim = skeletonAnimation.Skeleton.Data.FindAnimation(jumpAnimationName);
+            var anim = skeletonAnimation.Skeleton.Data.FindAnimation(animations[PlayerAnimationName.Jump]);
             rollDuration = anim != null ? anim.Duration : 0.3f;
-
-            // Инициализируем Trail Effects
-            if (motionTrails != null && motionTrails.Length > 0)
-            {
-                int len = motionTrails.Length;
-                trailEmissions   = new ParticleSystem.EmissionModule[len];
-                trailMains       = new ParticleSystem.MainModule[len];
-                trailVelocities  = new ParticleSystem.VelocityOverLifetimeModule[len];
-                trailRenderers   = new ParticleSystemRenderer[len];
-
-                for (int i = 0; i < len; i++)
-                {
-                    var ps = motionTrails[i];
-
-                    // Main
-                    var main = ps.main;
-                    main.startLifetime      = trailLifetime;
-                    main.startSize          = new ParticleSystem.MinMaxCurve(trailStartSizeMin, trailStartSizeMax);
-                    main.startColor         = trailColor;
-                    main.simulationSpace    = ParticleSystemSimulationSpace.World; 
-                    trailMains[i]           = main;
-
-                    var em = ps.emission;
-                    em.rateOverDistance     = 0f;
-                    em.rateOverTime         = trailEmissionRate;
-                    trailEmissions[i]       = em;
-
-                    var shape = ps.shape;
-                    shape.enabled           = true;
-
-                    var vel = ps.velocityOverLifetime;
-                    vel.enabled             = true;
-                    trailVelocities[i]      = vel;
-
-                    // Renderer: Stretch Billboard + сортировка над спрайтом
-                    var renderer            = ps.GetComponent<ParticleSystemRenderer>();
-                    renderer.renderMode     = ParticleSystemRenderMode.Stretch;
-                    renderer.lengthScale    = trailLengthScale;
-                    renderer.sortingLayerName = "Default";
-                    renderer.sortingOrder     = 10;
-                    trailRenderers[i]         = renderer;
-                }
-            }
         }
 
         private void Start()
@@ -235,7 +159,7 @@ namespace Resources.Scripts.Player
 
         private void Update()
         {
-            if (IsDead || isDrawing) return;
+            if (isDead || isDrawing) return;
 
             if (!isRolling)
             {
@@ -266,24 +190,17 @@ namespace Resources.Scripts.Player
 
             UpdateLightOuterRange();
             TickRollCooldown();
-            UpdateTrailEffects(moveInput);
 
             if (Input.GetKeyDown(KeyCode.LeftShift)) TryRoll();
-            if (!isRolling && Input.GetKeyDown(KeyCode.Space))
-                PlayAnimation(jumpAnimationName, false);
-
-            // Вход в режим черчения
-            if (Input.GetButtonDown("SpellModeButton"))
-                StartCoroutine(DrawingCoroutine());
         }
 
         private void FixedUpdate()
         {
-            if (IsDead || isDrawing) return;
+            if (isDead || isDrawing) return;
             if (!isRolling && LabyrinthMapController.Instance?.IsMapActive != true)
             {
                 float spd = playerStats.GetTotalMoveSpeed() * currentSlowMultiplier;
-                Vector2 delta = moveInput.normalized * spd * Time.fixedDeltaTime;
+                Vector2 delta = moveInput.normalized * (spd * Time.fixedDeltaTime);
                 rb.MovePosition(rb.position + delta);
             }
         }
@@ -294,39 +211,16 @@ namespace Resources.Scripts.Player
         {
             if (LabyrinthMapController.Instance?.IsMapActive == true || dir.magnitude <= idleThreshold)
             {
-                if (!idleCycling)
-                    PlayIdleSequence();
+                PlayIdleSequence();
                 return;
             }
 
-            idleCycling = false;
             lastMoveDirection = dir.normalized;
 
-            PlayAnimation(runAnimationName, true);
+            PlayAnimation(PlayerAnimationName.Run, true);
 
             if (Mathf.Abs(dir.x) > 0.01f)
                 skeletonAnimation.Skeleton.ScaleX = Mathf.Abs(initialScaleX) * -Mathf.Sign(dir.x);
-        }
-
-        private void UpdateTrailEffects(Vector2 dir)
-        {
-            if (trailEmissions == null) return;
-
-            float currentSpeed = playerStats.GetTotalMoveSpeed() * dir.magnitude * currentSlowMultiplier;
-            bool running = currentSpeed >= trailSpeedThreshold;
-
-            for (int i = 0; i < trailEmissions.Length; i++)
-            {
-                trailEmissions[i].enabled = running;
-                if (running)
-                {
-                    Vector3 baseVel = -new Vector3(dir.normalized.x, dir.normalized.y, 0f)
-                                      * currentSpeed
-                                      * trailVelocityMultiplier;
-                    trailVelocities[i].x = new ParticleSystem.MinMaxCurve(baseVel.x);
-                    trailVelocities[i].y = new ParticleSystem.MinMaxCurve(baseVel.y);
-                }
-            }
         }
         #endregion
 
@@ -335,7 +229,7 @@ namespace Resources.Scripts.Player
         {
             isDrawing = true;
             // Запускаем анимацию черчения, без зацикливания
-            skeletonAnimation.state.SetAnimation(0, drawingAnimationName, false);
+            PlayAnimation(PlayerAnimationName.Draw, false);
 
             // Ожидаем окончания или максимальное время
             yield return new WaitForSeconds(maxDrawingTime);
@@ -349,7 +243,7 @@ namespace Resources.Scripts.Player
         #region Dodge Roll
         public void TryRoll()
         {
-            if (canRoll && !isRolling && !IsDead && !isDrawing)
+            if (canRoll && !isRolling && !isDead && !isDrawing)
                 StartCoroutine(RollCoroutine());
         }
 
@@ -360,7 +254,7 @@ namespace Resources.Scripts.Player
             rollCooldownRemaining = rollCooldown;
             OnRollCooldownChanged?.Invoke(1f);
 
-            skeletonAnimation.state.SetAnimation(0, jumpAnimationName, false);
+            PlayAnimation(PlayerAnimationName.Jump, false);
 
             float baseSpeed = rollDistance / rollDuration;
             float effectiveRollSpeed = baseSpeed * rollSpeedMultiplier;
@@ -431,7 +325,7 @@ namespace Resources.Scripts.Player
 
         public void TakeDamage(EnemyController enemy)
         {
-            if (isImmortal || isRolling || IsDead || isDrawing || playerStats.TryEvade(transform.position)) return;
+            if (isImmortal || isRolling || isDead || isDrawing || playerStats.TryEvade(transform.position)) return;
 
             playerStats.Health -= enemy.GetComponent<EnemyStatsHandler>().Damage;
             StartCoroutine(DamageFlash());
@@ -496,45 +390,31 @@ namespace Resources.Scripts.Player
         public void ReceiveTrollHit() => Die();
         private void Die()
         {
-            IsDead = true;
-            var entry = skeletonAnimation.state.SetAnimation(0, deathAnimationName, false);
-            entry.Complete += trackEntry =>
-            {
-                if (trackEntry.Animation.Name == deathAnimationName)
-                {
-                    StageProgressionManager.Instance.ShowGameOver();
-                    Destroy(gameObject);
-                }
-            };
+            isDead = true;
+            PlayAnimation(PlayerAnimationName.Death, false);
         }
         #endregion
 
         #region Spine Helper
-        private void PlayAnimation(string animName, bool loop)
+        private TrackEntry PlayAnimation(PlayerAnimationName animName, bool loop)
         {
-            if (Array.IndexOf(idleAnimations, animName) < 0)
-                idleCycling = false;
             var current = skeletonAnimation.state.GetCurrent(0);
-            if (current?.Animation.Name == animName) return;
-            skeletonAnimation.state.SetAnimation(0, animName, loop);
+            if (current?.Animation.Name == animations[animName]) return null;
+            return skeletonAnimation.state.SetAnimation(0, animations[animName], loop);
         }
         private void HandleAnimationComplete(TrackEntry entry)
         {
-            if (idleCycling && entry.Animation.Name == idleAnimations[idleIndex])
+            if (entry.Animation.Name == animations[PlayerAnimationName.Death])
             {
-                idleIndex = (idleIndex + 1) % idleAnimations.Length;
-                skeletonAnimation.state.SetAnimation(0, idleAnimations[idleIndex], false);
+                StageProgressionManager.Instance.ShowGameOver();
+                Destroy(gameObject);
             }
-            else if (entry.Animation.Name == jumpAnimationName)
-            {
-                PlayIdleSequence();
-            }
+            
+            PlayIdleSequence();
         }
         private void PlayIdleSequence()
         {
-            idleCycling = true;
-            idleIndex = 0;
-            skeletonAnimation.state.SetAnimation(0, idleAnimations[idleIndex], false);
+            PlayAnimation(PlayerAnimationName.Idle, false);
         }
         #endregion
     }

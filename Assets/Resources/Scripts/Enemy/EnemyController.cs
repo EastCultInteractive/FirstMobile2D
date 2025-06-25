@@ -161,7 +161,7 @@ namespace Resources.Scripts.Enemy
 
         private void Update()
         {
-            if (player == null || player.IsDead)
+            if (player == null || player.isDead)
             {
                 isAttacking = false;
                 isChasing = false;
@@ -184,7 +184,7 @@ namespace Resources.Scripts.Enemy
 
         private void OnTriggerStay2D(Collider2D other)
         {
-            if (player == null || player.IsDead) return;
+            if (player == null || player.isDead) return;
             if (other.CompareTag("Player"))
                 AttemptAttack();
         }
@@ -304,7 +304,7 @@ namespace Resources.Scripts.Enemy
 
         private void AttemptAttack()
         {
-            if (player == null || player.IsDead) return;
+            if (player == null || player.isDead) return;
             if (isAttacking) return;
 
             float since = Time.time - lastAttackTime;
@@ -334,7 +334,7 @@ namespace Resources.Scripts.Enemy
 
             float hitTime = attackCooldown * 0.4f;
             yield return new WaitForSeconds(hitTime);
-            if (!player.IsDead)
+            if (!player.isDead)
             {
                 player.StartCoroutine(player.DamageFlash());
                 player.TakeDamage(this);
@@ -359,7 +359,7 @@ namespace Resources.Scripts.Enemy
 
             float hitTime = goblinAttackAnimationDuration * 0.4f;
             yield return new WaitForSeconds(hitTime);
-            if (!player.IsDead && HasLineOfSight())
+            if (!player.isDead && HasLineOfSight())
                 SpawnProjectileEvent();
             yield return new WaitForSeconds(goblinAttackAnimationDuration - hitTime);
 
@@ -436,7 +436,7 @@ namespace Resources.Scripts.Enemy
 
         public void SpawnProjectileEvent()
         {
-            if (player == null || player.IsDead) return;
+            if (player == null || player.isDead) return;
             var origin = attackPoint != null ? attackPoint.position : transform.position;
             var dir = (player.transform.position - origin).normalized;
             if (goblinProjectileSpreadAngle > 0f)
@@ -454,7 +454,7 @@ namespace Resources.Scripts.Enemy
 
         public void RegisterDarkSkullHitEvent()
         {
-            if (player == null || player.IsDead) return;
+            if (player == null || player.isDead) return;
             if (playerStats.TryEvade(transform.position)) return;
             player.StartCoroutine(player.DamageFlash());
             player.ReceiveDarkSkullHit();
@@ -464,7 +464,7 @@ namespace Resources.Scripts.Enemy
 
         public void RegisterTrollHitEvent()
         {
-            if (player == null || player.IsDead) return;
+            if (player == null || player.isDead) return;
             if (playerStats.TryEvade(transform.position)) return;
             player.StartCoroutine(player.DamageFlash());
             player.ReceiveTrollHit();
