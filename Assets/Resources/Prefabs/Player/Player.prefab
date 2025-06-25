@@ -520,6 +520,15 @@ MonoBehaviour:
   trailVelocityMultiplier: 1
   trailLengthScale: 3
   trailSpeedThreshold: 1
+  runAnimationName: Run_03_001
+  slowAnimationName: Goes_01_002
+  jumpAnimationName: Jamp_04_001
+  deathAnimationName: Death_05
+  idleAnimations:
+  - Idle_02_003
+  drawingAnimationName: Magiy_03_001
+  slowThreshold: 0.5
+  idleThreshold: 0.1
   joystick: {fileID: 0}
   trapPrefab: {fileID: 726999753017517549, guid: 2883cba0652d4754ab1bd2e5e075b41d, type: 3}
   inputSmoothTime: 0.1
@@ -535,6 +544,7 @@ MonoBehaviour:
   rollSpeedMultiplier: 1
   flashColor: {r: 1, g: 0, b: 0, a: 1}
   flashDuration: 0.3
+  maxDrawingTime: 5
 --- !u!114 &1957564526145093592
 MonoBehaviour:
   m_ObjectHideFlags: 0

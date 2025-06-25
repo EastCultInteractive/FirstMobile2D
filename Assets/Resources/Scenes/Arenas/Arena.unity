@@ -14703,6 +14703,10 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 543103349}
+    - target: {fileID: 9034907166800464094, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: drawingAnimationName
+      value: Magiy_03_001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
