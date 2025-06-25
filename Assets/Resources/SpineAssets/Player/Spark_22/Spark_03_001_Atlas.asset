@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6b194f808b1af6499c93410e504af42, type: 3}
-  m_Name: Cherep_Nog_02_001_Atlas
+  m_Name: Spark_03_001_Atlas
   m_EditorClassIdentifier: 
   textureLoadingMode: 0
   onDemandTextureLoader: {fileID: 0}
-  atlasFile: {fileID: 4900000, guid: d9ed8469d1392074aba83096f6b9a31a, type: 3}
+  atlasFile: {fileID: 4900000, guid: 5618a4193be23482eae47e5cbbdbf53a, type: 3}
   materials:
-  - {fileID: 2100000, guid: 7844ff28db59f834e8aaf8f2326d705f, type: 2}
+  - {fileID: 2100000, guid: 2ba7a2b222ca24b3fa0f974c07ecdeea, type: 2}

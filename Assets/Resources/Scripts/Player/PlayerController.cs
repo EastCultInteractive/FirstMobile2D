@@ -45,12 +45,12 @@ namespace Resources.Scripts.Player
         #endregion
 
         #region Constants
-        private const string SlowAnimationName   = "Goes_01_002";
-        private const string RunAnimationName    = "Run_03_001";
-        private const string JumpAnimationName   = "Jamp_04_001";
-        private const string DeathAnimationName  = "Death_05";
+        private const string SlowAnimationName   = "relevant/step";
+        private const string RunAnimationName    = "relevant/run";
+        private const string JumpAnimationName   = "relevant/Jump";
+        private const string DeathAnimationName  = "relevant/death";
         private static readonly string[] IdleAnimations = {
-            "Idle_02_003"
+            "relevant/Idle",
         };
         private const float SlowThreshold = 0.5f;
         private const float IdleThreshold = 0.1f;
