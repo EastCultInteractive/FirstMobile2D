@@ -77,7 +77,9 @@ namespace Resources.Scripts.Enemy
 
         private Vector2 roamDirection;
         private float roamTimeRemaining;
-
+        
+        private EnemyStatsHandler stats;
+        
         private SkeletonAnimation skeletonAnimation;
 
         // Для управления эффектами замедления
@@ -294,6 +296,12 @@ namespace Resources.Scripts.Enemy
 
             float hitTime = attackCooldown * 0.4f;
             yield return new WaitForSeconds(hitTime);
+
+            if (!player.IsDead)
+            {
+                player.StartCoroutine(player.DamageFlash());
+                player.TakeDamage(this, stats);
+            }
 
             yield return new WaitForSeconds(attackCooldown - hitTime);
 
