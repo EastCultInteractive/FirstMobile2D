@@ -182,6 +182,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: GoblinAxe
   enemyType: 6
+  animations:
+    _serializedList: []
   speed: 1
   slowMultiplier: 1
   detectionRange: 5
@@ -201,12 +203,6 @@ MonoBehaviour:
   goblinProjectileDamage: 0
   goblinProjectileSpreadAngle: 0
   goblinProjectileScale: {x: 1, y: 1, z: 1}
-  darkSkullAttackCooldownTime: 1
-  darkSkullAttackAnimationDuration: 2
-  darkSkullPushForce: 5
-  trollAttackCooldownTime: 1
-  trollAttackAnimationDuration: 1
-  trollPushForce: 5
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0

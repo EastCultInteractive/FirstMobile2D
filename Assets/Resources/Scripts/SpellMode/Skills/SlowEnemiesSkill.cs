@@ -4,9 +4,7 @@ using Resources.Scripts.Enemy;
 namespace Resources.Scripts.SpellMode.Skills
 {
     /// <summary>
-    /// ----------------------------------------------------------------------------
-    /// Skill that slows enemies within a specified radius.
-    /// ----------------------------------------------------------------------------
+    /// Не работает, позже обновим.
     /// </summary>
     public class SlowEnemiesSkill : SkillBase
     {
@@ -19,31 +17,36 @@ namespace Resources.Scripts.SpellMode.Skills
         public float slowDuration = 3f;
 
         // Pre-allocated array to store collider results.
-        private Collider2D[] resultsBuffer = new Collider2D[50];
+        private readonly Collider2D[] _resultsBuffer = new Collider2D[50];
 
         /// <summary>
         /// Activates the slow effect on all enemies within the effect radius.
         /// </summary>
         protected override void ActivateSkill()
         {
-            // Set up a default contact filter (triggers are not included).
-            ContactFilter2D filter = new ContactFilter2D { useTriggers = false };
+            // Configure a ContactFilter2D that ignores triggers and uses no layer mask.
+            var filter = new ContactFilter2D
+            {
+                useTriggers = false,
+                useLayerMask = false
+            };
 
-            // Use the non-allocating overload to get colliders within the effect radius.
-            int count = Physics2D.OverlapCircle(transform.position, effectRadius, filter, resultsBuffer);
+            // Perform a non-allocating physics query.
+            int count = Physics2D.OverlapCircle(transform.position, effectRadius, filter, _resultsBuffer);
             for (int i = 0; i < count; i++)
             {
-                Collider2D hit = resultsBuffer[i];
-                if (hit.CompareTag("Enemy"))
-                {
-                    EnemyController enemy = hit.GetComponent<EnemyController>();
-                    if (enemy != null)
-                    {
-                        enemy.ApplySlow(slowMultiplier, slowDuration);
-                    }
-                }
+                var hit = _resultsBuffer[i];
+                if (!hit.CompareTag("Enemy"))
+                    continue;
+
+                var enemy = hit.GetComponent<EnemyController>();
+                if (enemy == null)
+                    continue;
+
+                enemy.ApplySlow(slowMultiplier, slowDuration);
             }
-            Debug.Log("SlowEnemiesSkill activated.");
+
+            Debug.Log($"SlowEnemiesSkill activated: radius={effectRadius}, multiplier={slowMultiplier}, duration={slowDuration}");
         }
 
         /// <summary>

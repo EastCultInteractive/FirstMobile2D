@@ -57,9 +57,6 @@ namespace Resources.Scripts.Player
         [Tooltip("Ссылка на Spine SkeletonAnimation (дочерний объект)")]
         [SerializeField] private SkeletonAnimation skeletonAnimation;
 
-        [Header("DarkSkull / Troll Damage Settings")]
-        [SerializeField] private int maxDarkSkullHits = 2;
-
         [Header("Dodge Roll Settings")]
         [SerializeField, Tooltip("Дальность кувырка (в единицах Unity)")]
         private float rollDistance = 6f;
@@ -77,7 +74,6 @@ namespace Resources.Scripts.Player
         [Header("Drawing Mode Settings")]
         [Tooltip("Макс. время рисования, с.")]
         [SerializeField, Range(0.1f, 10f)] private float maxDrawingTime = 5f;
-        
 
         #region Public Events & Properties
         public event Action<float> OnRollCooldownChanged;
@@ -90,7 +86,6 @@ namespace Resources.Scripts.Player
         private float currentSlowMultiplier = 1f;
         private Coroutine slowCoroutine;
         private bool bonusActive;
-        private int darkSkullHitCount;
 
         private Vector2 lastMoveDirection = Vector2.left;
         private bool isRolling;
@@ -142,7 +137,7 @@ namespace Resources.Scripts.Player
         private void Start()
         {
             playerStats = GetComponent<PlayerStatsHandler>();
-            PlayIdleSequence();
+            PlayAnimation(PlayerAnimationName.Idle, false);
 
             if (finishPoint != null)
                 initialDistance = Vector2.Distance(transform.position, finishPoint.position);
@@ -167,7 +162,6 @@ namespace Resources.Scripts.Player
 
                 Vector2 rawInput = new Vector2(h, v);
 
-                // Мгновенная остановка, если джойстик отпущен
                 if (rawInput.magnitude <= idleThreshold)
                 {
                     moveInput = Vector2.zero;
@@ -204,7 +198,7 @@ namespace Resources.Scripts.Player
         {
             if (LabyrinthMapController.Instance?.IsMapActive == true || dir.magnitude <= idleThreshold)
             {
-                PlayIdleSequence();
+                PlayAnimation(PlayerAnimationName.Idle, false);;
                 return;
             }
 
@@ -222,7 +216,6 @@ namespace Resources.Scripts.Player
             {
                 PlayAnimation(PlayerAnimationName.Run, true);
             }
-            
 
             if (Mathf.Abs(dir.x) > 0.01f)
                 skeletonAnimation.Skeleton.ScaleX = Mathf.Abs(initialScaleX) * -Mathf.Sign(dir.x);
@@ -312,14 +305,19 @@ namespace Resources.Scripts.Player
             flashCoroutine = null;
         }
 
-        public void TakeDamage(EnemyController enemy)
+        /// <summary>
+        /// Единый метод получения урона от любого врага.
+        /// </summary>
+        public void TakeDamage(EnemyController enemy, EnemyStatsHandler stats)
         {
-            if (isImmortal || isRolling || IsDead || drawingManager.IsDrawing || playerStats.TryEvade(transform.position)) return;
+            if (isImmortal || isRolling || IsDead || drawingManager.IsDrawing || playerStats.TryEvade(transform.position))
+                return;
 
-            playerStats.Health -= enemy.GetComponent<EnemyStatsHandler>().Damage;
+            int damage = stats.Damage; // прямой доступ к кэшированному полю
+            playerStats.Health -= damage;
             StartCoroutine(DamageFlash());
 
-            if (playerStats.Health <= 0f)
+            if (playerStats.Health <= 0)
             {
                 Die();
                 return;
@@ -371,12 +369,6 @@ namespace Resources.Scripts.Player
             playerStats.ResetStats();
             bonusActive = false;
         }
-        public void ReceiveDarkSkullHit()
-        {
-            if (++darkSkullHitCount >= maxDarkSkullHits)
-                Die();
-        }
-        public void ReceiveTrollHit() => Die();
         private void Die()
         {
             IsDead = true;
@@ -399,10 +391,6 @@ namespace Resources.Scripts.Player
                 Destroy(gameObject);
             }
             
-            PlayIdleSequence();
-        }
-        private void PlayIdleSequence()
-        {
             PlayAnimation(PlayerAnimationName.Idle, false);
         }
         #endregion
