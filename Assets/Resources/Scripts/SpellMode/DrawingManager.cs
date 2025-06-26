@@ -19,10 +19,6 @@ namespace Resources.Scripts.SpellMode
     {
         #region Inspector Fields
 
-        [Header("Start Mode")]
-        [Tooltip("Drawing starts when the button is pressed.")]
-        [SerializeField] private Button? drawButton;
-
         [Header("UI Elements")]
         [SerializeField] private Text? feedbackText;
 
@@ -68,10 +64,13 @@ namespace Resources.Scripts.SpellMode
         [SerializeField] private Canvas? mainCanvas;
 
         #endregion
+        
+        #region Public Events & Properties
+        public bool IsDrawing { get; private set; }
+        #endregion
 
         #region Private State
 
-        private bool isDrawing;
         private float drawingTimer;
         private float noMovementTimer;
         private float comboTimer;
@@ -101,7 +100,7 @@ namespace Resources.Scripts.SpellMode
 
         private void Update()
         {
-            if (!isDrawing)
+            if (!IsDrawing)
                 return;
 
             drawingTimer += Time.deltaTime;
@@ -170,7 +169,7 @@ namespace Resources.Scripts.SpellMode
                 currentLine = null;
             }
 
-            isDrawing = true;
+            IsDrawing = true;
             drawingTimer = noMovementTimer = comboTimer = 0f;
             hasMoved = false;
             drawnPoints.Clear();
@@ -219,10 +218,10 @@ namespace Resources.Scripts.SpellMode
 
         public void EndDrawing()
         {
-            if (!isDrawing)
+            if (!IsDrawing)
                 return;
 
-            isDrawing = false;
+            IsDrawing = false;
 
             if (feedbackText != null)
             {
