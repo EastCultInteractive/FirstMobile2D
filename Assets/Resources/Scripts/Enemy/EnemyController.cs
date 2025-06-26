@@ -11,7 +11,6 @@ using Resources.Scripts.Enemy.Enum;
 namespace Resources.Scripts.Enemy
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    [RequireComponent(typeof(BoxCollider2D))]
     public class EnemyController : MonoBehaviour
     {
         #region Inspector Fields
@@ -23,11 +22,6 @@ namespace Resources.Scripts.Enemy
         [Header("Animations")]
         [SerializedDictionary("Animation Code", "Value")]
         public SerializedDictionary<EnemyAnimationName, string> animations;
-
-        [Header("Movement Settings")]
-        public float speed = 1f;
-        public float slowMultiplier = 1f;
-        public float detectionRange = 5f;
 
         [Header("Patrol Settings (Labyrinth)")]
         public float patrolRadius = 3f;
@@ -66,6 +60,7 @@ namespace Resources.Scripts.Enemy
         #region Private Fields
 
         private Rigidbody2D rb;
+        private BoxCollider2D attackZoneCollider;
         private PlayerController player;
         private LabyrinthField labField;
         private List<Vector3> currentPath = new List<Vector3>();
@@ -77,9 +72,9 @@ namespace Resources.Scripts.Enemy
 
         private Vector2 roamDirection;
         private float roamTimeRemaining;
-        
+
         private EnemyStatsHandler stats;
-        
+
         private SkeletonAnimation skeletonAnimation;
 
         // Для управления эффектами замедления
@@ -92,9 +87,20 @@ namespace Resources.Scripts.Enemy
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
-            var bc = GetComponent<BoxCollider2D>();
-            bc.isTrigger = true;
-            Physics2D.IgnoreLayerCollision(gameObject.layer, gameObject.layer);
+
+            var zoneTransform = transform.Find("AttackZoneCollider");
+            if (zoneTransform == null)
+            {
+                Debug.LogError($"[{enemyName}] Не найден дочерний объект AttackZoneCollider");
+                return;
+            }
+
+            attackZoneCollider = zoneTransform.GetComponent<BoxCollider2D>();
+            if (attackZoneCollider == null)
+            {
+                Debug.LogError($"[{enemyName}] У объекта AttackZoneCollider нет BoxCollider2D");
+                return;
+            }
 
             var spineChild = transform.Find("SpineVisual");
             if (spineChild == null)
@@ -109,12 +115,13 @@ namespace Resources.Scripts.Enemy
                 return;
             }
 
-            // Подписка на окончание любой анимации
             skeletonAnimation.state.Complete += HandleAnimationComplete;
         }
 
         private void Start()
         {
+            stats = GetComponent<EnemyStatsHandler>();
+
             var go = GameObject.FindGameObjectWithTag("Player");
             if (go != null)
                 player = go.GetComponent<PlayerController>();
@@ -122,7 +129,6 @@ namespace Resources.Scripts.Enemy
             labField = LabyrinthGeneratorWithWalls.CurrentField;
             roamTimeRemaining = 0f;
 
-            // Корректируем задержку атаки под длительность анимации
             var sd = skeletonAnimation.SkeletonDataAsset.GetSkeletonData(true);
             var anim = sd.FindAnimation(animations[EnemyAnimationName.Attack]);
             if (anim != null)
@@ -143,7 +149,7 @@ namespace Resources.Scripts.Enemy
             }
 
             float dist = Vector3.Distance(transform.position, player.transform.position);
-            bool sees = dist <= detectionRange;
+            bool sees = dist <= stats.DetectionRange;
 
             if (sees) ChaseBehavior(dist);
             else
@@ -157,7 +163,7 @@ namespace Resources.Scripts.Enemy
         private void OnTriggerStay2D(Collider2D other)
         {
             if (player == null || player.IsDead) return;
-            if (other.CompareTag("Player"))
+            if (other == attackZoneCollider && other.CompareTag("Player"))
                 AttemptAttack();
         }
 
@@ -178,7 +184,8 @@ namespace Resources.Scripts.Enemy
             }
 
             roamTimeRemaining -= Time.deltaTime;
-            Vector3 move = new Vector3(roamDirection.x, roamDirection.y, 0f) * speed * Time.deltaTime;
+            float currentSpeed = stats.MovementSpeed * stats.SlowMultiplier;
+            Vector3 move = new Vector3(roamDirection.x, roamDirection.y, 0f) * currentSpeed * Time.deltaTime;
             transform.position += move;
             TurnToTarget(move);
         }
@@ -216,7 +223,8 @@ namespace Resources.Scripts.Enemy
             Vector3 goal = currentPath[pathIndex];
             Vector3 dir = (goal - transform.position).normalized;
             TurnToTarget(dir);
-            transform.position = Vector3.MoveTowards(transform.position, goal, speed * Time.deltaTime);
+            float currentSpeed = stats.MovementSpeed * stats.SlowMultiplier;
+            transform.position = Vector3.MoveTowards(transform.position, goal, currentSpeed * Time.deltaTime);
             if (Vector3.Distance(transform.position, goal) < 0.05f) pathIndex++;
         }
 
@@ -260,7 +268,8 @@ namespace Resources.Scripts.Enemy
                 }
                 Vector3 dir = (player.transform.position - transform.position).normalized;
                 TurnToTarget(dir);
-                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+                float currentSpeed = stats.MovementSpeed * stats.SlowMultiplier;
+                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, currentSpeed * Time.deltaTime);
             }
         }
 
@@ -291,20 +300,17 @@ namespace Resources.Scripts.Enemy
         {
             isAttacking = true;
             lastAttackTime = Time.time;
-            float oldSpeed = speed; speed = 0f;
             PlayAnimation(EnemyAnimationName.Attack, false);
 
             float hitTime = attackCooldown * 0.4f;
             yield return new WaitForSeconds(hitTime);
-            
+
             player.TakeDamage(this, stats);
-            
 
             yield return new WaitForSeconds(attackCooldown - hitTime);
 
             skeletonAnimation.state.ClearTrack(0);
 
-            speed = oldSpeed;
             yield return new WaitForSeconds(0.5f);
             isAttacking = false;
         }
@@ -313,7 +319,6 @@ namespace Resources.Scripts.Enemy
         {
             isAttacking = true;
             lastAttackTime = Time.time;
-            float oldSpeed = speed; speed = 0f;
             PlayAnimation(EnemyAnimationName.Attack, false);
 
             float hitTime = goblinAttackAnimationDuration * 0.4f;
@@ -322,7 +327,6 @@ namespace Resources.Scripts.Enemy
                 SpawnProjectileEvent();
             yield return new WaitForSeconds(goblinAttackAnimationDuration - hitTime);
 
-            speed = oldSpeed;
             yield return new WaitForSeconds(0.5f);
             isAttacking = false;
         }
@@ -370,17 +374,11 @@ namespace Resources.Scripts.Enemy
 
         #region Physics Utilities
 
-        /// <summary>
-        /// Позволяет отталкивать этого врага силой impulse.
-        /// </summary>
         public void ApplyPush(Vector2 force)
         {
             rb.AddForce(force, ForceMode2D.Impulse);
         }
 
-        /// <summary>
-        /// Замедляет скорость движения врага на множитель factor на время duration.
-        /// </summary>
         public void ApplySlow(float factor, float duration)
         {
             if (slowEffectCoroutine != null)
@@ -390,10 +388,9 @@ namespace Resources.Scripts.Enemy
 
         private IEnumerator SlowEffect(float factor, float duration)
         {
-            float originalSpeed = speed;
-            speed = originalSpeed * factor;
+            stats.SetSlowMultiplier(factor);
             yield return new WaitForSeconds(duration);
-            speed = originalSpeed;
+            stats.ResetSlowMultiplier();
             slowEffectCoroutine = null;
         }
 
