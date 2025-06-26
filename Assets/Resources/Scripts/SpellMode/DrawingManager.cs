@@ -92,22 +92,6 @@ namespace Resources.Scripts.SpellMode
         {
             audioManager = GlobalAudioManager.Instance;
 
-            if (drawButton != null)
-            {
-                drawButton.onClick.AddListener(() =>
-                {
-                    if (drawButton.transform != null)
-                    {
-                        drawButton.transform
-                                  .DOPunchScale(Vector3.one * 0.1f, 0.3f)
-                                  .SetEase(Ease.OutElastic)
-                                  .SetId(this)
-                                  .SetUpdate(true);
-                    }
-                    StartDrawing();
-                });
-            }
-
             if (manaBarUI == null)
                 manaBarUI = Object.FindFirstObjectByType<Canvas>()?
                                   .GetComponentInChildren<RectTransform>();

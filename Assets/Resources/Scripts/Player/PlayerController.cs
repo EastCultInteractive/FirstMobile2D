@@ -9,6 +9,7 @@ using Spine;
 using Spine.Unity;
 using UnityEngine.Rendering.Universal;
 using Resources.Scripts.GameManagers;
+using Resources.Scripts.Player.enums;
 
 namespace Resources.Scripts.Player
 {
@@ -21,17 +22,7 @@ namespace Resources.Scripts.Player
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour
     {
-        public enum PlayerAnimationName
-        {
-            Run,
-            Step,
-            Jump,
-            Death,
-            Idle,
-            Draw
-        }
-
-        #region Animation Names & Thresholds
+        #region Animation Names (публичные поля)
 
         [Header("Animations")]
         [SerializedDictionary("Animation Code", "Value")]
@@ -250,7 +241,7 @@ namespace Resources.Scripts.Player
         private void Start()
         {
             playerStats = GetComponent<PlayerStatsHandler>();
-            PlayIdleSequence();
+            PlayAnimation(PlayerAnimationName.Idle, false);;
 
             if (finishPoint != null)
                 initialDistance = Vector2.Distance(transform.position, finishPoint.position);
@@ -315,7 +306,7 @@ namespace Resources.Scripts.Player
         {
             if (LabyrinthMapController.Instance?.IsMapActive == true || dir.magnitude <= idleThreshold)
             {
-                PlayIdleSequence();
+                PlayAnimation(PlayerAnimationName.Idle, false);;
                 return;
             }
 
@@ -326,6 +317,26 @@ namespace Resources.Scripts.Player
                 skeletonAnimation.Skeleton.ScaleX = Mathf.Abs(initialScaleX) * -Mathf.Sign(dir.x);
         }
 
+        #region Drawing Mode
+
+        public void StartDrawing()
+        {
+            StartCoroutine(DrawingCoroutine());
+        }
+        
+        private IEnumerator DrawingCoroutine()
+        {
+            isDrawing = true;
+            // Запускаем анимацию черчения, без зацикливания
+            PlayAnimation(PlayerAnimationName.Draw, false);
+
+            // Ожидаем окончания или максимальное время
+            yield return new WaitForSeconds(maxDrawingTime);
+
+            // Возвращаемся в простой
+            PlayAnimation(PlayerAnimationName.Idle, false);;
+            isDrawing = false;
+        }
         #endregion
 
         #region Dodge Roll
@@ -529,29 +540,9 @@ namespace Resources.Scripts.Player
                 // Handled in Die()
                 return;
             }
-            if (name == animations[PlayerAnimationName.Jump])
-            {
-                PlayIdleSequence();
-                return;
-            }
-
-            if (idleCycling && name == IdleAnimations[idleIndex])
-            {
-                idleIndex = (idleIndex + 1) % IdleAnimations.Length;
-                skeletonAnimation.state.SetAnimation(0, IdleAnimations[idleIndex], false);
-                return;
-            }
-
-            PlayIdleSequence();
+            
+            PlayAnimation(PlayerAnimationName.Idle, false);;
         }
-
-        private void PlayIdleSequence()
-        {
-            idleCycling = true;
-            idleIndex = 0;
-            skeletonAnimation.state.SetAnimation(0, IdleAnimations[idleIndex], false);
-        }
-
         #endregion
     }
 }

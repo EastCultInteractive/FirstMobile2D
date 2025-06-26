@@ -32,19 +32,6 @@ namespace Resources.Scripts.UI
 
         private void Start()
         {
-            btn.onClick.AddListener(() =>
-            {
-                player?.TryRoll();
-
-                // Убираем старые твины и сбрасываем масштаб
-                var t = btn.transform;
-                t.DOKill(true);
-                t.localScale = Vector3.one;
-
-                // Пунч-анимация нажатия
-                t.DOPunchScale(Vector3.one * 0.1f, 0.3f).SetEase(Ease.OutElastic);
-            });
-
             // Подписываемся на изменение кулдауна
             if (player != null)
                 player.OnRollCooldownChanged += SetCooldownUI;
