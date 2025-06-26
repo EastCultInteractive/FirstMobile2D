@@ -15,10 +15,6 @@ namespace Resources.Scripts.Enemy
     public class EnemyController : MonoBehaviour
     {
         #region Inspector Fields
-
-        [Header("Animations")]
-        [SerializedDictionary("Animation Code", "Value")]
-        public SerializedDictionary<EnemyAnimationName, string> animations;
         
         [Header("Common Settings")]
         public string enemyName = "Enemy";

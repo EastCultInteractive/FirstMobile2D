@@ -9,7 +9,7 @@ using Spine;
 using Spine.Unity;
 using UnityEngine.Rendering.Universal;
 using Resources.Scripts.GameManagers;
-using Resources.Scripts.Player.enums;
+using Resources.Scripts.Player.Enum;
 using Resources.Scripts.SpellMode;
 
 namespace Resources.Scripts.Player

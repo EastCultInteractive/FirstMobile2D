@@ -1,4 +1,4 @@
-namespace Resources.Scripts.Player.enums
+namespace Resources.Scripts.Player.Enum
 {
 	public enum PlayerAnimationName
 	{
