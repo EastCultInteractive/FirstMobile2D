@@ -2,23 +2,13 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Spine.Unity;
+using AYellowpaper.SerializedCollections;
 using Resources.Scripts.Player;
 using Resources.Scripts.Labyrinth;
+using Resources.Scripts.Enemy.Enum; 
 
 namespace Resources.Scripts.Enemy
 {
-    public enum EnemyType
-    {
-        Standard,
-        Goblin,
-        DarkSkull,
-        Troll,
-        Gremlin,
-        ScullKnife,
-        GoblinAxe,
-        
-    }
-
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
     public class EnemyController : MonoBehaviour
@@ -29,6 +19,10 @@ namespace Resources.Scripts.Enemy
         public string enemyName = "Enemy";
         public EnemyType enemyType = EnemyType.Standard;
 
+        [Header("Animations")]
+        [SerializedDictionary("Animation Code", "Value")]
+        public SerializedDictionary<EnemyAnimationName, string> animations;
+
         [Header("Movement Settings")]
         public float speed = 1f;
         public float slowMultiplier = 1f;
@@ -38,14 +32,17 @@ namespace Resources.Scripts.Enemy
         public float patrolRadius = 3f;
         public float patrolSpeedMultiplier = 0.5f;
 
-        [Header("Standard Attack Settings")]
+        [Header("Standard (Melee) Attack Settings")]
+        [Tooltip("Range within which melee enemies will attack.")]
         public float attackRange = 1f;
-        [Tooltip("Минимальное время между ударами; скорректируется под длину анимации")]
+        [Tooltip("Minimum time between attacks; will be clamped to animation length.")]
         public float attackCooldown = 1f;
+        [Tooltip("Should this enemy push the player on hit?")]
         public bool pushPlayer = true;
+        [Tooltip("Force with which melee enemies push the player.")]
         public float pushForceMultiplier = 1f;
 
-        [Header("Goblin Attack Settings")]
+        [Header("Goblin (Ranged) Attack Settings")]
         public float goblinAttackCooldownTime = 2f;
         public float goblinAttackAnimationDuration = 1f;
         public float bindingDuration = 0.5f;
@@ -57,16 +54,6 @@ namespace Resources.Scripts.Enemy
         public float goblinProjectileSpreadAngle;
         public Vector3 goblinProjectileScale = Vector3.one;
 
-        [Header("DarkSkull Attack Settings")]
-        public float darkSkullAttackCooldownTime = 1f;
-        public float darkSkullAttackAnimationDuration = 1f;
-        public float darkSkullPushForce = 5f;
-
-        [Header("Troll Attack Settings")]
-        public float trollAttackCooldownTime = 1f;
-        public float trollAttackAnimationDuration = 1f;
-        public float trollPushForce = 5f;
-
         [Header("Detection & Obstacles")]
         public LayerMask obstacleMask;
 
@@ -75,30 +62,7 @@ namespace Resources.Scripts.Enemy
 
         #endregion
 
-        #region Private Types & Fields
-
-        private struct AnimData
-        {
-            public string Idle;
-            public string Walk;
-            public string Attack;
-            public AnimData(string idle, string walk, string attack)
-            {
-                Idle = idle;
-                Walk = walk;
-                Attack = attack;
-            }
-        }
-
-        private static readonly Dictionary<EnemyType, AnimData> animationMap = new Dictionary<EnemyType, AnimData>
-        {
-            { EnemyType.Standard,   new AnimData("Idle",          "Walk",           "Attack") },
-            { EnemyType.Goblin,     new AnimData("idle_goblin",   "walk_goblin",    "attack_goblin") },
-            { EnemyType.DarkSkull,  new AnimData("idle_02_003",   "Походка_02_003", "attack_02_002") },
-            { EnemyType.Troll,      new AnimData("Idle_02_004",   "Goes_02_002",    "Attack_01_03") },
-            { EnemyType.Gremlin,    new AnimData("idle_01_002",   "Goes_01_002",    "Attack_01_002") },
-            { EnemyType.ScullKnife, new AnimData("Idle_02_001",   "Goes_02_002",    "Attack_01_001") },
-        };
+        #region Private Fields
 
         private Rigidbody2D rb;
         private PlayerController player;
@@ -117,6 +81,9 @@ namespace Resources.Scripts.Enemy
 
         private SkeletonAnimation skeletonAnimation;
 
+        // Для управления эффектами замедления
+        private Coroutine slowEffectCoroutine;
+
         #endregion
 
         #region Unity Methods
@@ -128,7 +95,6 @@ namespace Resources.Scripts.Enemy
             bc.isTrigger = true;
             Physics2D.IgnoreLayerCollision(gameObject.layer, gameObject.layer);
 
-            // Перенос Spine на дочерний объект SpineVisual
             var spineChild = transform.Find("SpineVisual");
             if (spineChild == null)
             {
@@ -139,13 +105,18 @@ namespace Resources.Scripts.Enemy
             if (skeletonAnimation == null)
                 Debug.LogError($"[{enemyName}] Отсутствует SkeletonAnimation на SpineVisual");
 
-            // Получаем анимации из словаря
-            if (!animationMap.TryGetValue(enemyType, out var animData))
-                animData = animationMap[EnemyType.Standard];
-
-            idleAnim   = animData.Idle;
-            walkAnim   = animData.Walk;
-            attackAnim = animData.Attack;
+            // Инициализация анимаций из инспектора
+            if (animations != null &&
+                animations.TryGetValue(EnemyAnimationName.Idle, out idleAnim) &&
+                animations.TryGetValue(EnemyAnimationName.Walk, out walkAnim) &&
+                animations.TryGetValue(EnemyAnimationName.Attack, out attackAnim))
+            {
+                // Всё заполнено корректно
+            }
+            else
+            {
+                Debug.LogError($"[{enemyName}] Не заполнены все элементы в словаре animations", this);
+            }
         }
 
         private void Start()
@@ -319,19 +290,13 @@ namespace Resources.Scripts.Enemy
                 case EnemyType.Goblin:
                     if (since >= goblinAttackCooldownTime) StartCoroutine(PerformGoblinAttack());
                     break;
-                case EnemyType.DarkSkull:
-                    if (since >= darkSkullAttackCooldownTime) StartCoroutine(PerformDarkSkullAttack());
-                    break;
-                case EnemyType.Troll:
-                    if (since >= trollAttackCooldownTime) StartCoroutine(PerformTrollAttack());
-                    break;
                 default:
-                    if (since >= attackCooldown) StartCoroutine(PerformStandardAttack());
+                    if (since >= attackCooldown) StartCoroutine(PerformMeleeAttack());
                     break;
             }
         }
 
-        private IEnumerator PerformStandardAttack()
+        private IEnumerator PerformMeleeAttack()
         {
             isAttacking = true;
             lastAttackTime = Time.time;
@@ -340,6 +305,7 @@ namespace Resources.Scripts.Enemy
 
             float hitTime = attackCooldown * 0.4f;
             yield return new WaitForSeconds(hitTime);
+
             if (!player.IsDead)
             {
                 player.StartCoroutine(player.DamageFlash());
@@ -347,7 +313,10 @@ namespace Resources.Scripts.Enemy
                 if (pushPlayer)
                     player.transform.position += (player.transform.position - transform.position).normalized * pushForceMultiplier;
             }
+
             yield return new WaitForSeconds(attackCooldown - hitTime);
+
+            skeletonAnimation.state.ClearTrack(0);
 
             speed = oldSpeed;
             PlayIdleAnim();
@@ -376,68 +345,22 @@ namespace Resources.Scripts.Enemy
             EnsureWalkAnim();
         }
 
-        private IEnumerator PerformDarkSkullAttack()
-        {
-            isAttacking = true;
-            lastAttackTime = Time.time;
-            float oldSpeed = speed; speed = 0f;
-            PlayAttackAnim();
-
-            float hitTime = darkSkullAttackAnimationDuration * 0.4f;
-            yield return new WaitForSeconds(hitTime);
-            player.StartCoroutine(player.DamageFlash());
-            player.ReceiveDarkSkullHit();
-            if (pushPlayer)
-                player.transform.position += (player.transform.position - transform.position).normalized * darkSkullPushForce;
-            yield return new WaitForSeconds(darkSkullAttackAnimationDuration - hitTime);
-
-            skeletonAnimation.state.ClearTrack(0);
-
-            speed = oldSpeed;
-            PlayIdleAnim();
-            yield return new WaitForSeconds(0.5f);
-            isAttacking = false;
-            EnsureWalkAnim();
-        }
-
-        private IEnumerator PerformTrollAttack()
-        {
-            isAttacking = true;
-            lastAttackTime = Time.time;
-            float oldSpeed = speed; speed = 0f;
-            PlayAttackAnim();
-
-            float hitTime = trollAttackAnimationDuration * 0.4f;
-            yield return new WaitForSeconds(hitTime);
-            player.StartCoroutine(player.DamageFlash());
-            player.ReceiveTrollHit();
-            if (pushPlayer)
-                player.transform.position += (player.transform.position - transform.position).normalized * trollPushForce;
-            yield return new WaitForSeconds(trollAttackAnimationDuration - hitTime);
-
-            speed = oldSpeed;
-            PlayIdleAnim();
-            yield return new WaitForSeconds(0.5f);
-            isAttacking = false;
-            EnsureWalkAnim();
-        }
-
         #endregion
 
         #region Spine Animation Control
 
-        private void PlayIdleAnim()     => skeletonAnimation?.state.SetAnimation(0, idleAnim, true);
-        private void PlayWalkAnim()     => skeletonAnimation?.state.SetAnimation(0, walkAnim, true);
+        private void PlayIdleAnim()   => skeletonAnimation?.state.SetAnimation(0, idleAnim, true);
+        private void PlayWalkAnim()   => skeletonAnimation?.state.SetAnimation(0, walkAnim, true);
         private void EnsureWalkAnim()
         {
             var c = skeletonAnimation?.state.GetCurrent(0);
             if (c == null || c.Animation.Name != walkAnim) PlayWalkAnim();
         }
-        private void PlayAttackAnim()   => skeletonAnimation?.state.SetAnimation(0, attackAnim, false);
+        private void PlayAttackAnim() => skeletonAnimation?.state.SetAnimation(0, attackAnim, false);
 
         #endregion
 
-        #region Animation Events & Effects
+        #region Animation Events
 
         public void SpawnProjectileEvent()
         {
@@ -457,36 +380,36 @@ namespace Resources.Scripts.Enemy
             }
         }
 
-        public void RegisterDarkSkullHitEvent()
+        #endregion
+
+        #region Physics Utilities
+
+        /// <summary>
+        /// Позволяет отталкивать этого врага силой impulse.
+        /// </summary>
+        public void ApplyPush(Vector2 force)
         {
-            if (player == null || player.IsDead) return;
-            if (playerStats.TryEvade(transform.position)) return;
-            player.StartCoroutine(player.DamageFlash());
-            player.ReceiveDarkSkullHit();
-            if (pushPlayer)
-                player.transform.position += (player.transform.position - transform.position).normalized * darkSkullPushForce;
+            rb.AddForce(force, ForceMode2D.Impulse);
         }
 
-        public void RegisterTrollHitEvent()
+        /// <summary>
+        /// Замедляет скорость движения врага на множитель factor на время duration.
+        /// </summary>
+        public void ApplySlow(float factor, float duration)
         {
-            if (player == null || player.IsDead) return;
-            if (playerStats.TryEvade(transform.position)) return;
-            player.StartCoroutine(player.DamageFlash());
-            player.ReceiveTrollHit();
-            if (pushPlayer)
-                player.transform.position += (player.transform.position - transform.position).normalized * trollPushForce;
+            if (slowEffectCoroutine != null)
+                StopCoroutine(slowEffectCoroutine);
+            slowEffectCoroutine = StartCoroutine(SlowEffect(factor, duration));
         }
 
-        public void ApplySlow(float f, float d) => StartCoroutine(SlowEffect(f, d));
-        private IEnumerator SlowEffect(float f, float d)
+        private IEnumerator SlowEffect(float factor, float duration)
         {
-            float old = speed;
-            speed = old * slowMultiplier;
-            yield return new WaitForSeconds(d);
-            speed = old;
+            float originalSpeed = speed;
+            speed = originalSpeed * factor;
+            yield return new WaitForSeconds(duration);
+            speed = originalSpeed;
+            slowEffectCoroutine = null;
         }
-
-        public void ApplyPush(Vector2 force) => rb.AddForce(force, ForceMode2D.Impulse);
 
         #endregion
 
