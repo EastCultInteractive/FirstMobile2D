@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: Black_Cherep_02_002_SkeletonData
   m_EditorClassIdentifier: 
   atlasAssets:
-  - {fileID: 11400000, guid: 2a497254a9dd6d04787b951d5c356bd5, type: 2}
+  - {fileID: 11400000, guid: 7e74efc549839fa4c97ab29913429b33, type: 2}
   scale: 0.01
-  skeletonJSON: {fileID: 4900000, guid: b4a93ee8c04ed3844acde39e7e6ae616, type: 3}
+  skeletonJSON: {fileID: 4900000, guid: cbf4142414f0e8b498d3a04a9a6187a7, type: 3}
   isUpgradingBlendModeMaterials: 0
   blendModeMaterials:
     requiresBlendModeMaterials: 1
     applyAdditiveMaterial: 1
     additiveMaterials:
     - pageName: Black_Cherep_02_002.png
-      material: {fileID: 2100000, guid: dbf795db24696364fa5c7ea1ed62dd3e, type: 2}
+      material: {fileID: 2100000, guid: 93af81ec45ef57f4a9026dc3c4afb480, type: 2}
     multiplyMaterials: []
     screenMaterials: []
   skeletonDataModifiers: []
