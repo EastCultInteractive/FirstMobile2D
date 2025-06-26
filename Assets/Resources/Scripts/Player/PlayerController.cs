@@ -308,12 +308,12 @@ namespace Resources.Scripts.Player
         /// <summary>
         /// Единый метод получения урона от любого врага.
         /// </summary>
-        public void TakeDamage(EnemyController enemy)
+        public void TakeDamage(EnemyController enemy, EnemyStatsHandler stats)
         {
             if (isImmortal || isRolling || IsDead || drawingManager.IsDrawing || playerStats.TryEvade(transform.position))
                 return;
 
-            int damage = enemy.GetComponent<EnemyStatsHandler>().Damage;
+            int damage = stats.Damage; // прямой доступ к кэшированному полю
             playerStats.Health -= damage;
             StartCoroutine(DamageFlash());
 

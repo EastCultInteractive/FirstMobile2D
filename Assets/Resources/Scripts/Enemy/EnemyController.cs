@@ -122,8 +122,7 @@ namespace Resources.Scripts.Enemy
 
             // Корректируем задержку атаки под длительность анимации
             var sd = skeletonAnimation.SkeletonDataAsset.GetSkeletonData(true);
-            var attackAnimName = animations[EnemyAnimationName.Attack];
-            var anim = sd.FindAnimation(attackAnimName);
+            var anim = sd.FindAnimation(animations[EnemyAnimationName.Attack]);
             if (anim != null)
                 attackCooldown = Mathf.Max(attackCooldown, anim.Duration);
 
@@ -296,14 +295,6 @@ namespace Resources.Scripts.Enemy
             float hitTime = attackCooldown * 0.4f;
             yield return new WaitForSeconds(hitTime);
 
-            if (!player.IsDead)
-            {
-                player.StartCoroutine(player.DamageFlash());
-                player.TakeDamage(this);
-                if (pushPlayer)
-                    player.transform.position += (player.transform.position - transform.position).normalized * pushForceMultiplier;
-            }
-
             yield return new WaitForSeconds(attackCooldown - hitTime);
 
             skeletonAnimation.state.ClearTrack(0);
@@ -347,8 +338,6 @@ namespace Resources.Scripts.Enemy
             if (!entry.Loop)
                 PlayAnimation(EnemyAnimationName.Idle, true);
         }
-
-        
 
         #endregion
 
