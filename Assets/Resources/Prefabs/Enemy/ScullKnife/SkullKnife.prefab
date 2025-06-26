@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2097136478269986845}
-  - component: {fileID: 2032738462464751892}
-  - component: {fileID: 4828152195036711627}
-  - component: {fileID: 3409289687882784398}
+  - component: {fileID: 2396306835133531537}
+  - component: {fileID: 5666407196475389712}
+  - component: {fileID: 5645290694450135645}
   m_Layer: 0
   m_Name: SpineVisual
   m_TagString: Untagged
@@ -34,7 +34,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1162642558128745149}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &2032738462464751892
+--- !u!23 &2396306835133531537
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -58,11 +58,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 590de0b23251e7b4eb362d8e4ac0b528, type: 2}
-  - {fileID: 2100000, guid: e3dc60d04ed74c840b70c74cc2945d72, type: 2}
-  - {fileID: 2100000, guid: 590de0b23251e7b4eb362d8e4ac0b528, type: 2}
-  - {fileID: 2100000, guid: e3dc60d04ed74c840b70c74cc2945d72, type: 2}
-  - {fileID: 2100000, guid: 590de0b23251e7b4eb362d8e4ac0b528, type: 2}
-  - {fileID: 2100000, guid: e3dc60d04ed74c840b70c74cc2945d72, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,7 +79,7 @@ MeshRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4828152195036711627
+--- !u!114 &5666407196475389712
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,7 +122,7 @@ MonoBehaviour:
   _animationName: 
   loop: 0
   timeScale: 1
---- !u!33 &3409289687882784398
+--- !u!33 &5645290694450135645
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,7 +259,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 5
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
