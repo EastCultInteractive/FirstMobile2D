@@ -137,7 +137,7 @@ namespace Resources.Scripts.Player
         private void Start()
         {
             playerStats = GetComponent<PlayerStatsHandler>();
-            PlayIdleSequence();
+            PlayAnimation(PlayerAnimationName.Idle, false);
 
             if (finishPoint != null)
                 initialDistance = Vector2.Distance(transform.position, finishPoint.position);
@@ -198,7 +198,7 @@ namespace Resources.Scripts.Player
         {
             if (LabyrinthMapController.Instance?.IsMapActive == true || dir.magnitude <= idleThreshold)
             {
-                PlayIdleSequence();
+                PlayAnimation(PlayerAnimationName.Idle, false);;
                 return;
             }
 
@@ -391,10 +391,6 @@ namespace Resources.Scripts.Player
                 Destroy(gameObject);
             }
             
-            PlayIdleSequence();
-        }
-        private void PlayIdleSequence()
-        {
             PlayAnimation(PlayerAnimationName.Idle, false);
         }
         #endregion

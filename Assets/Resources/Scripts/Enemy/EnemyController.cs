@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Spine;
 using Spine.Unity;
 using AYellowpaper.SerializedCollections;
 using Resources.Scripts.Player;
 using Resources.Scripts.Labyrinth;
-using Resources.Scripts.Enemy.Enum; 
+using Resources.Scripts.Enemy.Enum;
 
 namespace Resources.Scripts.Enemy
 {
@@ -66,7 +67,6 @@ namespace Resources.Scripts.Enemy
 
         private Rigidbody2D rb;
         private PlayerController player;
-        private PlayerStatsHandler playerStats;
         private LabyrinthField labField;
         private List<Vector3> currentPath = new List<Vector3>();
         private int pathIndex;
@@ -75,7 +75,6 @@ namespace Resources.Scripts.Enemy
         private bool isChasing;
         private float lastAttackTime;
 
-        private string idleAnim, walkAnim, attackAnim;
         private Vector2 roamDirection;
         private float roamTimeRemaining;
 
@@ -103,41 +102,32 @@ namespace Resources.Scripts.Enemy
             }
             skeletonAnimation = spineChild.GetComponent<SkeletonAnimation>();
             if (skeletonAnimation == null)
+            {
                 Debug.LogError($"[{enemyName}] Отсутствует SkeletonAnimation на SpineVisual");
+                return;
+            }
 
-            // Инициализация анимаций из инспектора
-            if (animations != null &&
-                animations.TryGetValue(EnemyAnimationName.Idle, out idleAnim) &&
-                animations.TryGetValue(EnemyAnimationName.Walk, out walkAnim) &&
-                animations.TryGetValue(EnemyAnimationName.Attack, out attackAnim))
-            {
-                // Всё заполнено корректно
-            }
-            else
-            {
-                Debug.LogError($"[{enemyName}] Не заполнены все элементы в словаре animations", this);
-            }
+            // Подписка на окончание любой анимации
+            skeletonAnimation.state.Complete += HandleAnimationComplete;
         }
 
         private void Start()
         {
             var go = GameObject.FindGameObjectWithTag("Player");
             if (go != null)
-            {
                 player = go.GetComponent<PlayerController>();
-                playerStats = go.GetComponent<PlayerStatsHandler>();
-            }
 
             labField = LabyrinthGeneratorWithWalls.CurrentField;
             roamTimeRemaining = 0f;
 
             // Корректируем задержку атаки под длительность анимации
             var sd = skeletonAnimation.SkeletonDataAsset.GetSkeletonData(true);
-            var anim = sd.FindAnimation(attackAnim);
+            var attackAnimName = animations[EnemyAnimationName.Attack];
+            var anim = sd.FindAnimation(attackAnimName);
             if (anim != null)
                 attackCooldown = Mathf.Max(attackCooldown, anim.Duration);
 
-            PlayIdleAnim();
+            PlayAnimation(EnemyAnimationName.Idle, true);
         }
 
         private void Update()
@@ -183,7 +173,7 @@ namespace Resources.Scripts.Enemy
                 float a = Random.Range(0f, 360f) * Mathf.Deg2Rad;
                 roamDirection = new Vector2(Mathf.Cos(a), Mathf.Sin(a)).normalized;
                 roamTimeRemaining = Random.Range(2f, 5f);
-                PlayWalkAnim();
+                PlayAnimation(EnemyAnimationName.Walk, true);
             }
 
             roamTimeRemaining -= Time.deltaTime;
@@ -210,7 +200,7 @@ namespace Resources.Scripts.Enemy
             var cells = labField.FindPath(from, to);
             currentPath = labField.PathToWorld(cells);
             pathIndex = 0;
-            PlayWalkAnim();
+            PlayAnimation(EnemyAnimationName.Walk, true);
         }
 
         private void FollowPath()
@@ -218,7 +208,7 @@ namespace Resources.Scripts.Enemy
             if (pathIndex >= currentPath.Count)
             {
                 currentPath.Clear();
-                PlayIdleAnim();
+                PlayAnimation(EnemyAnimationName.Idle, true);
                 return;
             }
 
@@ -265,7 +255,7 @@ namespace Resources.Scripts.Enemy
                 if (!isChasing)
                 {
                     isChasing = true;
-                    EnsureWalkAnim();
+                    PlayAnimation(EnemyAnimationName.Walk, true);
                 }
                 Vector3 dir = (player.transform.position - transform.position).normalized;
                 TurnToTarget(dir);
@@ -301,7 +291,7 @@ namespace Resources.Scripts.Enemy
             isAttacking = true;
             lastAttackTime = Time.time;
             float oldSpeed = speed; speed = 0f;
-            PlayAttackAnim();
+            PlayAnimation(EnemyAnimationName.Attack, false);
 
             float hitTime = attackCooldown * 0.4f;
             yield return new WaitForSeconds(hitTime);
@@ -319,10 +309,8 @@ namespace Resources.Scripts.Enemy
             skeletonAnimation.state.ClearTrack(0);
 
             speed = oldSpeed;
-            PlayIdleAnim();
             yield return new WaitForSeconds(0.5f);
             isAttacking = false;
-            EnsureWalkAnim();
         }
 
         private IEnumerator PerformGoblinAttack()
@@ -330,7 +318,7 @@ namespace Resources.Scripts.Enemy
             isAttacking = true;
             lastAttackTime = Time.time;
             float oldSpeed = speed; speed = 0f;
-            PlayAttackAnim();
+            PlayAnimation(EnemyAnimationName.Attack, false);
 
             float hitTime = goblinAttackAnimationDuration * 0.4f;
             yield return new WaitForSeconds(hitTime);
@@ -339,24 +327,28 @@ namespace Resources.Scripts.Enemy
             yield return new WaitForSeconds(goblinAttackAnimationDuration - hitTime);
 
             speed = oldSpeed;
-            PlayIdleAnim();
             yield return new WaitForSeconds(0.5f);
             isAttacking = false;
-            EnsureWalkAnim();
         }
 
         #endregion
 
-        #region Spine Animation Control
+        #region Spine Helper
 
-        private void PlayIdleAnim()   => skeletonAnimation?.state.SetAnimation(0, idleAnim, true);
-        private void PlayWalkAnim()   => skeletonAnimation?.state.SetAnimation(0, walkAnim, true);
-        private void EnsureWalkAnim()
+        private TrackEntry PlayAnimation(EnemyAnimationName animName, bool loop)
         {
-            var c = skeletonAnimation?.state.GetCurrent(0);
-            if (c == null || c.Animation.Name != walkAnim) PlayWalkAnim();
+            var current = skeletonAnimation.state.GetCurrent(0);
+            if (current?.Animation.Name == animations[animName]) return null;
+            return skeletonAnimation.state.SetAnimation(0, animations[animName], loop);
         }
-        private void PlayAttackAnim() => skeletonAnimation?.state.SetAnimation(0, attackAnim, false);
+
+        private void HandleAnimationComplete(TrackEntry entry)
+        {
+            if (!entry.Loop)
+                PlayAnimation(EnemyAnimationName.Idle, true);
+        }
+
+        
 
         #endregion
 
