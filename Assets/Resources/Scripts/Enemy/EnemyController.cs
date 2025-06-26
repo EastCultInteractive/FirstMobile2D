@@ -1,9 +1,11 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using Spine.Unity;
 using Resources.Scripts.Player;
 using Resources.Scripts.Labyrinth;
+using Resources.Scripts.Enemy.enums;
 
 namespace Resources.Scripts.Enemy
 {
@@ -25,6 +27,10 @@ namespace Resources.Scripts.Enemy
     {
         #region Inspector Fields
 
+        [Header("Animations")]
+        [SerializedDictionary("Animation Code", "Value")]
+        public SerializedDictionary<EnemyAnimationName, string> animations;
+        
         [Header("Common Settings")]
         public string enemyName = "Enemy";
         public EnemyType enemyType = EnemyType.Standard;

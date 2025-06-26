@@ -28,7 +28,7 @@ rotate:90
 bounds:238,308,131,55
 offsets:0,0,132,55
 01_Plash_02
-bounds:2,1685,336,487
+bounds:2,1887,336,487
 01_Plash_L_01
 bounds:2,3182,98,573
 offsets:0,0,103,573
@@ -40,7 +40,7 @@ rotate:270
 bounds:205,421,156,450
 offsets:16,0,172,450
 01_Svechenie_01
-bounds:293,1646,139,75
+bounds:285,2222,139,75
 offsets:1,1,141,77
 rotate:90
 01_Taz_01
@@ -54,7 +54,7 @@ bounds:247,1063,116,318
 01_Telo_P_01
 bounds:134,1341,204,342
 01_Ten_01
-bounds:2,1241,472,130
+bounds:2,1211,472,130
 offsets:1,1,474,132
 rotate:90
 01_Udar_01_001
@@ -62,7 +62,7 @@ bounds:233,3085,224,137
 offsets:38,33,300,200
 rotate:90
 02_Golova_01
-bounds:2,2174,200,328
+bounds:2,1685,200,328
 offsets:1,1,202,330
 rotate:90
 02_Plash_03

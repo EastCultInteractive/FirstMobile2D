@@ -15081,7 +15081,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 262425310062359845, guid: 55f72956051b31a4eb561c595de334f4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 262425310062359845, guid: 55f72956051b31a4eb561c595de334f4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -15094,7 +15094,7 @@ PrefabInstance:
     - target: {fileID: 262425310062359845, guid: 55f72956051b31a4eb561c595de334f4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1964511370}
+      objectReference: {fileID: 2074087616}
     - target: {fileID: 262425310062359845, guid: 55f72956051b31a4eb561c595de334f4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -15117,7 +15117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 262425310062359845, guid: 55f72956051b31a4eb561c595de334f4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Resources.Scripts.Player.PlayerController, Assembly-CSharp
+      value: Resources.Scripts.SpellMode.DrawingManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 262425310062359845, guid: 55f72956051b31a4eb561c595de334f4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
