@@ -1,3 +1,4 @@
+using Resources.Scripts.Entity;
 using UnityEngine;
 using TMPro;
 
@@ -7,46 +8,41 @@ namespace Resources.Scripts.Player
     /// Хранит и обновляет состояние здоровья, маны и собранных фей.
     /// Также даёт возможность уклоняться и отображать UI-текст уклонения.
     /// </summary>
-    public class PlayerStatsHandler : MonoBehaviour
+    public class PlayerStatsHandler : EntityStats
     {
         [Header("Fairy Collection")]
-        [SerializeField, Tooltip("Количество собранных фей")]       private int fairyCount;
+        [SerializeField] private int fairyCount;
         public int FairyCount { get => fairyCount; set => fairyCount = Mathf.Max(0, value); }
 
-        [Header("Health Settings")]
-        [SerializeField, Range(5, 200), Tooltip("Текущее здоровье игрока")]        private int health = 100;
-        [SerializeField, Tooltip("Максимальное здоровье игрока")]                   private int maxHealth = 100;
-        public int Health { get => health; set => health = Mathf.Clamp(value, 0, maxHealth); }
-
         [Header("Mana Settings")]
-        [SerializeField, Tooltip("Максимальная мана")]                              private float maxMana = 100f;
-        [SerializeField, Tooltip("Текущая мана")]                                   private float currentMana;
-        [SerializeField, Tooltip("Скорость восстановления маны в секунду")]          private float manaRegenRate = 10f;
+        [SerializeField] private float maxMana = 100f;
+        [SerializeField] private float currentMana;
+        [SerializeField] private float manaRegenRate = 10f;
 
         [Header("Mana Regen Rate Bonus")]
         private float manaRegenRateBonus;
         private float defaultManaRegenRate;
 
         [Header("Mana Regen Delay")]
-        [SerializeField, Tooltip("Задержка после использования перед регеном маны")] private float manaRegenDelayAfterSpell = 2f;
+        [SerializeField] private float manaRegenDelayAfterSpell = 2f;
         private float manaRegenDelayTimer;
         
         [Header("Movement Settings")]
-        [SerializeField, Tooltip("Базовая скорость движения")]                       private float baseMoveSpeed = 5f;
-        [SerializeField, Tooltip("Текущая итоговая скорость (с учётом перков)")]     private float currentMoveSpeed;
+        [SerializeField] private float baseMoveSpeed = 5f;
+        [SerializeField] private float currentMoveSpeed;
         private float moveSpeedPercentBonus;
 
         [Header("Fairy Pull Settings")]
-        [SerializeField, Tooltip("Базовый радиус притягивания фей")]                 private float basePullRange = 3f;
+        [SerializeField] private float basePullRange = 3f;
         private float pullRangePercentBonus;
 
         [Header("Debug (Runtime)")]
-        [SerializeField, Tooltip("Текущий радиус притягивания фей")]                private float debugPullRange;
+        [SerializeField] private float debugPullRange;
 
         [Header("Evasion Settings")]
-        [SerializeField, Range(0f, 100f), Tooltip("Текущий шанс уклонения (%)")]    private float baseEvasionChance = 10f;
-        [SerializeField, Tooltip("Кулдаун между уклонениями (сек)")]                 private float evasionCooldown = 1f;
-        [SerializeField, Tooltip("Префаб UI-текста для отображения уклонения")]      private GameObject evasionTextPrefab;
+        [SerializeField, Range(0f, 100f)] private float baseEvasionChance = 10f;
+        [SerializeField] private float evasionCooldown = 1f;
+        [SerializeField] private GameObject evasionTextPrefab;
         private float evasionCooldownTimer;
 
         // Сохраняем исходные значения для сброса перков и бонусов

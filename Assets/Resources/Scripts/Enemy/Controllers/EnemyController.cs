@@ -7,97 +7,79 @@ using Spine.Unity;
 using Resources.Scripts.Player;
 using Resources.Scripts.Labyrinth;
 using Resources.Scripts.Enemy.Enum;
+using Resources.Scripts.Entity;
 
 namespace Resources.Scripts.Enemy.Controllers
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : EntityController
     {
-        [Header("Common Settings")]
-        [SerializeField] private string enemyName = "Enemy";
+        [Header("Common Settings")] [SerializeField]
+        private string enemyName = "Enemy";
 
-        [Header("Animations")]
-        [SerializeField] private SerializedDictionary<EnemyAnimationName, string> animations;
+        [Header("Animations")] [SerializeField]
+        private SerializedDictionary<EnemyAnimationName, string> animations;
 
-        [Header("Patrol Settings (Labyrinth)")]
-        [SerializeField] private float patrolRadius = 3f;
+        [Header("Patrol Settings (Labyrinth)")] [SerializeField]
+        private float patrolRadius = 3f;
+
         [SerializeField] private float patrolSpeedMultiplier = 0.5f;
 
-        [Header("Detection & Obstacles")]
-        [SerializeField] private LayerMask obstacleMask;
+        [Header("Detection & Obstacles")] [SerializeField]
+        private LayerMask obstacleMask;
 
-        [Header("Debug Settings")]
-        [SerializeField] private bool debugLog;
-        
-        [Header("Push Settings")]
-        [Tooltip("Если true, при ударе игрок будет отталкиваться")]
-        [SerializeField] private bool pushPlayer = true;
-        
-        
+        [Header("Push Settings")] [Tooltip("Если true, при ударе игрок будет отталкиваться")] [SerializeField]
+        private bool pushPlayer = true;
+
+
         protected PlayerController Player;
-        
+
         protected float LastAttackTime;
         protected bool IsAttacking;
-        
+
         private bool isChasing;
-        
-        private Rigidbody2D rb;
+
         private BoxCollider2D attackZoneCollider;
-        
+
         private LabyrinthField labField;
         private List<Vector3> currentPath = new();
         private int pathIndex;
-        
+
         private Vector2 roamDirection;
         private float roamTimeRemaining;
 
         protected EnemyStatsHandler Stats;
         protected SkeletonAnimation SkeletonAnimation;
-        
-        private void Awake()
-        {
-            rb = GetComponent<Rigidbody2D>();
 
-            var zoneTransform = transform.Find("AttackZoneCollider");
-            if (zoneTransform == null)
-            {
-                Debug.LogError($"[{enemyName}] AttackZoneCollider отсутствует");
-                return;
-            }
-            attackZoneCollider = zoneTransform.GetComponent<BoxCollider2D>();
-
-            var spineChild = transform.Find("SpineVisual");
-            if (spineChild == null)
-            {
-                Debug.LogError($"[{enemyName}] SpineVisual отсутствует");
-                return;
-            }
-
-            SkeletonAnimation = spineChild.GetComponent<SkeletonAnimation>();
-            if (SkeletonAnimation == null)
-            {
-                Debug.LogError($"[{enemyName}] SkeletonAnimation отсутствует");
-                return;
-            }
-
-            SkeletonAnimation.state.Complete += HandleAnimationComplete;
-        }
-
+        #region Initialization
         private void Start()
         {
-            Stats = GetComponent<EnemyStatsHandler>();
-            var go = GameObject.FindGameObjectWithTag("Player");
-            if (go != null) Player = go.GetComponent<PlayerController>();
 
             labField = LabyrinthGeneratorWithWalls.CurrentField;
             roamTimeRemaining = 0f;
 
-            var sd = SkeletonAnimation.SkeletonDataAsset.GetSkeletonData(true);
-            var anim = sd.FindAnimation(animations[EnemyAnimationName.Attack]);
-            if (anim != null) OnAdjustAttackCooldown(anim.Duration);
+            InitEnemy();
+            InitAnimations();
+        }
 
+        private void InitEnemy()
+        {
+            Stats = GetComponent<EnemyStatsHandler>();
+            var player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null) Player = player.GetComponent<PlayerController>();
+
+            var zoneTransform = transform.Find("AttackZoneCollider");
+            attackZoneCollider = zoneTransform.GetComponent<BoxCollider2D>();
+        }
+
+        private void InitAnimations()
+        {
+            var spineChild = transform.Find("SpineVisual");
+            SkeletonAnimation = spineChild.GetComponent<SkeletonAnimation>();
+            SkeletonAnimation.state.Complete += HandleAnimationComplete;
             PlayAnimation(EnemyAnimationName.Idle, true);
         }
+        #endregion
 
         private void Update()
         {
@@ -269,15 +251,6 @@ namespace Resources.Scripts.Enemy.Controllers
             StartCoroutine(SlowEffect(factor, duration));
         }
         
-        /// <summary>
-        /// Применяет импульсную силу к врагу.
-        /// </summary>
-        /// <param name="force">Вектор силы, в направлении которого будет отброшен враг.</param>
-        public void ApplyPush(Vector2 force)
-        {
-            rb.AddForce(force, ForceMode2D.Impulse);
-        }
-
         private IEnumerator SlowEffect(float factor, float duration)
         {
             Stats.SetSlowMultiplier(factor);
@@ -308,8 +281,13 @@ namespace Resources.Scripts.Enemy.Controllers
 
         protected virtual void AttemptAttack()
         {
+            
         }
-        protected virtual void OnAdjustAttackCooldown(float animationDuration) { }
+
+        protected virtual void OnAdjustAttackCooldown(float animationDuration)
+        {   
+            
+        }
         protected virtual void OnStartChase() { }
         public bool PushPlayer => pushPlayer;
     }

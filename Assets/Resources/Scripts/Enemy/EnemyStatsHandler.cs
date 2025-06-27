@@ -1,8 +1,9 @@
+using Resources.Scripts.Entity;
 using UnityEngine;
 
 namespace Resources.Scripts.Enemy
 {
-    public class EnemyStatsHandler : MonoBehaviour
+    public class EnemyStatsHandler : EntityStats
     {
         [Header("Combat Stats")]
         [SerializeField, Range(1, 50), Tooltip("Damage dealt by the enemy.")]

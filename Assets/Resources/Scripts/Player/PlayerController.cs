@@ -11,6 +11,7 @@ using UnityEngine.Rendering.Universal;
 using Resources.Scripts.GameManagers;
 using Resources.Scripts.Player.Enum;
 using Resources.Scripts.Enemy.Controllers;
+using Resources.Scripts.Entity;
 using Resources.Scripts.SpellMode;
 
 namespace Resources.Scripts.Player
@@ -22,7 +23,7 @@ namespace Resources.Scripts.Player
     /// Добавлен «ветровой» эффект от ушей и ног при беге с помощью ParticleSystem.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : EntityController
     {
         #region Animation Names (публичные поля)
 
@@ -308,24 +309,6 @@ namespace Resources.Scripts.Player
         /// <summary>
         /// Единый метод получения урона от любого врага.
         /// </summary>
-        public void TakeDamage(EnemyController enemy, EnemyStatsHandler stats)
-        {
-            if (isImmortal || isRolling || IsDead || drawingManager.IsDrawing || playerStats.TryEvade(transform.position))
-                return;
-
-            var damage = stats.Damage;
-            playerStats.Health -= damage;
-            StartCoroutine(DamageFlash());
-
-            if (playerStats.Health <= 0)
-            {
-                Die();
-                return;
-            }
-
-            if (enemy.PushPlayer)
-                EntityUtils.MakeDash(transform, transform.position - enemy.transform.position);
-        }
         #endregion
 
         #region Other Effects

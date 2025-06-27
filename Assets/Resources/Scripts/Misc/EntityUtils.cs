@@ -13,10 +13,5 @@ namespace Resources.Scripts.Misc
         /// </summary>
         /// <param name="transform">The Transform component to move.</param>
         /// <param name="direction">The direction vector for the dash movement.</param>
-        public static void MakeDash(Transform transform, Vector3 direction)
-        {
-            // Translate the transform in the normalized direction.
-            transform.Translate(direction.normalized);
-        }
     }
 }
