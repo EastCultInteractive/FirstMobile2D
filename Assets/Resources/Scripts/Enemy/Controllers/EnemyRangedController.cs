@@ -7,17 +7,17 @@ namespace Resources.Scripts.Enemy.Controllers
     public class EnemyRangedController : EnemyController
     {
         [Header("Ranged Attack Settings")]
-        public float attackRange = 5f;
-        public float rangedAttackCooldown = 2f;
-        public float projectileSpawnDelay = 1.8f;
-        public float bindingDuration = 0.5f;
-        public GameObject projectilePrefab;
-        public Transform attackPoint;
-        public float projectileSpeed = 5f;
-        public float projectileLifeTime = 5f;
-        public float projectileDamage = 1f;
-        public float projectileSpreadAngle;
-        public Vector3 projectileScale = Vector3.one;
+        [SerializeField] private float attackRange = 5f;
+        [SerializeField] private float rangedAttackCooldown = 2f;
+        [SerializeField] private float projectileSpawnDelay = 1.8f;
+        [SerializeField] private float bindingDuration = 0.5f;
+        [SerializeField] private GameObject projectilePrefab;
+        [SerializeField] private Transform attackPoint;
+        [SerializeField] private float projectileSpeed = 5f;
+        [SerializeField] private float projectileLifeTime = 5f;
+        [SerializeField] private float projectileDamage = 1f;
+        [SerializeField] private float projectileSpreadAngle;
+        [SerializeField] private Vector3 projectileScale = Vector3.one;
 
         protected override void OnAdjustAttackCooldown(float animationDuration)
         {
@@ -33,7 +33,7 @@ namespace Resources.Scripts.Enemy.Controllers
         {
             if (isAttacking) return;
 
-            float since = Time.time - lastAttackTime;
+            var since = Time.time - lastAttackTime;
             if (since >= rangedAttackCooldown)
                 StartCoroutine(PerformRangedAttack());
         }
@@ -46,10 +46,10 @@ namespace Resources.Scripts.Enemy.Controllers
             var track = PlayAnimation(EnemyAnimationName.Attack, false);
             yield return new WaitForSeconds(projectileSpawnDelay);
 
-            if (player != null && !player.IsDead && HasLineOfSight())
+            if (player && !player.IsDead && HasLineOfSight())
                 SpawnProjectile();
 
-            float remaining = Mathf.Max(0f, track.Animation.Duration - projectileSpawnDelay);
+            var remaining = Mathf.Max(0f, track.Animation.Duration - projectileSpawnDelay);
             yield return new WaitForSeconds(remaining);
 
             isAttacking = false;
@@ -57,7 +57,7 @@ namespace Resources.Scripts.Enemy.Controllers
 
         private void SpawnProjectile()
         {
-            var origin = attackPoint != null ? attackPoint.position : transform.position;
+            var origin = attackPoint ? attackPoint.position : transform.position;
             var dir = (player.transform.position - origin).normalized;
 
             if (projectileSpreadAngle > 0f)

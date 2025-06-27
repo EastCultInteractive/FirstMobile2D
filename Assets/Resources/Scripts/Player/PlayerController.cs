@@ -132,7 +132,7 @@ namespace Resources.Scripts.Player
             initialScaleX = skeletonAnimation.Skeleton.ScaleX;
             skeletonAnimation.state.Complete += HandleAnimationComplete;
             var anim = skeletonAnimation.Skeleton.Data.FindAnimation(animations[PlayerAnimationName.Jump]);
-            rollDuration = anim != null ? anim.Duration : 0.3f;
+            rollDuration = anim?.Duration ?? 0.3f;
         }
 
         private void Start()
@@ -152,8 +152,8 @@ namespace Resources.Scripts.Player
 
             if (!isRolling)
             {
-                float h = joystick != null ? joystick.Horizontal : 0f;
-                float v = joystick != null ? joystick.Vertical : 0f;
+                var h = joystick ? joystick.Horizontal : 0f;
+                var v = joystick ? joystick.Vertical : 0f;
 
                 if (Mathf.Approximately(h + v, 0f))
                 {
@@ -161,7 +161,7 @@ namespace Resources.Scripts.Player
                     v = Input.GetAxis("Vertical");
                 }
 
-                Vector2 rawInput = new Vector2(h, v);
+                var rawInput = new Vector2(h, v);
 
                 if (rawInput.magnitude <= idleThreshold)
                 {
@@ -187,8 +187,8 @@ namespace Resources.Scripts.Player
             if (IsDead) return;
             if (!isRolling && LabyrinthMapController.Instance?.IsMapActive != true)
             {
-                float spd = playerStats.GetTotalMoveSpeed() * currentSlowMultiplier;
-                Vector2 delta = moveInput.normalized * (spd * Time.fixedDeltaTime);
+                var spd = playerStats.GetTotalMoveSpeed() * currentSlowMultiplier;
+                var delta = moveInput.normalized * (spd * Time.fixedDeltaTime);
                 rb.MovePosition(rb.position + delta);
             }
         }
@@ -239,14 +239,14 @@ namespace Resources.Scripts.Player
 
             PlayAnimation(PlayerAnimationName.Jump, false);
 
-            float baseSpeed = rollDistance / rollDuration;
-            float effectiveRollSpeed = baseSpeed * rollSpeedMultiplier;
+            var baseSpeed = rollDistance / rollDuration;
+            var effectiveRollSpeed = baseSpeed * rollSpeedMultiplier;
             rb.linearVelocity = Vector2.zero;
 
-            float elapsed = 0f;
+            var elapsed = 0f;
             while (elapsed < rollDuration)
             {
-                Vector2 step = lastMoveDirection * (effectiveRollSpeed * Time.deltaTime);
+                var step = lastMoveDirection * (effectiveRollSpeed * Time.deltaTime);
                 rb.MovePosition(rb.position + step);
                 elapsed += Time.deltaTime;
                 yield return null;
@@ -268,17 +268,17 @@ namespace Resources.Scripts.Player
         #region Light Methods
         private void UpdateLightOuterRange()
         {
-            if (finishPoint == null || playerLight == null || initialDistance < 0f) return;
-            float t = 1f - Mathf.Clamp01(Vector2.Distance(transform.position, finishPoint.position) / initialDistance);
+            if (!finishPoint || !playerLight || initialDistance < 0f) return;
+            var t = 1f - Mathf.Clamp01(Vector2.Distance(transform.position, finishPoint.position) / initialDistance);
             playerLight.pointLightOuterRadius = Mathf.Lerp(baseLightRange, maxLightRange, t);
         }
 
         private IEnumerator WaitForFinishMarker()
         {
-            while (finishPoint == null)
+            while (!finishPoint)
             {
                 var obj = GameObject.FindGameObjectWithTag(ETag.Fairy.ToString());
-                if (obj != null)
+                if (obj)
                 {
                     finishPoint = obj.transform;
                     initialDistance = Vector2.Distance(transform.position, finishPoint.position);
@@ -289,7 +289,8 @@ namespace Resources.Scripts.Player
         #endregion
 
         #region Damage and Evasion
-        public IEnumerator DamageFlash()
+
+        private IEnumerator DamageFlash()
         {
             if (flashCoroutine != null) yield break;
             flashCoroutine = StartCoroutine(_DamageFlash());
@@ -299,7 +300,7 @@ namespace Resources.Scripts.Player
         private IEnumerator _DamageFlash()
         {
             var skel = skeletonAnimation.Skeleton;
-            Color orig = skel.GetColor();
+            var orig = skel.GetColor();
             skel.SetColor(new Color(flashColor.r, flashColor.g, flashColor.b, flashColor.a));
             yield return new WaitForSeconds(flashDuration);
             skel.SetColor(orig);
@@ -314,7 +315,7 @@ namespace Resources.Scripts.Player
             if (isImmortal || isRolling || IsDead || drawingManager.IsDrawing || playerStats.TryEvade(transform.position))
                 return;
 
-            int damage = stats.Damage; // прямой доступ к кэшированному полю
+            var damage = stats.Damage;
             playerStats.Health -= damage;
             StartCoroutine(DamageFlash());
 
@@ -324,7 +325,7 @@ namespace Resources.Scripts.Player
                 return;
             }
 
-            if (enemy.PushesPlayer)
+            if (enemy.PushPlayer)
                 EntityUtils.MakeDash(transform, transform.position - enemy.transform.position);
         }
         #endregion
@@ -344,14 +345,13 @@ namespace Resources.Scripts.Player
         public void ApplyBinding(float duration) => StartCoroutine(BindingCoroutine(duration));
         private IEnumerator BindingCoroutine(float duration)
         {
-            float orig = currentSlowMultiplier;
+            var orig = currentSlowMultiplier;
             currentSlowMultiplier = 0f;
             yield return new WaitForSeconds(duration);
             currentSlowMultiplier = orig;
         }
         public void ApplyPush(Vector2 force)
         {
-            // теперь работает)
             var rb = GetComponent<Rigidbody2D>();
             if (rb != null)
                 rb.AddForce(force, ForceMode2D.Impulse);

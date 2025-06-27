@@ -226,7 +226,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -407,8 +407,8 @@ MonoBehaviour:
   rangedAttackCooldown: 2
   projectileSpawnDelay: 1.8
   bindingDuration: 0.5
-  projectilePrefab: {fileID: 0}
-  attackPoint: {fileID: 0}
+  projectilePrefab: {fileID: 6885619361130000166, guid: a76844d27e8692f4c8aac78a21f9329b, type: 3}
+  attackPoint: {fileID: 185450234523569990}
   projectileSpeed: 5
   projectileLifeTime: 5
   projectileDamage: 1

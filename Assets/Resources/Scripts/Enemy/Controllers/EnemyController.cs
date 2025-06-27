@@ -14,38 +14,44 @@ namespace Resources.Scripts.Enemy.Controllers
     public abstract class EnemyController : MonoBehaviour
     {
         [Header("Common Settings")]
-        public string enemyName = "Enemy";
+        [SerializeField] private string enemyName = "Enemy";
 
         [Header("Animations")]
-        public SerializedDictionary<EnemyAnimationName, string> animations;
+        [SerializeField] private SerializedDictionary<EnemyAnimationName, string> animations;
 
         [Header("Patrol Settings (Labyrinth)")]
-        public float patrolRadius = 3f;
-        public float patrolSpeedMultiplier = 0.5f;
+        [SerializeField] private float patrolRadius = 3f;
+        [SerializeField] private float patrolSpeedMultiplier = 0.5f;
 
         [Header("Detection & Obstacles")]
-        public LayerMask obstacleMask;
+        [SerializeField] private LayerMask obstacleMask;
 
         [Header("Debug Settings")]
-        public bool debugLog;
-
-        protected Rigidbody2D rb;
-        protected BoxCollider2D attackZoneCollider;
+        [SerializeField] private bool debugLog;
+        
+        [Header("Push Settings")]
+        [Tooltip("Если true, при ударе игрок будет отталкиваться")]
+        [SerializeField] private bool pushPlayer = true;
+        
+        public virtual bool PushPlayer => pushPlayer;
+        
+        private Rigidbody2D rb;
+        private BoxCollider2D attackZoneCollider;
         protected PlayerController player;
-        protected LabyrinthField labField;
-        protected List<Vector3> currentPath = new List<Vector3>();
-        protected int pathIndex;
+        private LabyrinthField labField;
+        private List<Vector3> currentPath = new List<Vector3>();
+        private int pathIndex;
 
         protected bool isAttacking;
-        protected bool isChasing;
+        private bool isChasing;
         protected float lastAttackTime;
 
-        protected Vector2 roamDirection;
-        protected float roamTimeRemaining;
+        private Vector2 roamDirection;
+        private float roamTimeRemaining;
 
         protected EnemyStatsHandler stats;
         protected SkeletonAnimation skeletonAnimation;
-
+        
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
@@ -75,7 +81,6 @@ namespace Resources.Scripts.Enemy.Controllers
             skeletonAnimation.state.Complete += HandleAnimationComplete;
         }
 
-
         private void Start()
         {
             stats = GetComponent<EnemyStatsHandler>();
@@ -94,7 +99,7 @@ namespace Resources.Scripts.Enemy.Controllers
 
         private void Update()
         {
-            if (player == null || player.IsDead)
+            if (!player || player.IsDead)
             {
                 isAttacking = false;
                 isChasing = false;
@@ -105,8 +110,8 @@ namespace Resources.Scripts.Enemy.Controllers
                 return;
             }
 
-            float dist = Vector3.Distance(transform.position, player.transform.position);
-            bool sees = dist <= stats.DetectionRange;
+            var dist = Vector3.Distance(transform.position, player.transform.position);
+            var sees = dist <= stats.DetectionRange;
 
             if (sees && CanAttack(dist))
             {
@@ -143,7 +148,7 @@ namespace Resources.Scripts.Enemy.Controllers
 
             if (roamTimeRemaining <= 0f)
             {
-                float a = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+                var a = Random.Range(0f, 360f) * Mathf.Deg2Rad;
                 roamDirection = new Vector2(Mathf.Cos(a), Mathf.Sin(a)).normalized;
                 roamTimeRemaining = Random.Range(2f, 5f);
 
@@ -151,8 +156,8 @@ namespace Resources.Scripts.Enemy.Controllers
             }
 
             roamTimeRemaining -= Time.deltaTime;
-            float speed = stats.MovementSpeed * stats.SlowMultiplier;
-            Vector3 move = new Vector3(roamDirection.x, roamDirection.y, 0f) * speed * Time.deltaTime;
+            var speed = stats.MovementSpeed * stats.SlowMultiplier;
+            var move = new Vector3(roamDirection.x, roamDirection.y, 0f) * (speed * Time.deltaTime);
 
             transform.position += move;
             TurnToTarget(move);
@@ -194,12 +199,12 @@ namespace Resources.Scripts.Enemy.Controllers
                 return;
             }
 
-            Vector3 goal = currentPath[pathIndex];
-            Vector3 dir = (goal - transform.position).normalized;
+            var goal = currentPath[pathIndex];
+            var dir = (goal - transform.position).normalized;
 
             TurnToTarget(dir);
 
-            float speed = stats.MovementSpeed * stats.SlowMultiplier;
+            var speed = stats.MovementSpeed * stats.SlowMultiplier;
             transform.position = Vector3.MoveTowards(transform.position, goal, speed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, goal) < 0.05f)
@@ -228,10 +233,10 @@ namespace Resources.Scripts.Enemy.Controllers
             }
             else
             {
-                Vector3 dir = (player.transform.position - transform.position).normalized;
+                var dir = (player.transform.position - transform.position).normalized;
                 TurnToTarget(dir);
 
-                float speed = stats.MovementSpeed * stats.SlowMultiplier;
+                var speed = stats.MovementSpeed * stats.SlowMultiplier;
                 transform.position = Vector3.MoveTowards(
                     transform.position,
                     player.transform.position,
@@ -246,16 +251,14 @@ namespace Resources.Scripts.Enemy.Controllers
         protected abstract void AttemptAttack();
         protected virtual void OnAdjustAttackCooldown(float animationDuration) { }
         protected virtual void OnStartChase() { }
-
-        public virtual bool PushesPlayer => false;
+        
 
         protected TrackEntry PlayAnimation(EnemyAnimationName animName, bool loop)
         {
             var current = skeletonAnimation.state.GetCurrent(0);
-            if (current?.Animation.Name == animations[animName])
-                return null;
-
-            return skeletonAnimation.state.SetAnimation(0, animations[animName], loop);
+            return current?.Animation.Name == animations[animName]
+                ? null
+                : skeletonAnimation.state.SetAnimation(0, animations[animName], loop);
         }
 
         private void HandleAnimationComplete(TrackEntry entry)
@@ -263,9 +266,6 @@ namespace Resources.Scripts.Enemy.Controllers
             if (!entry.Loop)
                 PlayAnimation(EnemyAnimationName.Idle, true);
         }
-
-        public void ApplyPush(Vector2 force) =>
-            rb.AddForce(force, ForceMode2D.Impulse);
 
         public void ApplySlow(float factor, float duration)
         {
@@ -282,16 +282,16 @@ namespace Resources.Scripts.Enemy.Controllers
 
         protected bool HasLineOfSight()
         {
-            if (player == null) return false;
+            if (!player) return false;
 
             var origin = attackZoneCollider.transform.position;
             var dir = (player.transform.position - origin).normalized;
-            float dist = Vector3.Distance(origin, player.transform.position);
+            var dist = Vector3.Distance(origin, player.transform.position);
 
-            return Physics2D.Raycast(origin, dir, dist, obstacleMask).collider == null;
+            return !Physics2D.Raycast(origin, dir, dist, obstacleMask).collider;
         }
 
-        protected void TurnToTarget(Vector3 dir) =>
+        private void TurnToTarget(Vector3 dir) =>
             transform.eulerAngles = dir.x < 0f
                 ? Vector3.zero
                 : new Vector3(0f, 180f, 0f);

@@ -7,11 +7,12 @@ namespace Resources.Scripts.Enemy.Controllers
     public class EnemyMeleeController : EnemyController
     {
         [Header("Melee Attack Settings")]
-        public float attackRange = 1f;
-        public float attackCooldown = 1f;
-        public bool pushPlayer = true;
-        public float pushForceMultiplier = 1f;
+        [SerializeField] private float attackRange = 1f;
+        [SerializeField] private float attackCooldown = 1f;
+        [SerializeField, Tooltip("Толкать игрока при ударе")]
+        private bool pushPlayer = true;
 
+        public override bool PushPlayer => pushPlayer;
         protected override void OnAdjustAttackCooldown(float animationDuration)
         {
             attackCooldown = Mathf.Max(attackCooldown, animationDuration);
@@ -21,12 +22,12 @@ namespace Resources.Scripts.Enemy.Controllers
         {
             return distanceToPlayer <= attackRange;
         }
-
+        
         protected override void AttemptAttack()
         {
             if (isAttacking) return;
 
-            float since = Time.time - lastAttackTime;
+            var since = Time.time - lastAttackTime;
             if (since >= attackCooldown)
                 StartCoroutine(PerformMeleeAttack());
         }
@@ -38,18 +39,12 @@ namespace Resources.Scripts.Enemy.Controllers
 
             PlayAnimation(EnemyAnimationName.Attack, false);
 
-            float hitTime = attackCooldown * 0.4f;
+            var hitTime = attackCooldown * 0.4f;
             yield return new WaitForSeconds(hitTime);
 
             player.TakeDamage(this, stats);
 
-            if (pushPlayer)
-                player.ApplyPush(
-                    (player.transform.position - transform.position).normalized
-                    * pushForceMultiplier
-                );
-
-            float tail = attackCooldown - hitTime;
+            var tail = attackCooldown - hitTime;
             if (tail > 0f)
                 yield return new WaitForSeconds(tail);
 
@@ -58,7 +53,6 @@ namespace Resources.Scripts.Enemy.Controllers
 
             isAttacking = false;
         }
-
-        public override bool PushesPlayer => pushPlayer;
+        
     }
 }
