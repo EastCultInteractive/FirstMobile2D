@@ -268,6 +268,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skull
       objectReference: {fileID: 0}
+    - target: {fileID: 5454972267272251233, guid: 96e315385965b1142af797f7f8e15b6d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6046244535853897246, guid: 96e315385965b1142af797f7f8e15b6d, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -464,6 +468,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Troll
       objectReference: {fileID: 0}
+    - target: {fileID: 6948234551739620505, guid: 10433903692912845893fbc8030784d6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -480,6 +488,10 @@ PrefabInstance:
     - target: {fileID: 1113557749512579635, guid: b89c68620d9c2c441b0d4ecce42ea97d, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6394749322097616598, guid: b89c68620d9c2c441b0d4ecce42ea97d, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7260566827850767976, guid: b89c68620d9c2c441b0d4ecce42ea97d, type: 3}
       propertyPath: m_Name
@@ -525,7 +537,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7930368814533079836, guid: b89c68620d9c2c441b0d4ecce42ea97d, type: 3}
+      propertyPath: goblinProjectileSpawnDelay
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4908351125954435191, guid: b89c68620d9c2c441b0d4ecce42ea97d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -554,7 +571,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1223923430}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -668,6 +685,10 @@ PrefabInstance:
     - target: {fileID: 5454972267272251233, guid: a5635ab2d2127414b8f9134d5f0b4629, type: 3}
       propertyPath: m_Name
       value: GoblinAxe
+      objectReference: {fileID: 0}
+    - target: {fileID: 5454972267272251233, guid: a5635ab2d2127414b8f9134d5f0b4629, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9094505057881849203, guid: a5635ab2d2127414b8f9134d5f0b4629, type: 3}
       propertyPath: m_Mesh
@@ -812,7 +833,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2396306835133531537, guid: e61aa865685e94b4aa276d526954ef47, type: 3}
       propertyPath: m_Materials.Array.size
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2396306835133531537, guid: e61aa865685e94b4aa276d526954ef47, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
@@ -837,6 +858,10 @@ PrefabInstance:
     - target: {fileID: 5454972267272251233, guid: e61aa865685e94b4aa276d526954ef47, type: 3}
       propertyPath: m_Name
       value: SkullKnife
+      objectReference: {fileID: 0}
+    - target: {fileID: 5454972267272251233, guid: e61aa865685e94b4aa276d526954ef47, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5645290694450135645, guid: e61aa865685e94b4aa276d526954ef47, type: 3}
       propertyPath: m_Mesh
@@ -1104,6 +1129,10 @@ PrefabInstance:
     - target: {fileID: 5454972267272251233, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
       propertyPath: m_Name
       value: Gremlin
+      objectReference: {fileID: 0}
+    - target: {fileID: 5454972267272251233, guid: e22cfb096297cf34190664a030dd9dcc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

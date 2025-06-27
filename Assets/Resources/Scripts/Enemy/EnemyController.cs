@@ -48,6 +48,8 @@ namespace Resources.Scripts.Enemy
         public float goblinProjectileDamage = 1f;
         public float goblinProjectileSpreadAngle;
         public Vector3 goblinProjectileScale = Vector3.one;
+        [Tooltip("Delay before projectile spawn relative to start of animation")]
+        public float goblinProjectileSpawnDelay = 1.8f;
 
         [Header("Detection & Obstacles")]
         public LayerMask obstacleMask;
@@ -319,15 +321,17 @@ namespace Resources.Scripts.Enemy
         {
             isAttacking = true;
             lastAttackTime = Time.time;
-            PlayAnimation(EnemyAnimationName.Attack, false);
-
-            float hitTime = goblinAttackAnimationDuration * 0.4f;
-            yield return new WaitForSeconds(hitTime);
+            
+            var track = PlayAnimation(EnemyAnimationName.Attack, false);
+            
+            yield return new WaitForSeconds(goblinProjectileSpawnDelay);
+            
             if (!player.IsDead && HasLineOfSight())
                 SpawnProjectileEvent();
-            yield return new WaitForSeconds(goblinAttackAnimationDuration - hitTime);
+            
+            float remaining = Mathf.Max(0f, track.Animation.Duration - goblinProjectileSpawnDelay);
+            yield return new WaitForSeconds(remaining);
 
-            yield return new WaitForSeconds(0.5f);
             isAttacking = false;
         }
 

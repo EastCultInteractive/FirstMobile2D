@@ -12,6 +12,7 @@ TagManager:
   - WallUpTrigger
   - WallSide
   - WallBottomTrigger
+  - Projectile
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - PlayerLight
   - MinimapOnly
   - Fairy
-  - 
+  - Projectile
   - 
   - 
   - 
