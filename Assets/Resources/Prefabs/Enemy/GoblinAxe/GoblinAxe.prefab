@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1162642558128745149}
@@ -143,7 +143,6 @@ GameObject:
   - component: {fileID: 1847258255522103315}
   - component: {fileID: 1606458086800395996}
   - component: {fileID: 736454512942791700}
-  - component: {fileID: 4917359499613051521}
   - component: {fileID: 3190392342066876204}
   m_Layer: 0
   m_Name: GoblinAxe
@@ -161,11 +160,12 @@ Transform:
   m_GameObject: {fileID: 5454972267272251233}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.9751259, y: 0.044978082, z: 0}
-  m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8354695352350604998}
+  - {fileID: 4987944577010022715}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8270591237024505471
@@ -183,10 +183,13 @@ MonoBehaviour:
   enemyName: GoblinAxe
   enemyType: 6
   animations:
-    _serializedList: []
-  speed: 1
-  slowMultiplier: 1
-  detectionRange: 5
+    _serializedList:
+    - Key: 0
+      Value: relevant/idle
+    - Key: 1
+      Value: relevant/step
+    - Key: 2
+      Value: relevant/attack
   patrolRadius: 3
   patrolSpeedMultiplier: 0.5
   attackRange: 1
@@ -223,6 +226,8 @@ MonoBehaviour:
   health: 10
   attackSpeedMultiplier: 1
   movementSpeed: 1
+  slowMultiplier: 1
+  detectionRange: 5
 --- !u!70 &1606458086800395996
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -257,8 +262,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 2.88}
-  m_Size: {x: 3.39, y: 4.69}
+  m_Offset: {x: 0, y: 0.5}
+  m_Size: {x: 0.5, y: 0.5}
   m_Direction: 0
 --- !u!50 &736454512942791700
 Rigidbody2D:
@@ -273,7 +278,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 5
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -287,13 +292,58 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &4917359499613051521
-BoxCollider2D:
+--- !u!114 &3190392342066876204
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5454972267272251233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  killOnDisable: 1
+--- !u!1 &8303929491026787407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4987944577010022715}
+  - component: {fileID: 898755686536178872}
+  m_Layer: 0
+  m_Name: AttackZoneCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4987944577010022715
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8303929491026787407}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1162642558128745149}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &898755686536178872
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8303929491026787407}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -321,28 +371,15 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 4.02}
+  m_Offset: {x: 0, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4, y: 4}
-    newSize: {x: 1, y: 2}
-    adaptiveTilingThreshold: 0.5
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 9.41, y: 13.2}
+  m_Size: {x: 1.2, y: 1.5}
   m_EdgeRadius: 0
---- !u!114 &3190392342066876204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5454972267272251233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killOnDisable: 1

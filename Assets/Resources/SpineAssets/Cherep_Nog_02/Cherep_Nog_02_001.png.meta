@@ -1,0 +1,1027 @@
+fileFormatVersion: 2
+guid: 012617a1182258a48a18dd4afed6d0a3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4498561385216875470
+    second: Cherep_Nog_02_001_0
+  - first:
+      213: -5148270042567984872
+    second: Cherep_Nog_02_001_1
+  - first:
+      213: -3680038092980222041
+    second: Cherep_Nog_02_001_2
+  - first:
+      213: 419292144053183132
+    second: Cherep_Nog_02_001_3
+  - first:
+      213: 7602368258754994307
+    second: Cherep_Nog_02_001_4
+  - first:
+      213: -1682843311428692090
+    second: Cherep_Nog_02_001_5
+  - first:
+      213: 1264804056683666823
+    second: Cherep_Nog_02_001_6
+  - first:
+      213: 3682939329214761764
+    second: Cherep_Nog_02_001_7
+  - first:
+      213: 2876306067529982184
+    second: Cherep_Nog_02_001_8
+  - first:
+      213: 5387530130686866766
+    second: Cherep_Nog_02_001_9
+  - first:
+      213: 5447624742827309996
+    second: Cherep_Nog_02_001_10
+  - first:
+      213: -4028978964483860499
+    second: Cherep_Nog_02_001_11
+  - first:
+      213: -2928042794541022850
+    second: Cherep_Nog_02_001_12
+  - first:
+      213: -457950909022565499
+    second: Cherep_Nog_02_001_13
+  - first:
+      213: -5816499647965819508
+    second: Cherep_Nog_02_001_14
+  - first:
+      213: 2164461105527797036
+    second: Cherep_Nog_02_001_15
+  - first:
+      213: -7251186304537565877
+    second: Cherep_Nog_02_001_16
+  - first:
+      213: 23028711830268194
+    second: Cherep_Nog_02_001_17
+  - first:
+      213: 6867435103165206975
+    second: Cherep_Nog_02_001_18
+  - first:
+      213: 1799109704493248988
+    second: Cherep_Nog_02_001_19
+  - first:
+      213: -6712499936881161758
+    second: Cherep_Nog_02_001_20
+  - first:
+      213: -7297391185404304412
+    second: Cherep_Nog_02_001_21
+  - first:
+      213: 7653045196530510428
+    second: Cherep_Nog_02_001_22
+  - first:
+      213: 7697475106679980821
+    second: Cherep_Nog_02_001_23
+  - first:
+      213: -3564234599459105005
+    second: Cherep_Nog_02_001_24
+  - first:
+      213: -5775870437369201697
+    second: Cherep_Nog_02_001_25
+  - first:
+      213: 1173149035037579405
+    second: Cherep_Nog_02_001_26
+  - first:
+      213: 1652606458372506877
+    second: Cherep_Nog_02_001_27
+  - first:
+      213: 8677946712310775069
+    second: Cherep_Nog_02_001_28
+  - first:
+      213: -1218961240863353547
+    second: Cherep_Nog_02_001_29
+  - first:
+      213: -6325290395284272434
+    second: Cherep_Nog_02_001_30
+  - first:
+      213: -3152116011296019387
+    second: Cherep_Nog_02_001_31
+  - first:
+      213: -5523118783260451367
+    second: Cherep_Nog_02_001_32
+  - first:
+      213: -2140145568706699502
+    second: Cherep_Nog_02_001_33
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 0
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1152
+        width: 70
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecb1426deb91e6e30800000000000000
+      internalID: 4498561385216875470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_1
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 1175
+        width: 67
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81933f84cabad88b0800000000000000
+      internalID: -5148270042567984872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_2
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 1196
+        width: 11
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a702042ad0edecc0800000000000000
+      internalID: -3680038092980222041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_3
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 1137
+        width: 64
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c92e667cbff91d500800000000000000
+      internalID: 419292144053183132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_4
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 1137
+        width: 27
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 380ebcaf6a9018960800000000000000
+      internalID: 7602368258754994307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_5
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 1157
+        width: 81
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68796a1ace655a8e0800000000000000
+      internalID: -1682843311428692090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_6
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1099
+        width: 165
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78d5a1d969c7d8110800000000000000
+      internalID: 1264804056683666823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_7
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 1089
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42b492f8ecd6c1330800000000000000
+      internalID: 3682939329214761764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_8
+      rect:
+        serializedVersion: 2
+        x: 283
+        y: 1103
+        width: 44
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e0ec6c0121bae720800000000000000
+      internalID: 2876306067529982184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_9
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 1084
+        width: 59
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e45fd480c1a54ca40800000000000000
+      internalID: 5387530130686866766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_10
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 1080
+        width: 27
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cabb9d147d9d99b40800000000000000
+      internalID: 5447624742827309996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_11
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 968
+        width: 122
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de71b6e6af03618c0800000000000000
+      internalID: -4028978964483860499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_12
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 992
+        width: 147
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e718d3087908d57d0800000000000000
+      internalID: -2928042794541022850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_13
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 915
+        width: 193
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58b8427131805a9f0800000000000000
+      internalID: -457950909022565499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_14
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 968
+        width: 161
+        height: 134
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8d00d62364a74fa0800000000000000
+      internalID: -5816499647965819508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_15
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 873
+        width: 177
+        height: 95
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c25322d58e5b90e10800000000000000
+      internalID: 2164461105527797036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_16
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 756
+        width: 183
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b456cd5797c9e5b90800000000000000
+      internalID: -7251186304537565877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_17
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 815
+        width: 174
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 229274ccd70d15000800000000000000
+      internalID: 23028711830268194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_18
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 756
+        width: 63
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb1d53257d70e4f50800000000000000
+      internalID: 6867435103165206975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_19
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 530
+        width: 234
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd137408eb8b7f810800000000000000
+      internalID: 1799109704493248988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_20
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 534
+        width: 146
+        height: 281
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e9cd5b2fd868d2a0800000000000000
+      internalID: -6712499936881161758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_21
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 535
+        width: 101
+        height: 193
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e3e8ee41657aba90800000000000000
+      internalID: -7297391185404304412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_22
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 35
+        width: 135
+        height: 474
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5ae5350f04153a60800000000000000
+      internalID: 7653045196530510428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_23
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 311
+        width: 236
+        height: 211
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 513821993dce2da60800000000000000
+      internalID: 7697475106679980821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_24
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 387
+        width: 57
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3175513148b498ec0800000000000000
+      internalID: -3564234599459105005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_25
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 246
+        width: 56
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdbbde7607cf7dfa0800000000000000
+      internalID: -5775870437369201697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_26
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 239
+        width: 51
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d88d10ee4dcd74010800000000000000
+      internalID: 1173149035037579405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_27
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 1
+        width: 284
+        height: 306
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df44fc861dc3fe610800000000000000
+      internalID: 1652606458372506877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_28
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 275
+        width: 32
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1d7d0f9e824e6870800000000000000
+      internalID: 8677946712310775069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_29
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 283
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 535de53b531651fe0800000000000000
+      internalID: -1218961240863353547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_30
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 83
+        width: 27
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eca04e7f5ed0838a0800000000000000
+      internalID: -6325290395284272434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_31
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 143
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54c21e7303f6144d0800000000000000
+      internalID: -3152116011296019387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_32
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 139
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dd1977bab0f953b0800000000000000
+      internalID: -5523118783260451367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cherep_Nog_02_001_33
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 2
+        width: 151
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21f5c99b1fcac42e0800000000000000
+      internalID: -2140145568706699502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Cherep_Nog_02_001_0: 4498561385216875470
+      Cherep_Nog_02_001_1: -5148270042567984872
+      Cherep_Nog_02_001_10: 5447624742827309996
+      Cherep_Nog_02_001_11: -4028978964483860499
+      Cherep_Nog_02_001_12: -2928042794541022850
+      Cherep_Nog_02_001_13: -457950909022565499
+      Cherep_Nog_02_001_14: -5816499647965819508
+      Cherep_Nog_02_001_15: 2164461105527797036
+      Cherep_Nog_02_001_16: -7251186304537565877
+      Cherep_Nog_02_001_17: 23028711830268194
+      Cherep_Nog_02_001_18: 6867435103165206975
+      Cherep_Nog_02_001_19: 1799109704493248988
+      Cherep_Nog_02_001_2: -3680038092980222041
+      Cherep_Nog_02_001_20: -6712499936881161758
+      Cherep_Nog_02_001_21: -7297391185404304412
+      Cherep_Nog_02_001_22: 7653045196530510428
+      Cherep_Nog_02_001_23: 7697475106679980821
+      Cherep_Nog_02_001_24: -3564234599459105005
+      Cherep_Nog_02_001_25: -5775870437369201697
+      Cherep_Nog_02_001_26: 1173149035037579405
+      Cherep_Nog_02_001_27: 1652606458372506877
+      Cherep_Nog_02_001_28: 8677946712310775069
+      Cherep_Nog_02_001_29: -1218961240863353547
+      Cherep_Nog_02_001_3: 419292144053183132
+      Cherep_Nog_02_001_30: -6325290395284272434
+      Cherep_Nog_02_001_31: -3152116011296019387
+      Cherep_Nog_02_001_32: -5523118783260451367
+      Cherep_Nog_02_001_33: -2140145568706699502
+      Cherep_Nog_02_001_4: 7602368258754994307
+      Cherep_Nog_02_001_5: -1682843311428692090
+      Cherep_Nog_02_001_6: 1264804056683666823
+      Cherep_Nog_02_001_7: 3682939329214761764
+      Cherep_Nog_02_001_8: 2876306067529982184
+      Cherep_Nog_02_001_9: 5387530130686866766
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

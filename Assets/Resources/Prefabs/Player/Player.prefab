@@ -294,8 +294,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.09, y: -0.3}
-  m_Size: {x: 1.13, y: 1.65}
+  m_Offset: {x: 0, y: 0.35}
+  m_Size: {x: 0.5, y: 0.5}
   m_Direction: 0
 --- !u!50 &3017650857843441594
 Rigidbody2D:
@@ -387,7 +387,6 @@ MonoBehaviour:
   maxLightRange: 2
   isImmortal: 0
   skeletonAnimation: {fileID: 1461745437943937123}
-  maxDarkSkullHits: 2
   rollDistance: 5
   rollCooldown: 2
   rollSpeedMultiplier: 1
@@ -406,7 +405,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 587778a18e16bb7459d7604eb4885d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drawButton: {fileID: 0}
   feedbackText: {fileID: 0}
   drawingLinePrefab: {fileID: 7464985380232957954, guid: daf2d54d475df5141adaca72a28abb1e, type: 3}
   drawingLineColor: {r: 1, g: 0, b: 0, a: 1}

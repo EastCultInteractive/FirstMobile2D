@@ -24,7 +24,6 @@ namespace Resources.Scripts.Enemy
             speed = projectileSpeed;
             bindingDuration = bindDuration;
             lifeTime = projectileLifeTime;
-            // projectileDamage передаётся, но снаряд его не наносит напрямую
 
             Destroy(gameObject, lifeTime);
         }
@@ -46,14 +45,9 @@ namespace Resources.Scripts.Enemy
             {
                 var player = collision.GetComponent<PlayerController>();
                 if (player != null && !player.IsDead)
-                {
                     player.ApplyBinding(bindingDuration);
-                }
                 Destroy(gameObject);
-            }
-            else if (!collision.CompareTag("Enemy"))
-            {
-                Destroy(gameObject);
+                return;
             }
         }
     }
