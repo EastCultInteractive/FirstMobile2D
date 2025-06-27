@@ -1,5 +1,5 @@
 using UnityEngine;
-using Resources.Scripts.Enemy;
+using Resources.Scripts.Enemy.Controllers;
 
 namespace Resources.Scripts.SpellMode.Skills
 {

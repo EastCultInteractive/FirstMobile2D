@@ -139,11 +139,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1162642558128745149}
-  - component: {fileID: 8270591237024505471}
   - component: {fileID: 1847258255522103315}
   - component: {fileID: 1606458086800395996}
   - component: {fileID: 736454512942791700}
   - component: {fileID: 3190392342066876204}
+  - component: {fileID: 120300985408570809}
   m_Layer: 0
   m_Name: GoblinAxe
   m_TagString: Enemy
@@ -168,48 +168,6 @@ Transform:
   - {fileID: 4987944577010022715}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8270591237024505471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5454972267272251233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf8b6283cd8ff4f76bcbdfc30dab2a50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyName: GoblinAxe
-  enemyType: 6
-  animations:
-    _serializedList:
-    - Key: 0
-      Value: relevant/idle
-    - Key: 1
-      Value: relevant/step
-    - Key: 2
-      Value: relevant/attack
-  patrolRadius: 3
-  patrolSpeedMultiplier: 0.5
-  attackRange: 1
-  attackCooldown: 1
-  pushPlayer: 0
-  pushForceMultiplier: 1
-  goblinAttackCooldownTime: 2
-  goblinAttackAnimationDuration: 1
-  bindingDuration: 2
-  projectilePrefab: {fileID: 0}
-  attackPoint: {fileID: 0}
-  projectileSpeed: 5
-  goblinProjectileLifeTime: 5
-  goblinProjectileDamage: 0
-  goblinProjectileSpreadAngle: 0
-  goblinProjectileScale: {x: 1, y: 1, z: 1}
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
-  debugLog: 0
 --- !u!114 &1847258255522103315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,6 +263,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   killOnDisable: 1
+--- !u!114 &120300985408570809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5454972267272251233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c84eff7b9c99884e9adcd8d69c11822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyName: "\u0413\u043E\u0431\u043B\u0438\u043D \u0441 \u0442\u043E\u043F\u043E\u0440\u043E\u043C"
+  animations:
+    _serializedList:
+    - Key: 0
+      Value: relevant/idle
+    - Key: 1
+      Value: relevant/step
+    - Key: 2
+      Value: relevant/attack
+  patrolRadius: 3
+  patrolSpeedMultiplier: 0.5
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  debugLog: 0
+  attackRange: 1
+  attackCooldown: 1
+  pushPlayer: 1
+  pushForceMultiplier: 1
 --- !u!1 &8303929491026787407
 GameObject:
   m_ObjectHideFlags: 0

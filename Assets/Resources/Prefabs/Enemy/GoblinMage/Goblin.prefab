@@ -251,11 +251,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7880351290222830155}
-  - component: {fileID: 7930368814533079836}
   - component: {fileID: 634281836380079888}
   - component: {fileID: 7207241283653982740}
   - component: {fileID: 8437135565535939038}
   - component: {fileID: 5660968033192809300}
+  - component: {fileID: 1171146480769530433}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Enemy
@@ -281,49 +281,6 @@ Transform:
   - {fileID: 9025175943637413277}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7930368814533079836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7260566827850767976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf8b6283cd8ff4f76bcbdfc30dab2a50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyName: Goblin
-  enemyType: 1
-  animations:
-    _serializedList:
-    - Key: 0
-      Value: relevant/idle
-    - Key: 1
-      Value: relevant/step
-    - Key: 2
-      Value: relevant/attack
-  patrolRadius: 3
-  patrolSpeedMultiplier: 0.5
-  attackRange: 2
-  attackCooldown: 1
-  pushPlayer: 0
-  pushForceMultiplier: 1
-  goblinAttackCooldownTime: 2
-  goblinAttackAnimationDuration: 1
-  bindingDuration: 0.5
-  projectilePrefab: {fileID: 6885619361130000166, guid: a76844d27e8692f4c8aac78a21f9329b, type: 3}
-  attackPoint: {fileID: 185450234523569990}
-  projectileSpeed: 5
-  goblinProjectileLifeTime: 5
-  goblinProjectileDamage: 0
-  goblinProjectileSpreadAngle: 0
-  goblinProjectileScale: {x: 1, y: 1, z: 1}
-  goblinProjectileSpawnDelay: 1
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
-  debugLog: 0
 --- !u!114 &634281836380079888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,3 +376,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   killOnDisable: 1
+--- !u!114 &1171146480769530433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7260566827850767976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0137ae567e31fc34293c42fc40650e76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyName: "\u0413\u043E\u0431\u043B\u0438\u043D"
+  animations:
+    _serializedList:
+    - Key: 0
+      Value: relevant/idle
+    - Key: 1
+      Value: relevant/step
+    - Key: 2
+      Value: relevant/attack
+  patrolRadius: 3
+  patrolSpeedMultiplier: 0.5
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  debugLog: 0
+  attackRange: 5
+  rangedAttackCooldown: 2
+  projectileSpawnDelay: 1.8
+  bindingDuration: 0.5
+  projectilePrefab: {fileID: 0}
+  attackPoint: {fileID: 0}
+  projectileSpeed: 5
+  projectileLifeTime: 5
+  projectileDamage: 1
+  projectileSpreadAngle: 0
+  projectileScale: {x: 1, y: 1, z: 1}

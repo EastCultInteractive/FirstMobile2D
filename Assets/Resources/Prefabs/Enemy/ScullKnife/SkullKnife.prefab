@@ -58,6 +58,11 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 590de0b23251e7b4eb362d8e4ac0b528, type: 2}
+  - {fileID: 2100000, guid: e3dc60d04ed74c840b70c74cc2945d72, type: 2}
+  - {fileID: 2100000, guid: 590de0b23251e7b4eb362d8e4ac0b528, type: 2}
+  - {fileID: 2100000, guid: e3dc60d04ed74c840b70c74cc2945d72, type: 2}
+  - {fileID: 2100000, guid: 590de0b23251e7b4eb362d8e4ac0b528, type: 2}
+  - {fileID: 2100000, guid: e3dc60d04ed74c840b70c74cc2945d72, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -219,9 +224,9 @@ GameObject:
   - component: {fileID: 1162642558128745149}
   - component: {fileID: 736454512942791700}
   - component: {fileID: 3190392342066876204}
-  - component: {fileID: 2140977923837115317}
   - component: {fileID: 4233255029795141768}
   - component: {fileID: 4548578702858420460}
+  - component: {fileID: 2459483376757906055}
   m_Layer: 0
   m_Name: SkullKnife
   m_TagString: Enemy
@@ -286,48 +291,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   killOnDisable: 1
---- !u!114 &2140977923837115317
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5454972267272251233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf8b6283cd8ff4f76bcbdfc30dab2a50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyName: ScullKnife
-  enemyType: 5
-  animations:
-    _serializedList:
-    - Key: 0
-      Value: relevant/idle
-    - Key: 1
-      Value: relevant/step
-    - Key: 2
-      Value: relevant/attack
-  patrolRadius: 3
-  patrolSpeedMultiplier: 0.5
-  attackRange: 0.5
-  attackCooldown: 1
-  pushPlayer: 0
-  pushForceMultiplier: 1
-  goblinAttackCooldownTime: 2
-  goblinAttackAnimationDuration: 1
-  bindingDuration: 2
-  projectilePrefab: {fileID: 0}
-  attackPoint: {fileID: 0}
-  projectileSpeed: 5
-  goblinProjectileLifeTime: 5
-  goblinProjectileDamage: 0
-  goblinProjectileSpreadAngle: 0
-  goblinProjectileScale: {x: 1, y: 1, z: 1}
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
-  debugLog: 0
 --- !u!114 &4233255029795141768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,3 +346,34 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0.5}
   m_Size: {x: 0.5, y: 0.5}
   m_Direction: 0
+--- !u!114 &2459483376757906055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5454972267272251233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c84eff7b9c99884e9adcd8d69c11822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyName: "\u0427\u0435\u0440\u0435\u043F-\u043D\u043E\u0436"
+  animations:
+    _serializedList:
+    - Key: 0
+      Value: relevant/idle
+    - Key: 1
+      Value: relevant/step
+    - Key: 2
+      Value: relevant/attack
+  patrolRadius: 3
+  patrolSpeedMultiplier: 0.5
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  debugLog: 0
+  attackRange: 1
+  attackCooldown: 1
+  pushPlayer: 1
+  pushForceMultiplier: 1

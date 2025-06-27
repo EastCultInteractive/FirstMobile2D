@@ -10,6 +10,7 @@ using Spine.Unity;
 using UnityEngine.Rendering.Universal;
 using Resources.Scripts.GameManagers;
 using Resources.Scripts.Player.Enum;
+using Resources.Scripts.Enemy.Controllers;
 using Resources.Scripts.SpellMode;
 
 namespace Resources.Scripts.Player
@@ -323,7 +324,7 @@ namespace Resources.Scripts.Player
                 return;
             }
 
-            if (enemy.pushPlayer)
+            if (enemy.PushesPlayer)
                 EntityUtils.MakeDash(transform, transform.position - enemy.transform.position);
         }
         #endregion
@@ -347,6 +348,13 @@ namespace Resources.Scripts.Player
             currentSlowMultiplier = 0f;
             yield return new WaitForSeconds(duration);
             currentSlowMultiplier = orig;
+        }
+        public void ApplyPush(Vector2 force)
+        {
+            // теперь работает)
+            var rb = GetComponent<Rigidbody2D>();
+            if (rb != null)
+                rb.AddForce(force, ForceMode2D.Impulse);
         }
         public void Stun(float duration) => StartCoroutine(StunCoroutine(duration));
         private IEnumerator StunCoroutine(float duration)
