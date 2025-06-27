@@ -11,7 +11,7 @@ using Resources.Scripts.Enemy.Enum;
 namespace Resources.Scripts.Enemy.Controllers
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public abstract class EnemyController : MonoBehaviour
+    public class EnemyController : MonoBehaviour
     {
         [Header("Common Settings")]
         [SerializeField] private string enemyName = "Enemy";
@@ -33,7 +33,6 @@ namespace Resources.Scripts.Enemy.Controllers
         [Tooltip("Если true, при ударе игрок будет отталкиваться")]
         [SerializeField] private bool pushPlayer = true;
         
-        public virtual bool PushPlayer => pushPlayer;
         
         protected PlayerController Player;
         
@@ -46,14 +45,14 @@ namespace Resources.Scripts.Enemy.Controllers
         private BoxCollider2D attackZoneCollider;
         
         private LabyrinthField labField;
-        private List<Vector3> currentPath = new List<Vector3>();
+        private List<Vector3> currentPath = new();
         private int pathIndex;
         
         private Vector2 roamDirection;
         private float roamTimeRemaining;
 
-        protected EnemyStatsHandler stats;
-        protected SkeletonAnimation skeletonAnimation;
+        protected EnemyStatsHandler Stats;
+        protected SkeletonAnimation SkeletonAnimation;
         
         private void Awake()
         {
@@ -74,26 +73,26 @@ namespace Resources.Scripts.Enemy.Controllers
                 return;
             }
 
-            skeletonAnimation = spineChild.GetComponent<SkeletonAnimation>();
-            if (skeletonAnimation == null)
+            SkeletonAnimation = spineChild.GetComponent<SkeletonAnimation>();
+            if (SkeletonAnimation == null)
             {
                 Debug.LogError($"[{enemyName}] SkeletonAnimation отсутствует");
                 return;
             }
 
-            skeletonAnimation.state.Complete += HandleAnimationComplete;
+            SkeletonAnimation.state.Complete += HandleAnimationComplete;
         }
 
         private void Start()
         {
-            stats = GetComponent<EnemyStatsHandler>();
+            Stats = GetComponent<EnemyStatsHandler>();
             var go = GameObject.FindGameObjectWithTag("Player");
             if (go != null) Player = go.GetComponent<PlayerController>();
 
             labField = LabyrinthGeneratorWithWalls.CurrentField;
             roamTimeRemaining = 0f;
 
-            var sd = skeletonAnimation.SkeletonDataAsset.GetSkeletonData(true);
+            var sd = SkeletonAnimation.SkeletonDataAsset.GetSkeletonData(true);
             var anim = sd.FindAnimation(animations[EnemyAnimationName.Attack]);
             if (anim != null) OnAdjustAttackCooldown(anim.Duration);
 
@@ -114,7 +113,7 @@ namespace Resources.Scripts.Enemy.Controllers
             }
 
             var dist = Vector3.Distance(transform.position, Player.transform.position);
-            var sees = dist <= stats.DetectionRange;
+            var sees = dist <= Stats.DetectionRange;
 
             if (sees && CanAttack(dist))
             {
@@ -159,7 +158,7 @@ namespace Resources.Scripts.Enemy.Controllers
             }
 
             roamTimeRemaining -= Time.deltaTime;
-            var speed = stats.MovementSpeed * stats.SlowMultiplier;
+            var speed = Stats.MovementSpeed * Stats.SlowMultiplier;
             var move = new Vector3(roamDirection.x, roamDirection.y, 0f) * (speed * Time.deltaTime);
 
             transform.position += move;
@@ -207,7 +206,7 @@ namespace Resources.Scripts.Enemy.Controllers
 
             TurnToTarget(dir);
 
-            var speed = stats.MovementSpeed * stats.SlowMultiplier;
+            var speed = Stats.MovementSpeed * Stats.SlowMultiplier;
             transform.position = Vector3.MoveTowards(transform.position, goal, speed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, goal) < 0.05f)
@@ -239,7 +238,7 @@ namespace Resources.Scripts.Enemy.Controllers
                 var dir = (Player.transform.position - transform.position).normalized;
                 TurnToTarget(dir);
 
-                var speed = stats.MovementSpeed * stats.SlowMultiplier;
+                var speed = Stats.MovementSpeed * Stats.SlowMultiplier;
                 transform.position = Vector3.MoveTowards(
                     transform.position,
                     Player.transform.position,
@@ -250,18 +249,12 @@ namespace Resources.Scripts.Enemy.Controllers
             }
         }
 
-        protected abstract bool CanAttack(float distanceToPlayer);
-        protected abstract void AttemptAttack();
-        protected virtual void OnAdjustAttackCooldown(float animationDuration) { }
-        protected virtual void OnStartChase() { }
-        
-
         protected TrackEntry PlayAnimation(EnemyAnimationName animName, bool loop)
         {
-            var current = skeletonAnimation.state.GetCurrent(0);
+            var current = SkeletonAnimation.state.GetCurrent(0);
             return current?.Animation.Name == animations[animName]
                 ? null
-                : skeletonAnimation.state.SetAnimation(0, animations[animName], loop);
+                : SkeletonAnimation.state.SetAnimation(0, animations[animName], loop);
         }
 
         private void HandleAnimationComplete(TrackEntry entry)
@@ -280,17 +273,16 @@ namespace Resources.Scripts.Enemy.Controllers
         /// Применяет импульсную силу к врагу.
         /// </summary>
         /// <param name="force">Вектор силы, в направлении которого будет отброшен враг.</param>
-        public virtual void ApplyPush(Vector2 force)
+        public void ApplyPush(Vector2 force)
         {
-            var rb = GetComponent<Rigidbody2D>();
             rb.AddForce(force, ForceMode2D.Impulse);
         }
 
         private IEnumerator SlowEffect(float factor, float duration)
         {
-            stats.SetSlowMultiplier(factor);
+            Stats.SetSlowMultiplier(factor);
             yield return new WaitForSeconds(duration);
-            stats.ResetSlowMultiplier();
+            Stats.ResetSlowMultiplier();
         }
 
         protected bool HasLineOfSight()
@@ -308,5 +300,17 @@ namespace Resources.Scripts.Enemy.Controllers
             transform.eulerAngles = dir.x < 0f
                 ? Vector3.zero
                 : new Vector3(0f, 180f, 0f);
+
+        protected virtual bool CanAttack(float distanceToPlayer)
+        {
+            return false;
+        }
+
+        protected virtual void AttemptAttack()
+        {
+        }
+        protected virtual void OnAdjustAttackCooldown(float animationDuration) { }
+        protected virtual void OnStartChase() { }
+        public bool PushPlayer => pushPlayer;
     }
 }

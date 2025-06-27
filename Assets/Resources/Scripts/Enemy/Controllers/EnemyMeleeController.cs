@@ -9,10 +9,7 @@ namespace Resources.Scripts.Enemy.Controllers
         [Header("Melee Attack Settings")]
         [SerializeField] private float attackRange = 1f;
         [SerializeField] private float attackCooldown = 1f;
-        [SerializeField, Tooltip("Толкать игрока при ударе")]
-        private bool pushPlayer = true;
 
-        public override bool PushPlayer => pushPlayer;
         protected override void OnAdjustAttackCooldown(float animationDuration)
         {
             attackCooldown = Mathf.Max(attackCooldown, animationDuration);
@@ -42,13 +39,13 @@ namespace Resources.Scripts.Enemy.Controllers
             var hitTime = attackCooldown * 0.4f;
             yield return new WaitForSeconds(hitTime);
 
-            Player.TakeDamage(this, stats);
+            Player.TakeDamage(this, Stats);
 
             var tail = attackCooldown - hitTime;
             if (tail > 0f)
                 yield return new WaitForSeconds(tail);
 
-            skeletonAnimation.state.ClearTrack(0);
+            SkeletonAnimation.state.ClearTrack(0);
             yield return new WaitForSeconds(0.5f);
 
             IsAttacking = false;
