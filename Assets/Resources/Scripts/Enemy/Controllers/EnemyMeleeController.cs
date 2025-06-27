@@ -25,24 +25,24 @@ namespace Resources.Scripts.Enemy.Controllers
         
         protected override void AttemptAttack()
         {
-            if (isAttacking) return;
+            if (IsAttacking) return;
 
-            var since = Time.time - lastAttackTime;
+            var since = Time.time - LastAttackTime;
             if (since >= attackCooldown)
                 StartCoroutine(PerformMeleeAttack());
         }
 
         private IEnumerator PerformMeleeAttack()
         {
-            isAttacking = true;
-            lastAttackTime = Time.time;
+            IsAttacking = true;
+            LastAttackTime = Time.time;
 
             PlayAnimation(EnemyAnimationName.Attack, false);
 
             var hitTime = attackCooldown * 0.4f;
             yield return new WaitForSeconds(hitTime);
 
-            player.TakeDamage(this, stats);
+            Player.TakeDamage(this, stats);
 
             var tail = attackCooldown - hitTime;
             if (tail > 0f)
@@ -51,7 +51,7 @@ namespace Resources.Scripts.Enemy.Controllers
             skeletonAnimation.state.ClearTrack(0);
             yield return new WaitForSeconds(0.5f);
 
-            isAttacking = false;
+            IsAttacking = false;
         }
         
     }

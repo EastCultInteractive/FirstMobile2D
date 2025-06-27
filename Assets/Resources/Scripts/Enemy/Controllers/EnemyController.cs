@@ -35,17 +35,20 @@ namespace Resources.Scripts.Enemy.Controllers
         
         public virtual bool PushPlayer => pushPlayer;
         
+        protected PlayerController Player;
+        
+        protected float LastAttackTime;
+        protected bool IsAttacking;
+        
+        private bool isChasing;
+        
         private Rigidbody2D rb;
         private BoxCollider2D attackZoneCollider;
-        protected PlayerController player;
+        
         private LabyrinthField labField;
         private List<Vector3> currentPath = new List<Vector3>();
         private int pathIndex;
-
-        protected bool isAttacking;
-        private bool isChasing;
-        protected float lastAttackTime;
-
+        
         private Vector2 roamDirection;
         private float roamTimeRemaining;
 
@@ -85,7 +88,7 @@ namespace Resources.Scripts.Enemy.Controllers
         {
             stats = GetComponent<EnemyStatsHandler>();
             var go = GameObject.FindGameObjectWithTag("Player");
-            if (go != null) player = go.GetComponent<PlayerController>();
+            if (go != null) Player = go.GetComponent<PlayerController>();
 
             labField = LabyrinthGeneratorWithWalls.CurrentField;
             roamTimeRemaining = 0f;
@@ -99,9 +102,9 @@ namespace Resources.Scripts.Enemy.Controllers
 
         private void Update()
         {
-            if (!player || player.IsDead)
+            if (!Player || Player.IsDead)
             {
-                isAttacking = false;
+                IsAttacking = false;
                 isChasing = false;
 
                 if (labField != null) PatrolLabyrinth();
@@ -110,7 +113,7 @@ namespace Resources.Scripts.Enemy.Controllers
                 return;
             }
 
-            var dist = Vector3.Distance(transform.position, player.transform.position);
+            var dist = Vector3.Distance(transform.position, Player.transform.position);
             var sees = dist <= stats.DetectionRange;
 
             if (sees && CanAttack(dist))
@@ -119,7 +122,7 @@ namespace Resources.Scripts.Enemy.Controllers
                 return;
             }
 
-            isAttacking = false;
+            IsAttacking = false;
 
             if (sees)
             {
@@ -136,7 +139,7 @@ namespace Resources.Scripts.Enemy.Controllers
 
         private void OnTriggerStay2D(Collider2D other)
         {
-            if (player == null || player.IsDead) return;
+            if (Player == null || Player.IsDead) return;
 
             if (other == attackZoneCollider && other.CompareTag("Player"))
                 AttemptAttack();
@@ -144,7 +147,7 @@ namespace Resources.Scripts.Enemy.Controllers
 
         private void RoamArena()
         {
-            if (isAttacking) return;
+            if (IsAttacking) return;
 
             if (roamTimeRemaining <= 0f)
             {
@@ -165,7 +168,7 @@ namespace Resources.Scripts.Enemy.Controllers
 
         private void PatrolLabyrinth()
         {
-            if (isAttacking) return;
+            if (IsAttacking) return;
 
             if (currentPath.Count == 0 || pathIndex >= currentPath.Count)
             {
@@ -228,18 +231,18 @@ namespace Resources.Scripts.Enemy.Controllers
             if (labField != null)
             {
                 if (pathIndex >= currentPath.Count)
-                    BuildPath(WorldToCell(transform.position), WorldToCell(player.transform.position));
+                    BuildPath(WorldToCell(transform.position), WorldToCell(Player.transform.position));
                 FollowPath();
             }
             else
             {
-                var dir = (player.transform.position - transform.position).normalized;
+                var dir = (Player.transform.position - transform.position).normalized;
                 TurnToTarget(dir);
 
                 var speed = stats.MovementSpeed * stats.SlowMultiplier;
                 transform.position = Vector3.MoveTowards(
                     transform.position,
-                    player.transform.position,
+                    Player.transform.position,
                     speed * Time.deltaTime
                 );
 
@@ -272,6 +275,16 @@ namespace Resources.Scripts.Enemy.Controllers
             StopAllCoroutines();
             StartCoroutine(SlowEffect(factor, duration));
         }
+        
+        /// <summary>
+        /// Применяет импульсную силу к врагу.
+        /// </summary>
+        /// <param name="force">Вектор силы, в направлении которого будет отброшен враг.</param>
+        public virtual void ApplyPush(Vector2 force)
+        {
+            var rb = GetComponent<Rigidbody2D>();
+            rb.AddForce(force, ForceMode2D.Impulse);
+        }
 
         private IEnumerator SlowEffect(float factor, float duration)
         {
@@ -282,11 +295,11 @@ namespace Resources.Scripts.Enemy.Controllers
 
         protected bool HasLineOfSight()
         {
-            if (!player) return false;
+            if (!Player) return false;
 
             var origin = attackZoneCollider.transform.position;
-            var dir = (player.transform.position - origin).normalized;
-            var dist = Vector3.Distance(origin, player.transform.position);
+            var dir = (Player.transform.position - origin).normalized;
+            var dist = Vector3.Distance(origin, Player.transform.position);
 
             return !Physics2D.Raycast(origin, dir, dist, obstacleMask).collider;
         }

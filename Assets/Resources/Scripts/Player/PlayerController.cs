@@ -185,12 +185,10 @@ namespace Resources.Scripts.Player
         private void FixedUpdate()
         {
             if (IsDead) return;
-            if (!isRolling && LabyrinthMapController.Instance?.IsMapActive != true)
-            {
-                var spd = playerStats.GetTotalMoveSpeed() * currentSlowMultiplier;
-                var delta = moveInput.normalized * (spd * Time.fixedDeltaTime);
-                rb.MovePosition(rb.position + delta);
-            }
+            if (isRolling || LabyrinthMapController.Instance?.IsMapActive == true) return;
+            var spd = playerStats.GetTotalMoveSpeed() * currentSlowMultiplier;
+            var delta = moveInput.normalized * (spd * Time.fixedDeltaTime);
+            rb.MovePosition(rb.position + delta);
         }
         #endregion
 

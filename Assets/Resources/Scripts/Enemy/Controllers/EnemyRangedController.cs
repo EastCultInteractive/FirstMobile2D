@@ -31,34 +31,34 @@ namespace Resources.Scripts.Enemy.Controllers
 
         protected override void AttemptAttack()
         {
-            if (isAttacking) return;
+            if (IsAttacking) return;
 
-            var since = Time.time - lastAttackTime;
+            var since = Time.time - LastAttackTime;
             if (since >= rangedAttackCooldown)
                 StartCoroutine(PerformRangedAttack());
         }
 
         private IEnumerator PerformRangedAttack()
         {
-            isAttacking = true;
-            lastAttackTime = Time.time;
+            IsAttacking = true;
+            LastAttackTime = Time.time;
 
             var track = PlayAnimation(EnemyAnimationName.Attack, false);
             yield return new WaitForSeconds(projectileSpawnDelay);
 
-            if (player && !player.IsDead && HasLineOfSight())
+            if (Player && !Player.IsDead && HasLineOfSight())
                 SpawnProjectile();
 
             var remaining = Mathf.Max(0f, track.Animation.Duration - projectileSpawnDelay);
             yield return new WaitForSeconds(remaining);
 
-            isAttacking = false;
+            IsAttacking = false;
         }
 
         private void SpawnProjectile()
         {
             var origin = attackPoint ? attackPoint.position : transform.position;
-            var dir = (player.transform.position - origin).normalized;
+            var dir = (Player.transform.position - origin).normalized;
 
             if (projectileSpreadAngle > 0f)
                 dir = Quaternion.Euler(
