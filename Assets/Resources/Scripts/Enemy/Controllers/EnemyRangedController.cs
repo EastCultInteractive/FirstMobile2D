@@ -6,9 +6,6 @@ namespace Resources.Scripts.Enemy.Controllers
     public class EnemyRangedController : EnemyController
     {
         [Header("Ranged Attack Settings")]
-        [SerializeField] private float attackRange = 5f;
-        [SerializeField] private float rangedAttackCooldown = 2f;
-        [SerializeField] private float projectileSpawnDelay = 1.8f;
         [SerializeField] private float bindingDuration = 0.5f;
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private Transform attackPoint;

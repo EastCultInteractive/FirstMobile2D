@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using System.Linq;
+using AYellowpaper.SerializedCollections;
 using Spine;
 using Spine.Unity;
 using UnityEngine;
@@ -10,13 +13,13 @@ namespace Resources.Scripts.Entity
 		[SerializeField] private Color damageFlashColor = Color.red;	
 		[SerializeField, Range(0.1f, 1f)] private float damageFlashDuration = 0.3f;
 		
-		protected Rigidbody2D RigidBodyInstance;
 		private Skeleton skeleton;
+		private EntityStats stats;
 		
 		protected SkeletonAnimation SkeletonAnimation;
-		protected EntityStats Stats;
+		protected Rigidbody2D RigidBodyInstance;
 
-		public bool IsDead => Stats.Health <= 0;
+		public bool IsDead => stats.Health <= 0;
 
 		private void Awake()
 		{
@@ -29,7 +32,7 @@ namespace Resources.Scripts.Entity
 		private void InitEntity()
 		{
 			RigidBodyInstance = GetComponent<Rigidbody2D>();
-			Stats = GetComponent<EntityStats>();
+			stats = GetComponent<EntityStats>();
 		}
 		
 		private void InitAnimations()
@@ -45,35 +48,57 @@ namespace Resources.Scripts.Entity
             // if (isImmortal || isRolling || IsDead || drawingManager.IsDrawing || playerStats.TryEvade(transform.position))
             //     return;
 
-            Stats.Health -= from.Stats.Damage;
+            stats.Health -= from.stats.Damage;
             ApplyDamageFlash();
-            ApplyPush((transform.position - from.transform.position) * from.Stats.PushDistance);
+            ApplyPush((transform.position - from.transform.position) * from.stats.PushDistance);
             
-            if (Stats.Health <= 0) Die();
+            if (stats.Health <= 0) Die();
         }
         
-        #region Damage and Evasion
+        #region Other Effects
+		public void ApplyPush(Vector2 force) => RigidBodyInstance.AddForce(force, ForceMode2D.Impulse);
+        public void ApplyDash(Transform from) => transform.Translate((transform.position - from.position).normalized);
+        public void ApplySlow(float factor, float duration) => StartCoroutine(MoveSpeedEffect(factor, duration));
+        public void ApplySpeedBoost(float factor, float duration) => StartCoroutine(MoveSpeedEffect(factor, duration));
+        public void ApplyStun(float duration) => StartCoroutine(MoveSpeedEffect(0f, duration));
         private void ApplyDamageFlash() => StartCoroutine(DamageFlash());
+        
+        private IEnumerator MoveSpeedEffect(float factor, float duration)
+        {
+            var baseSlow = stats.SlowMultiplier;
+            stats.SlowMultiplier = factor;
+            yield return new WaitForSeconds(duration);
+            stats.SlowMultiplier = baseSlow;
+        }
+        
         private IEnumerator DamageFlash()
         {
             skeleton.SetColor(damageFlashColor);
             yield return new WaitForSeconds(damageFlashDuration);
             skeleton.SetColor(Color.white);
         }
-        #endregion
 
-        #region Other Effects
-		public void ApplyPush(Vector2 force) => RigidBodyInstance.AddForce(force, ForceMode2D.Impulse);
-        public void ApplyDash(Transform from) => transform.Translate((transform.position - from.position).normalized);
-        public void ApplySlow(float factor, float duration) => StartCoroutine(SlowEffect(factor, duration));
-        public void ApplyStun(float duration) => StartCoroutine(SlowEffect(0f, duration));
-        
-        private IEnumerator SlowEffect(float factor, float duration)
+        #endregion
+		
+        #region Animations
+        protected void PlayAnimation<T>(
+	        SerializedDictionary<T, string> animations,
+	        T newAnimation,
+	        bool loop = false
+	        ) where T : IConvertible
         {
-            var baseSlow = Stats.SlowMultiplier;
-            Stats.SlowMultiplier = factor;
-            yield return new WaitForSeconds(duration);
-            Stats.SlowMultiplier = baseSlow;
+            SkeletonAnimation.state.SetAnimation(0, animations[newAnimation], loop);
+        }
+
+        protected T GetCurrentAnimation<T>(SerializedDictionary<T, string> animations) where T : IConvertible
+        {
+            var currentName = SkeletonAnimation.state.GetCurrent(0).Animation.Name;
+            return GetAnimationByName(animations, currentName);
+        }
+
+        protected T GetAnimationByName<T>(SerializedDictionary<T, string> animations, string animName) where T : IConvertible
+        {
+            return animations.FirstOrDefault(pair => pair.Value == animName).Key;
         }
         #endregion
         

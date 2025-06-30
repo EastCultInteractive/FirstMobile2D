@@ -19,7 +19,7 @@ namespace Resources.Scripts.Labyrinth
                 PlayerController player = other.GetComponent<PlayerController>();
                 if (player != null)
                 {
-                    player.Stun(stunDuration);
+                    player.ApplyStun(stunDuration);
                 }
                 Destroy(gameObject);
             }

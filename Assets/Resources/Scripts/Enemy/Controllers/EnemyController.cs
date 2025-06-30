@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
@@ -13,9 +15,10 @@ namespace Resources.Scripts.Enemy.Controllers
     [RequireComponent(typeof(Rigidbody2D))]
     public class EnemyController : EntityController
     {
+
         [Header("Animations")] [SerializeField]
         private SerializedDictionary<EnemyAnimationName, string> animations;
-
+        
         [Header("Detection & Obstacles")] [SerializeField]
         private LayerMask obstacleMask;
 
@@ -28,20 +31,22 @@ namespace Resources.Scripts.Enemy.Controllers
         private List<Vector3> currentPath = new();
         private int pathIndex;
 
-        private Vector3 moveGoal = Vector3.zero;
+        private Vector3 moveDirection = Vector3.zero;
+        private EnemyStatsHandler enemyStats;
 
 
-        #region Initialization Flow
         private void Start()
         {
             InitEnemy();
             InitAnimations();
             InitLabyrinthField();
+            InitTimers();
         }
-
+        
+        #region Initialization Flow
         private void InitEnemy()
         {
-            Stats = GetComponent<EnemyStatsHandler>();
+            enemyStats = GetComponent<EnemyStatsHandler>();
             var player = GameObject.FindGameObjectWithTag("Player");
             if (player != null) Player = player.GetComponent<PlayerController>();
         }
@@ -49,44 +54,59 @@ namespace Resources.Scripts.Enemy.Controllers
         private void InitAnimations()
         {
             SkeletonAnimation.state.Complete += HandleAnimationComplete;
-            PlayAnimation(EnemyAnimationName.Idle, true);
         }
 
         private void InitLabyrinthField()
         {
             labField = LabyrinthGeneratorWithWalls.CurrentField;
         }
+
+        private void InitTimers()
+        {
+            StartCoroutine(ResetMoveDirectionTimer());
+        }
         #endregion
         
-        #region UpdateFlow
         private void Update()
         {
-            var distance = Vector3.Distance(transform.position, Player.transform.position);
-            var sees = distance <= Stats.DetectionRange;
-            
+            var distance = 0f;
+            var sees = false;
+
+            if (Player)
+            {
+                distance = Vector3.Distance(transform.position, Player.transform.position);
+                sees = distance <= enemyStats.DetectionRange;
+            }
+
             UpdateAttack(distance);
-            UpdateRoam(out moveGoal);
-            UpdateChase(sees, out moveGoal);
-            UpdateMove();
+            UpdateRoam(out moveDirection);
+            UpdateChase(sees, out moveDirection);
         }
 
-        private void UpdateRoam(out Vector3 goal)
+        private void FixedUpdate()
         {
-            goal = moveGoal;
-            if (moveGoal != Vector3.zero) return;
+            UpdateMove();
+            UpdateAnimations();
+        }
 
-            goal = labField == null ? RoamArena() : PatrolLabyrinth();
+        #region UpdateFlow
+        private void UpdateRoam(out Vector3 direction)
+        {
+            direction = moveDirection;
+            if (moveDirection != Vector3.zero) return;
+
+            direction = labField == null ? RoamArena() : PatrolLabyrinth();
         }
 
         private void UpdateAttack(float distance)
         {
-            if (distance <= attackRange) return;
-            PlayAnimation(EnemyAnimationName.Attack, false);
+            if (distance <= attackRange || !Player) return;
+            PlayAnimation(animations, EnemyAnimationName.Attack);
         }
 
         private void UpdateChase(bool sees, out Vector3 goal)
         {
-            goal = moveGoal;
+            goal = moveDirection;
             if (!sees) return;
             
             goal = ChaseBehavior();
@@ -94,14 +114,15 @@ namespace Resources.Scripts.Enemy.Controllers
 
         private void UpdateMove()
         {
-            if (moveGoal == Vector3.zero) return;
-            
-            var speed = Stats.MovementSpeed * Stats.SlowMultiplier;
-            transform.position = Vector3.MoveTowards(transform.position, moveGoal, speed * Time.deltaTime);
-            TurnToTarget(moveGoal);
-            
-            if (moveGoal == transform.position)
-                moveGoal = Vector3.zero;
+            var speed = enemyStats.MovementSpeed * enemyStats.SlowMultiplier;
+            RigidBodyInstance.linearVelocity = moveDirection * (speed * Time.deltaTime);
+            Debug.Log(moveDirection);
+        }
+
+        private void UpdateAnimations()
+        {
+            if (GetCurrentVelocity() > 0f) PlayAnimation(animations, EnemyAnimationName.Walk);
+            else if (Mathf.Approximately(RigidBodyInstance.linearVelocity.magnitude, 0f)) PlayAnimation(animations, EnemyAnimationName.Idle);
         }
         #endregion
         
@@ -112,6 +133,11 @@ namespace Resources.Scripts.Enemy.Controllers
             var roamDirection = new Vector2(Mathf.Cos(dirAngle), Mathf.Sin(dirAngle)).normalized * Random.Range(0f, 10f);
             var goal = roamDirection * transform.position;
             return goal;
+        }
+
+        private float GetCurrentVelocity()
+        {
+            return RigidBodyInstance.linearVelocity.magnitude;
         }
 
         private Vector3 PatrolLabyrinth()
@@ -135,8 +161,6 @@ namespace Resources.Scripts.Enemy.Controllers
             var cells = labField.FindPath(from, to);
             currentPath = labField.PathToWorld(cells);
             pathIndex = 0;
-
-            PlayAnimation(EnemyAnimationName.Walk, true);
         }
 
         private Vector3 FollowPath()
@@ -170,33 +194,10 @@ namespace Resources.Scripts.Enemy.Controllers
             return FollowPath();
         }
 
-        private TrackEntry PlayAnimation(EnemyAnimationName newAnimation, bool loop)
-        {
-            var currentAnimation = GetCurrentAnimation();
-            return currentAnimation == newAnimation
-                ? null
-                : SkeletonAnimation.state.SetAnimation(0, animations[newAnimation], loop);
-        }
-
-        private EnemyAnimationName GetCurrentAnimation()
-        {
-            var currentName = SkeletonAnimation.state.GetCurrent(0).Animation.Name;
-            return GetAnimationByName(currentName);
-        }
-
-        private EnemyAnimationName GetAnimationByName(string animName)
-        {
-            if (animations[EnemyAnimationName.Idle] == animName) return EnemyAnimationName.Idle;
-            if (animations[EnemyAnimationName.Walk] == animName) return EnemyAnimationName.Walk;
-            if (animations[EnemyAnimationName.Attack] == animName) return EnemyAnimationName.Attack;
-
-            return EnemyAnimationName.Idle;
-        }
 
         private void HandleAnimationComplete(TrackEntry entry)
         {
-            var completedAnimation = GetAnimationByName(entry.Animation.Name);
-            
+            var completedAnimation = GetAnimationByName(animations, entry.Animation.Name);
             if (completedAnimation == EnemyAnimationName.Attack) PerformAttack();
         }
 
@@ -221,6 +222,15 @@ namespace Resources.Scripts.Enemy.Controllers
         protected virtual void PerformAttack()
         {
             
+        }
+
+        private IEnumerator ResetMoveDirectionTimer()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(Random.Range(3f, 6f));
+                moveDirection = Vector3.zero;
+            }
         }
     }
 }
