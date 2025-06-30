@@ -1,6 +1,5 @@
 using UnityEngine;
-using System.Collections;
-using Resources.Scripts.Enemy.Enum;
+using Random = UnityEngine.Random;
 
 namespace Resources.Scripts.Enemy.Controllers
 {
@@ -19,40 +18,12 @@ namespace Resources.Scripts.Enemy.Controllers
         [SerializeField] private float projectileSpreadAngle;
         [SerializeField] private Vector3 projectileScale = Vector3.one;
 
-        protected override void OnAdjustAttackCooldown(float animationDuration)
+        protected override void PerformAttack()
         {
-            rangedAttackCooldown = Mathf.Max(rangedAttackCooldown, animationDuration);
-        }
-
-        protected override bool CanAttack(float distanceToPlayer)
-        {
-            return distanceToPlayer <= attackRange && HasLineOfSight();
-        }
-
-        protected override void AttemptAttack()
-        {
-            if (IsAttacking) return;
-
-            var since = Time.time - LastAttackTime;
-            if (since >= rangedAttackCooldown)
-                StartCoroutine(PerformRangedAttack());
-        }
-
-        private IEnumerator PerformRangedAttack()
-        {
-            IsAttacking = true;
-            LastAttackTime = Time.time;
-
-            var track = PlayAnimation(EnemyAnimationName.Attack, false);
-            yield return new WaitForSeconds(projectileSpawnDelay);
-
-            if (Player && !Player.IsDead && HasLineOfSight())
-                SpawnProjectile();
-
-            var remaining = Mathf.Max(0f, track.Animation.Duration - projectileSpawnDelay);
-            yield return new WaitForSeconds(remaining);
-
-            IsAttacking = false;
+            base.PerformAttack();
+            if (!Player) return;
+            
+            SpawnProjectile();
         }
 
         private void SpawnProjectile()

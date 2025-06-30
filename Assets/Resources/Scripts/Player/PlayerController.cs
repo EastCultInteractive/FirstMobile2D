@@ -16,12 +16,6 @@ using Resources.Scripts.SpellMode;
 
 namespace Resources.Scripts.Player
 {
-    /// <summary>
-    /// Controls player movement, light, animation, dodge roll, evasion and traps.
-    /// Uses Spine animation instead of Unity Animator / SpriteRenderer.
-    /// When damaged, player briefly flashes red.
-    /// Добавлен «ветровой» эффект от ушей и ног при беге с помощью ParticleSystem.
-    /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : EntityController
     {
@@ -55,10 +49,6 @@ namespace Resources.Scripts.Player
         [Header("Player Settings")]
         public bool isImmortal;
 
-        [Header("Animation Settings")]
-        [Tooltip("Ссылка на Spine SkeletonAnimation (дочерний объект)")]
-        [SerializeField] private SkeletonAnimation skeletonAnimation;
-
         [Header("Dodge Roll Settings")]
         [SerializeField, Tooltip("Дальность кувырка (в единицах Unity)")]
         private float rollDistance = 6f;
@@ -67,12 +57,6 @@ namespace Resources.Scripts.Player
         [SerializeField, Tooltip("Множитель скорости движения при кувырке (1 = стандартная скорость)"), Range(0.1f, 3f)]
         private float rollSpeedMultiplier = 1f;
 
-        [Header("Damage Flash Settings")]
-        [Tooltip("Цвет мигания при получении урона")]
-        [SerializeField] private Color flashColor = Color.red;
-        [Tooltip("Длительность мигания (секунд)")]
-        [SerializeField, Range(0.05f, 1f)] private float flashDuration = 0.3f;
-
         [Header("Drawing Mode Settings")]
         [Tooltip("Макс. время рисования, с.")]
         [SerializeField, Range(0.1f, 10f)] private float maxDrawingTime = 5f;
@@ -80,13 +64,10 @@ namespace Resources.Scripts.Player
         #region Public Events & Properties
         public event Action<float> OnRollCooldownChanged;
         public float RollCooldownDuration => rollCooldown;
-        public bool IsDead { get; private set; }
         #endregion
 
         #region Private Fields
         private PlayerStatsHandler playerStats;
-        private float currentSlowMultiplier = 1f;
-        private Coroutine slowCoroutine;
         private bool bonusActive;
 
         private Vector2 lastMoveDirection = Vector2.left;
@@ -99,12 +80,8 @@ namespace Resources.Scripts.Player
         private float initialScaleX;
 
         // Rigidbody2D и ввод
-        private Rigidbody2D rb;
         private Vector2 moveInput;
         private Vector2 inputSmoothVelocity;
-
-        // Для светового флеша урона
-        private Coroutine flashCoroutine;
 
         // Для расчета светового эффекта финиша
         private float initialDistance = -1f;
@@ -115,25 +92,14 @@ namespace Resources.Scripts.Player
         #region Unity Methods
         private void Awake()
         {
-            rb = GetComponent<Rigidbody2D>();
-            rb.gravityScale = 0f;
-            rb.freezeRotation = true;
-            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+            RigidBodyInstance.gravityScale = 0f;
+            RigidBodyInstance.freezeRotation = true;
+            RigidBodyInstance.interpolation = RigidbodyInterpolation2D.Interpolate;
             
             drawingManager = GetComponent<DrawingManager>();
 
-            if (skeletonAnimation == null)
-                skeletonAnimation = GetComponentInChildren<SkeletonAnimation>();
-            if (skeletonAnimation == null)
-            {
-                Debug.LogError("PlayerController: SkeletonAnimation не назначен", this);
-                return;
-            }
-
-            initialScaleX = skeletonAnimation.Skeleton.ScaleX;
-            skeletonAnimation.state.Complete += HandleAnimationComplete;
-            var anim = skeletonAnimation.Skeleton.Data.FindAnimation(animations[PlayerAnimationName.Jump]);
-            rollDuration = anim?.Duration ?? 0.3f;
+            initialScaleX = SkeletonAnimation.Skeleton.ScaleX;
+            SkeletonAnimation.state.Complete += HandleAnimationComplete;
         }
 
         private void Start()
@@ -187,9 +153,9 @@ namespace Resources.Scripts.Player
         {
             if (IsDead) return;
             if (isRolling || LabyrinthMapController.Instance?.IsMapActive == true) return;
-            var spd = playerStats.GetTotalMoveSpeed() * currentSlowMultiplier;
+            var spd = Stats.MovementSpeed * Stats.SlowMultiplier;
             var delta = moveInput.normalized * (spd * Time.fixedDeltaTime);
-            rb.MovePosition(rb.position + delta);
+            RigidBodyInstance.MovePosition(RigidBodyInstance.position + delta);
         }
         #endregion
 
@@ -218,7 +184,7 @@ namespace Resources.Scripts.Player
             }
 
             if (Mathf.Abs(dir.x) > 0.01f)
-                skeletonAnimation.Skeleton.ScaleX = Mathf.Abs(initialScaleX) * -Mathf.Sign(dir.x);
+                SkeletonAnimation.Skeleton.ScaleX = Mathf.Abs(initialScaleX) * -Mathf.Sign(dir.x);
         }
         #endregion
 
@@ -240,13 +206,13 @@ namespace Resources.Scripts.Player
 
             var baseSpeed = rollDistance / rollDuration;
             var effectiveRollSpeed = baseSpeed * rollSpeedMultiplier;
-            rb.linearVelocity = Vector2.zero;
+            RigidBodyInstance.linearVelocity = Vector2.zero;
 
             var elapsed = 0f;
             while (elapsed < rollDuration)
             {
                 var step = lastMoveDirection * (effectiveRollSpeed * Time.deltaTime);
-                rb.MovePosition(rb.position + step);
+                RigidBodyInstance.MovePosition(RigidBodyInstance.position + step);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
@@ -287,64 +253,7 @@ namespace Resources.Scripts.Player
         }
         #endregion
 
-        #region Damage and Evasion
-
-        private IEnumerator DamageFlash()
-        {
-            if (flashCoroutine != null) yield break;
-            flashCoroutine = StartCoroutine(_DamageFlash());
-            yield return flashCoroutine;
-        }
-
-        private IEnumerator _DamageFlash()
-        {
-            var skel = skeletonAnimation.Skeleton;
-            var orig = skel.GetColor();
-            skel.SetColor(new Color(flashColor.r, flashColor.g, flashColor.b, flashColor.a));
-            yield return new WaitForSeconds(flashDuration);
-            skel.SetColor(orig);
-            flashCoroutine = null;
-        }
-
-        /// <summary>
-        /// Единый метод получения урона от любого врага.
-        /// </summary>
-        #endregion
-
         #region Other Effects
-        public void ApplySlow(float factor, float duration)
-        {
-            if (slowCoroutine != null) StopCoroutine(slowCoroutine);
-            slowCoroutine = StartCoroutine(SlowCoroutine(factor, duration));
-        }
-        private IEnumerator SlowCoroutine(float factor, float duration)
-        {
-            currentSlowMultiplier = factor;
-            yield return new WaitForSeconds(duration);
-            currentSlowMultiplier = 1f;
-        }
-        public void ApplyBinding(float duration) => StartCoroutine(BindingCoroutine(duration));
-        private IEnumerator BindingCoroutine(float duration)
-        {
-            var orig = currentSlowMultiplier;
-            currentSlowMultiplier = 0f;
-            yield return new WaitForSeconds(duration);
-            currentSlowMultiplier = orig;
-        }
-        public void ApplyPush(Vector2 force)
-        {
-            var rb = GetComponent<Rigidbody2D>();
-            if (rb != null)
-                rb.AddForce(force, ForceMode2D.Impulse);
-        }
-        public void Stun(float duration) => StartCoroutine(StunCoroutine(duration));
-        private IEnumerator StunCoroutine(float duration)
-        {
-            float orig = currentSlowMultiplier;
-            currentSlowMultiplier = 0f;
-            yield return new WaitForSeconds(duration);
-            currentSlowMultiplier = orig;
-        }
         public void IncreaseSpeed(float mult)
         {
             if (!bonusActive)
@@ -358,9 +267,8 @@ namespace Resources.Scripts.Player
             playerStats.ResetStats();
             bonusActive = false;
         }
-        private void Die()
+        protected override void Die()
         {
-            IsDead = true;
             PlayAnimation(PlayerAnimationName.Death, false);
         }
         #endregion
@@ -368,9 +276,9 @@ namespace Resources.Scripts.Player
         #region Spine Helper
         private TrackEntry PlayAnimation(PlayerAnimationName animName, bool loop)
         {
-            var current = skeletonAnimation.state.GetCurrent(0);
+            var current = SkeletonAnimation.state.GetCurrent(0);
             if (current?.Animation.Name == animations[animName]) return null;
-            return skeletonAnimation.state.SetAnimation(0, animations[animName], loop);
+            return SkeletonAnimation.state.SetAnimation(0, animations[animName], loop);
         }
         private void HandleAnimationComplete(TrackEntry entry)
         {

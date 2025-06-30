@@ -49,23 +49,6 @@ namespace Resources.Scripts.Player
         private float defaultMaxMana, defaultManaRegenDelay, defaultBaseMoveSpeed,
                       defaultEvasionChance, defaultBasePullRange;
 
-        private void Awake()
-        {
-            // Сохраняем исходные значения
-            defaultMaxMana            = maxMana;
-            defaultManaRegenDelay     = manaRegenDelayAfterSpell;
-            defaultManaRegenRate      = manaRegenRate;
-            defaultBaseMoveSpeed      = baseMoveSpeed;
-            defaultEvasionChance      = baseEvasionChance;
-            defaultBasePullRange      = basePullRange;
-
-            // Устанавливаем текущее здоровье и ману в максимум
-            health = maxHealth;
-            currentMana = maxMana;
-
-            UpdateCurrentMoveSpeed();
-        }
-
         private void Update()
         {
             if (manaRegenDelayTimer > 0f)
@@ -84,18 +67,12 @@ namespace Resources.Scripts.Player
             currentMana = Mathf.Min(currentMana + manaRegenRate * Time.deltaTime, maxMana);
         }
 
-        /// <summary>
-        /// Потребление маны. Возвращает true, если мана списана успешно.
-        /// </summary>
         public bool UseMana(float amount)
         {
-            if (currentMana >= amount)
-            {
-                currentMana -= amount;
-                manaRegenDelayTimer = manaRegenDelayAfterSpell;
-                return true;
-            }
-            return false;
+            if (currentMana < amount) return false;
+            currentMana -= amount;
+            manaRegenDelayTimer = manaRegenDelayAfterSpell;
+            return true;
         }
 
         public void RestoreMana(float amount)
@@ -143,11 +120,6 @@ namespace Resources.Scripts.Player
         public float PullRange => basePullRange * (1f + pullRangePercentBonus / 100f);
         public float CurrentMana => currentMana;
         public float MaxMana => maxMana;
-
-        /// <summary>
-        /// Для PlayerController: возвращает итоговую скорость.
-        /// </summary>
-        public float GetTotalMoveSpeed() => currentMoveSpeed;
 
         /// <summary>
         /// Проверяет, удалось ли уклониться от атаки.

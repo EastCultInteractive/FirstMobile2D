@@ -1,65 +1,42 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using Spine;
-using Spine.Unity;
 using Resources.Scripts.Player;
 using Resources.Scripts.Labyrinth;
 using Resources.Scripts.Enemy.Enum;
 using Resources.Scripts.Entity;
+using Random = UnityEngine.Random;
 
 namespace Resources.Scripts.Enemy.Controllers
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class EnemyController : EntityController
     {
-        [Header("Common Settings")] [SerializeField]
-        private string enemyName = "Enemy";
-
         [Header("Animations")] [SerializeField]
         private SerializedDictionary<EnemyAnimationName, string> animations;
-
-        [Header("Patrol Settings (Labyrinth)")] [SerializeField]
-        private float patrolRadius = 3f;
-
-        [SerializeField] private float patrolSpeedMultiplier = 0.5f;
 
         [Header("Detection & Obstacles")] [SerializeField]
         private LayerMask obstacleMask;
 
-        [Header("Push Settings")] [Tooltip("Если true, при ударе игрок будет отталкиваться")] [SerializeField]
-        private bool pushPlayer = true;
-
+        [Header("Attack Settings")]
+        [SerializeField] private float attackRange = 1f;
 
         protected PlayerController Player;
-
-        protected float LastAttackTime;
-        protected bool IsAttacking;
-
-        private bool isChasing;
-
-        private BoxCollider2D attackZoneCollider;
 
         private LabyrinthField labField;
         private List<Vector3> currentPath = new();
         private int pathIndex;
 
-        private Vector2 roamDirection;
-        private float roamTimeRemaining;
+        private Vector3 moveGoal = Vector3.zero;
 
-        protected EnemyStatsHandler Stats;
-        protected SkeletonAnimation SkeletonAnimation;
 
-        #region Initialization
+        #region Initialization Flow
         private void Start()
         {
-
-            labField = LabyrinthGeneratorWithWalls.CurrentField;
-            roamTimeRemaining = 0f;
-
             InitEnemy();
             InitAnimations();
+            InitLabyrinthField();
         }
 
         private void InitEnemy()
@@ -67,90 +44,78 @@ namespace Resources.Scripts.Enemy.Controllers
             Stats = GetComponent<EnemyStatsHandler>();
             var player = GameObject.FindGameObjectWithTag("Player");
             if (player != null) Player = player.GetComponent<PlayerController>();
-
-            var zoneTransform = transform.Find("AttackZoneCollider");
-            attackZoneCollider = zoneTransform.GetComponent<BoxCollider2D>();
         }
 
         private void InitAnimations()
         {
-            var spineChild = transform.Find("SpineVisual");
-            SkeletonAnimation = spineChild.GetComponent<SkeletonAnimation>();
             SkeletonAnimation.state.Complete += HandleAnimationComplete;
             PlayAnimation(EnemyAnimationName.Idle, true);
         }
-        #endregion
 
+        private void InitLabyrinthField()
+        {
+            labField = LabyrinthGeneratorWithWalls.CurrentField;
+        }
+        #endregion
+        
+        #region UpdateFlow
         private void Update()
         {
-            if (!Player || Player.IsDead)
-            {
-                IsAttacking = false;
-                isChasing = false;
-
-                if (labField != null) PatrolLabyrinth();
-                else RoamArena();
-
-                return;
-            }
-
-            var dist = Vector3.Distance(transform.position, Player.transform.position);
-            var sees = dist <= Stats.DetectionRange;
-
-            if (sees && CanAttack(dist))
-            {
-                AttemptAttack();
-                return;
-            }
-
-            IsAttacking = false;
-
-            if (sees)
-            {
-                ChaseBehavior(dist);
-            }
-            else
-            {
-                isChasing = false;
-
-                if (labField != null) PatrolLabyrinth();
-                else RoamArena();
-            }
+            var distance = Vector3.Distance(transform.position, Player.transform.position);
+            var sees = distance <= Stats.DetectionRange;
+            
+            UpdateAttack(distance);
+            UpdateRoam(out moveGoal);
+            UpdateChase(sees, out moveGoal);
+            UpdateMove();
         }
 
-        private void OnTriggerStay2D(Collider2D other)
+        private void UpdateRoam(out Vector3 goal)
         {
-            if (Player == null || Player.IsDead) return;
+            goal = moveGoal;
+            if (moveGoal != Vector3.zero) return;
 
-            if (other == attackZoneCollider && other.CompareTag("Player"))
-                AttemptAttack();
+            goal = labField == null ? RoamArena() : PatrolLabyrinth();
         }
 
-        private void RoamArena()
+        private void UpdateAttack(float distance)
         {
-            if (IsAttacking) return;
+            if (distance <= attackRange) return;
+            PlayAnimation(EnemyAnimationName.Attack, false);
+        }
 
-            if (roamTimeRemaining <= 0f)
-            {
-                var a = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-                roamDirection = new Vector2(Mathf.Cos(a), Mathf.Sin(a)).normalized;
-                roamTimeRemaining = Random.Range(2f, 5f);
+        private void UpdateChase(bool sees, out Vector3 goal)
+        {
+            goal = moveGoal;
+            if (!sees) return;
+            
+            goal = ChaseBehavior();
+        }
 
-                PlayAnimation(EnemyAnimationName.Walk, true);
-            }
-
-            roamTimeRemaining -= Time.deltaTime;
+        private void UpdateMove()
+        {
+            if (moveGoal == Vector3.zero) return;
+            
             var speed = Stats.MovementSpeed * Stats.SlowMultiplier;
-            var move = new Vector3(roamDirection.x, roamDirection.y, 0f) * (speed * Time.deltaTime);
-
-            transform.position += move;
-            TurnToTarget(move);
+            transform.position = Vector3.MoveTowards(transform.position, moveGoal, speed * Time.deltaTime);
+            TurnToTarget(moveGoal);
+            
+            if (moveGoal == transform.position)
+                moveGoal = Vector3.zero;
+        }
+        #endregion
+        
+        
+        private Vector3 RoamArena()
+        {
+            var dirAngle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+            var roamDirection = new Vector2(Mathf.Cos(dirAngle), Mathf.Sin(dirAngle)).normalized * Random.Range(0f, 10f);
+            var goal = roamDirection * transform.position;
+            return goal;
         }
 
-        private void PatrolLabyrinth()
+        private Vector3 PatrolLabyrinth()
         {
-            if (IsAttacking) return;
-
             if (currentPath.Count == 0 || pathIndex >= currentPath.Count)
             {
                 var from = WorldToCell(transform.position);
@@ -162,7 +127,7 @@ namespace Resources.Scripts.Enemy.Controllers
                 BuildPath(from, to);
             }
 
-            FollowPath();
+            return FollowPath();
         }
 
         private void BuildPath(Vector2Int from, Vector2Int to)
@@ -174,121 +139,88 @@ namespace Resources.Scripts.Enemy.Controllers
             PlayAnimation(EnemyAnimationName.Walk, true);
         }
 
-        private void FollowPath()
+        private Vector3 FollowPath()
         {
             if (pathIndex >= currentPath.Count)
             {
                 currentPath.Clear();
-                PlayAnimation(EnemyAnimationName.Idle, true);
-                return;
+                return Vector3.zero;
             }
 
             var goal = currentPath[pathIndex];
-            var dir = (goal - transform.position).normalized;
-
-            TurnToTarget(dir);
-
-            var speed = Stats.MovementSpeed * Stats.SlowMultiplier;
-            transform.position = Vector3.MoveTowards(transform.position, goal, speed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, goal) < 0.05f)
                 pathIndex++;
+            
+            return goal;
         }
 
         private Vector2Int WorldToCell(Vector3 w) =>
-            new Vector2Int(
+            new(
                 Mathf.RoundToInt(-w.y / labField.CellSizeY),
                 Mathf.RoundToInt(w.x / labField.CellSizeX)
             );
 
-        private void ChaseBehavior(float dist)
+        private Vector3 ChaseBehavior()
         {
-            if (!isChasing)
-            {
-                isChasing = true;
-                OnStartChase();
-            }
-
-            if (labField != null)
-            {
-                if (pathIndex >= currentPath.Count)
-                    BuildPath(WorldToCell(transform.position), WorldToCell(Player.transform.position));
-                FollowPath();
-            }
-            else
-            {
-                var dir = (Player.transform.position - transform.position).normalized;
-                TurnToTarget(dir);
-
-                var speed = Stats.MovementSpeed * Stats.SlowMultiplier;
-                transform.position = Vector3.MoveTowards(
-                    transform.position,
-                    Player.transform.position,
-                    speed * Time.deltaTime
-                );
-
-                PlayAnimation(EnemyAnimationName.Walk, true);
-            }
+            if (labField == null) return Player.transform.position;
+            if (pathIndex >= currentPath.Count)
+                BuildPath(WorldToCell(transform.position), WorldToCell(Player.transform.position));
+            
+            return FollowPath();
         }
 
-        protected TrackEntry PlayAnimation(EnemyAnimationName animName, bool loop)
+        private TrackEntry PlayAnimation(EnemyAnimationName newAnimation, bool loop)
         {
-            var current = SkeletonAnimation.state.GetCurrent(0);
-            return current?.Animation.Name == animations[animName]
+            var currentAnimation = GetCurrentAnimation();
+            return currentAnimation == newAnimation
                 ? null
-                : SkeletonAnimation.state.SetAnimation(0, animations[animName], loop);
+                : SkeletonAnimation.state.SetAnimation(0, animations[newAnimation], loop);
+        }
+
+        private EnemyAnimationName GetCurrentAnimation()
+        {
+            var currentName = SkeletonAnimation.state.GetCurrent(0).Animation.Name;
+            return GetAnimationByName(currentName);
+        }
+
+        private EnemyAnimationName GetAnimationByName(string animName)
+        {
+            if (animations[EnemyAnimationName.Idle] == animName) return EnemyAnimationName.Idle;
+            if (animations[EnemyAnimationName.Walk] == animName) return EnemyAnimationName.Walk;
+            if (animations[EnemyAnimationName.Attack] == animName) return EnemyAnimationName.Attack;
+
+            return EnemyAnimationName.Idle;
         }
 
         private void HandleAnimationComplete(TrackEntry entry)
         {
-            if (!entry.Loop)
-                PlayAnimation(EnemyAnimationName.Idle, true);
-        }
-
-        public void ApplySlow(float factor, float duration)
-        {
-            StopAllCoroutines();
-            StartCoroutine(SlowEffect(factor, duration));
-        }
-        
-        private IEnumerator SlowEffect(float factor, float duration)
-        {
-            Stats.SetSlowMultiplier(factor);
-            yield return new WaitForSeconds(duration);
-            Stats.ResetSlowMultiplier();
+            var completedAnimation = GetAnimationByName(entry.Animation.Name);
+            
+            if (completedAnimation == EnemyAnimationName.Attack) PerformAttack();
         }
 
         protected bool HasLineOfSight()
         {
             if (!Player) return false;
 
-            var origin = attackZoneCollider.transform.position;
+            var origin = transform.position;
             var dir = (Player.transform.position - origin).normalized;
             var dist = Vector3.Distance(origin, Player.transform.position);
 
             return !Physics2D.Raycast(origin, dir, dist, obstacleMask).collider;
         }
 
-        private void TurnToTarget(Vector3 dir) =>
-            transform.eulerAngles = dir.x < 0f
+        private void TurnToTarget(Vector3 target)
+        {
+            transform.eulerAngles = (target - transform.position).x < 0f
                 ? Vector3.zero
                 : new Vector3(0f, 180f, 0f);
-
-        protected virtual bool CanAttack(float distanceToPlayer)
-        {
-            return false;
         }
 
-        protected virtual void AttemptAttack()
+        protected virtual void PerformAttack()
         {
             
         }
-
-        protected virtual void OnAdjustAttackCooldown(float animationDuration)
-        {   
-            
-        }
-        protected virtual void OnStartChase() { }
-        public bool PushPlayer => pushPlayer;
     }
 }

@@ -41,14 +41,12 @@ namespace Resources.Scripts.Enemy
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.CompareTag("Player"))
-            {
-                var player = collision.GetComponent<PlayerController>();
-                if (player != null && !player.IsDead)
-                    player.ApplyBinding(bindingDuration);
-                Destroy(gameObject);
-                return;
-            }
+            if (!collision.CompareTag("Player")) return;
+            
+            var player = collision.GetComponent<PlayerController>();
+            if (player != null && !player.IsDead)
+                player.ApplyStun(bindingDuration);
+            Destroy(gameObject);
         }
     }
 }
