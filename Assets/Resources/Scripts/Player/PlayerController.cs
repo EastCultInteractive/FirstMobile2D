@@ -131,6 +131,8 @@ namespace Resources.Scripts.Player
 
             if (Mathf.Abs(dir.x) > 0.01f)
                 SkeletonAnimation.Skeleton.ScaleX = Mathf.Abs(initialScaleX) * -Mathf.Sign(dir.x);
+            
+            TurnToDirection(dir);
         }
         #endregion
 

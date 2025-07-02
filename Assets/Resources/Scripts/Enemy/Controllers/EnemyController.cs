@@ -35,18 +35,25 @@ namespace Resources.Scripts.Enemy.Controllers
         private EnemyStatsHandler enemyStats;
 
 
+
         private void Start()
         {
             InitEnemy();
             InitAnimations();
             InitLabyrinthField();
-            InitTimers();
+            InitCoroutines();
+            
+            // Добавляем настройки физики
+            RigidBodyInstance.linearDamping = 5f; // Настройте значение
+            RigidBodyInstance.angularDamping = 5f; // Настройте значение
+            RigidBodyInstance.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
         
         #region Initialization Flow
         private void InitEnemy()
         {
             enemyStats = GetComponent<EnemyStatsHandler>();
+            
             var player = GameObject.FindGameObjectWithTag("Player");
             if (player != null) Player = player.GetComponent<PlayerController>();
         }
@@ -61,7 +68,7 @@ namespace Resources.Scripts.Enemy.Controllers
             labField = LabyrinthGeneratorWithWalls.CurrentField;
         }
 
-        private void InitTimers()
+        private void InitCoroutines()
         {
             StartCoroutine(ResetMoveDirectionTimer());
         }
@@ -104,25 +111,31 @@ namespace Resources.Scripts.Enemy.Controllers
             PlayAnimation(animations, EnemyAnimationName.Attack);
         }
 
-        private void UpdateChase(bool sees, out Vector3 goal)
+        private void UpdateChase(bool sees, out Vector3 direction)
         {
-            goal = moveDirection;
+            direction = moveDirection;
+            if (moveDirection != Vector3.zero) return;
             if (!sees) return;
             
-            goal = ChaseBehavior();
+            direction = ChaseBehavior();
         }
 
         private void UpdateMove()
         {
             var speed = enemyStats.MovementSpeed * enemyStats.SlowMultiplier;
-            RigidBodyInstance.linearVelocity = moveDirection * (speed * Time.deltaTime);
-            Debug.Log(moveDirection);
+            
+            RigidBodyInstance.AddForce(moveDirection.normalized * (speed * Time.deltaTime), ForceMode2D.Force);
+            TurnToDirection(moveDirection);
+            
+            UpdateAnimationSpeed(GetCurrentVelocity());
+            
+            Debug.Log(RigidBodyInstance.linearVelocity.sqrMagnitude);
         }
 
         private void UpdateAnimations()
         {
-            if (GetCurrentVelocity() > 0f) PlayAnimation(animations, EnemyAnimationName.Walk);
-            else if (Mathf.Approximately(RigidBodyInstance.linearVelocity.magnitude, 0f)) PlayAnimation(animations, EnemyAnimationName.Idle);
+            if (GetCurrentVelocity() > 0f) PlayAnimation(animations, EnemyAnimationName.Walk, true);
+            else if (Mathf.Approximately(GetCurrentVelocity(), 0f)) PlayAnimation(animations, EnemyAnimationName.Idle, true);
         }
         #endregion
         
@@ -131,8 +144,7 @@ namespace Resources.Scripts.Enemy.Controllers
         {
             var dirAngle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
             var roamDirection = new Vector2(Mathf.Cos(dirAngle), Mathf.Sin(dirAngle)).normalized * Random.Range(0f, 10f);
-            var goal = roamDirection * transform.position;
-            return goal;
+            return roamDirection;
         }
 
         private float GetCurrentVelocity()
@@ -210,13 +222,6 @@ namespace Resources.Scripts.Enemy.Controllers
             var dist = Vector3.Distance(origin, Player.transform.position);
 
             return !Physics2D.Raycast(origin, dir, dist, obstacleMask).collider;
-        }
-
-        private void TurnToTarget(Vector3 target)
-        {
-            transform.eulerAngles = (target - transform.position).x < 0f
-                ? Vector3.zero
-                : new Vector3(0f, 180f, 0f);
         }
 
         protected virtual void PerformAttack()

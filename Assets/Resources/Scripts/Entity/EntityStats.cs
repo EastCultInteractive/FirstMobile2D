@@ -15,9 +15,9 @@ namespace Resources.Scripts.Entity
         }
         
         [Header("Movement Stats")]
-        [SerializeField, Range(1, 15)] private int movementSpeed = 1;
+        [SerializeField, Range(10f, 300f)] private float movementSpeed = 15;
         [SerializeField, Range(0.1f, 5f)] private float slowMultiplier = 1f;
-        public int MovementSpeed => movementSpeed;
+        public float MovementSpeed => movementSpeed;
         public float SlowMultiplier
         {
 	        get => slowMultiplier;

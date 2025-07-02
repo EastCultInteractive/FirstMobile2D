@@ -18,6 +18,10 @@ namespace Resources.Scripts.Entity
 		
 		protected SkeletonAnimation SkeletonAnimation;
 		protected Rigidbody2D RigidBodyInstance;
+		
+		private float currentAnimationSpeed;
+		private const float AnimationSmoothing = 5f;
+		private TrackEntry currentTrack;
 
 		public bool IsDead => stats.Health <= 0;
 
@@ -71,6 +75,7 @@ namespace Resources.Scripts.Entity
             stats.SlowMultiplier = baseSlow;
         }
         
+
         private IEnumerator DamageFlash()
         {
             skeleton.SetColor(damageFlashColor);
@@ -87,18 +92,40 @@ namespace Resources.Scripts.Entity
 	        bool loop = false
 	        ) where T : IConvertible
         {
+	        if (newAnimation.Equals(GetCurrentAnimation(animations))) return;
             SkeletonAnimation.state.SetAnimation(0, animations[newAnimation], loop);
         }
 
         protected T GetCurrentAnimation<T>(SerializedDictionary<T, string> animations) where T : IConvertible
         {
-            var currentName = SkeletonAnimation.state.GetCurrent(0).Animation.Name;
-            return GetAnimationByName(animations, currentName);
+	        currentTrack = SkeletonAnimation.state.GetCurrent(0);
+	        return currentTrack == null ? default : GetAnimationByName(animations, currentTrack.Animation.Name);
         }
 
         protected T GetAnimationByName<T>(SerializedDictionary<T, string> animations, string animName) where T : IConvertible
         {
             return animations.FirstOrDefault(pair => pair.Value == animName).Key;
+        }
+
+        
+        protected void UpdateAnimationSpeed(float velocity)
+        {
+	        currentAnimationSpeed = Mathf.Lerp(currentAnimationSpeed, velocity, Time.deltaTime * AnimationSmoothing);
+    
+	        if (currentTrack != null)
+	        {
+		        currentTrack.TimeScale = currentAnimationSpeed;
+	        }
+        }
+        #endregion
+        
+        #region Skeleton
+
+        protected void TurnToDirection(Vector2 direction)
+        {
+	        if (direction.magnitude < 0.1f) return;
+
+	        SkeletonAnimation.Skeleton.ScaleX = -Mathf.Abs(SkeletonAnimation.Skeleton.ScaleX) * Mathf.Sign(direction.x);
         }
         #endregion
         
