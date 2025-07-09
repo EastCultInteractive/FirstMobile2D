@@ -245,7 +245,6 @@ GameObject:
   - component: {fileID: 4174530565647866428}
   - component: {fileID: 683423019107683919}
   - component: {fileID: 2546292044702544691}
-  - component: {fileID: 4208674995813834962}
   m_Layer: 5
   m_Name: TrapButton
   m_TagString: Untagged
@@ -369,16 +368,3 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &4208674995813834962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6827423938382192034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killOnDisable: 1

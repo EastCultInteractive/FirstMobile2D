@@ -273,7 +273,6 @@ GameObject:
   - component: {fileID: 6405704906286953379}
   - component: {fileID: 978189119453306623}
   - component: {fileID: 4120693691353133433}
-  - component: {fileID: 2635541192404333359}
   - component: {fileID: 3379819368328957793}
   m_Layer: 0
   m_Name: Bonus
@@ -413,20 +412,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f05500de5f0f4d94d8d3c76733379bd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedMultiplier: 1.5
---- !u!114 &2635541192404333359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4851787157202972978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killOnDisable: 1
+  multiplier: 1.5
+  duration: 1.5
 --- !u!114 &3379819368328957793
 MonoBehaviour:
   m_ObjectHideFlags: 0

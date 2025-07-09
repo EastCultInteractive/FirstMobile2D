@@ -254,7 +254,6 @@ GameObject:
   - component: {fileID: 634281836380079888}
   - component: {fileID: 7207241283653982740}
   - component: {fileID: 8437135565535939038}
-  - component: {fileID: 5660968033192809300}
   - component: {fileID: 1171146480769530433}
   m_Layer: 0
   m_Name: Goblin
@@ -293,12 +292,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0a4f3f326e94af18fc508688494c82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 3
   health: 10
-  attackSpeedMultiplier: 1
-  movementSpeed: 1
+  maxHealth: 100
+  movementSpeed: 10
   slowMultiplier: 1
+  damage: 3
+  attackSpeedMultiplier: 1
+  pushDistance: 1
   detectionRange: 5
+  patrolRadius: 3
+  patrolSpeedMultiplier: 0.5
 --- !u!70 &7207241283653982740
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -363,19 +366,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &5660968033192809300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7260566827850767976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killOnDisable: 1
 --- !u!114 &1171146480769530433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,7 +378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0137ae567e31fc34293c42fc40650e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyName: "\u0413\u043E\u0431\u043B\u0438\u043D"
+  damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  damageFlashDuration: 0.3
   animations:
     _serializedList:
     - Key: 0
@@ -397,15 +388,10 @@ MonoBehaviour:
       Value: relevant/step
     - Key: 2
       Value: relevant/attack
-  patrolRadius: 3
-  patrolSpeedMultiplier: 0.5
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
-  debugLog: 0
   attackRange: 5
-  rangedAttackCooldown: 2
-  projectileSpawnDelay: 1.8
   bindingDuration: 0.5
   projectilePrefab: {fileID: 6885619361130000166, guid: a76844d27e8692f4c8aac78a21f9329b, type: 3}
   attackPoint: {fileID: 185450234523569990}

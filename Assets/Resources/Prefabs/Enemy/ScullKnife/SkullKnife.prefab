@@ -223,7 +223,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1162642558128745149}
   - component: {fileID: 736454512942791700}
-  - component: {fileID: 3190392342066876204}
   - component: {fileID: 4233255029795141768}
   - component: {fileID: 4548578702858420460}
   - component: {fileID: 2459483376757906055}
@@ -278,19 +277,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &3190392342066876204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5454972267272251233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killOnDisable: 1
 --- !u!114 &4233255029795141768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,12 +289,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0a4f3f326e94af18fc508688494c82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 50
   health: 10
-  attackSpeedMultiplier: 1
-  movementSpeed: 1
+  maxHealth: 100
+  movementSpeed: 10
   slowMultiplier: 1
+  damage: 50
+  attackSpeedMultiplier: 1
+  pushDistance: 1
   detectionRange: 5
+  patrolRadius: 3
+  patrolSpeedMultiplier: 0.5
 --- !u!70 &4548578702858420460
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -358,7 +348,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c84eff7b9c99884e9adcd8d69c11822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyName: "\u0427\u0435\u0440\u0435\u043F-\u043D\u043E\u0436"
+  damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  damageFlashDuration: 0.3
   animations:
     _serializedList:
     - Key: 0
@@ -367,13 +358,7 @@ MonoBehaviour:
       Value: relevant/step
     - Key: 2
       Value: relevant/attack
-  patrolRadius: 3
-  patrolSpeedMultiplier: 0.5
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
-  debugLog: 0
   attackRange: 1
-  attackCooldown: 1
-  pushPlayer: 1
-  pushForceMultiplier: 1

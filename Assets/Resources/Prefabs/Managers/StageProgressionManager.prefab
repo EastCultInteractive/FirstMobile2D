@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3036163794358431572}
   - component: {fileID: 73796394299859957}
-  - component: {fileID: 823892174440187899}
   m_Layer: 0
   m_Name: StageProgressionManager
   m_TagString: Untagged
@@ -62,16 +61,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 07beb31afcf8e1246a6f3e4a030b0c5b, type: 2}
   - {fileID: 11400000, guid: dcb0d548b6b09dd4188293167533230c, type: 2}
   perkSelectionPanelPrefab: {fileID: 5462093637286728995, guid: 95beb444da4fed240812e7f15fea637e, type: 3}
---- !u!114 &823892174440187899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4037594709924466856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killOnDisable: 1
+  gameOverPanelPrefab: {fileID: 0}
+  genericArenaSceneName: Arena
+  genericLabyrinthSceneName: Labyrinth

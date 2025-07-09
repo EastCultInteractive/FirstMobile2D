@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6007042351952422134}
   - component: {fileID: 1078744402894559667}
   - component: {fileID: 2511880358619052396}
-  - component: {fileID: 5999928211428506489}
   m_Layer: 5
   m_Name: EvasionChanceTextPrefab
   m_TagString: Untagged
@@ -76,7 +75,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294947072
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 1
   m_colorMode: 3
@@ -94,7 +93,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 86.7
+  m_fontSize: 25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -152,16 +151,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floatSpeed: 1
   fadeTime: 1
---- !u!114 &5999928211428506489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1084327597910860270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killOnDisable: 1

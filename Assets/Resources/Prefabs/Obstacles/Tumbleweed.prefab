@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4983718023522743742}
   - component: {fileID: 4970918106572484292}
   - component: {fileID: 8396315918700863096}
-  - component: {fileID: 8616512177343028159}
   m_Layer: 3
   m_Name: Tumbleweed
   m_TagString: Untagged
@@ -144,16 +143,3 @@ MonoBehaviour:
   maxLife: 5
   fadeDuration: 1
   spawner: {fileID: 0}
---- !u!114 &8616512177343028159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7568341120262055036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killOnDisable: 1

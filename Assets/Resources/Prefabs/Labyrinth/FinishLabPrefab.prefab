@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4594806537120398100}
   - component: {fileID: 6892452890142312454}
-  - component: {fileID: 8138475943624335242}
   m_Layer: 3
   m_Name: FinishLabPrefab
   m_TagString: Finish
@@ -92,16 +91,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8138475943624335242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5256536322695205851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killOnDisable: 1

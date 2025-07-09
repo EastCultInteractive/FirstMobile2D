@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 4992319543349009509}
   - component: {fileID: 8201399005110109946}
   - component: {fileID: 4565138074813279902}
-  - component: {fileID: 3611851035501289892}
   m_Layer: 9
   m_Name: FairyF
   m_TagString: Fairy
@@ -168,16 +167,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3611851035501289892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6405068590111382987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killOnDisable: 1

@@ -571,7 +571,6 @@ GameObject:
   - component: {fileID: 1340310087968620305}
   - component: {fileID: 1128603667603660967}
   - component: {fileID: 295418846025165573}
-  - component: {fileID: 1108787010729124416}
   m_Layer: 5
   m_Name: PerkSelectionPanelPrefab
   m_TagString: Untagged
@@ -667,19 +666,6 @@ MonoBehaviour:
   - {fileID: 8940933977356223013}
   - {fileID: 817130734922474120}
   - {fileID: 2437114890478706476}
---- !u!114 &1108787010729124416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5462093637286728995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killOnDisable: 1
 --- !u!1 &5565207326979223883
 GameObject:
   m_ObjectHideFlags: 0

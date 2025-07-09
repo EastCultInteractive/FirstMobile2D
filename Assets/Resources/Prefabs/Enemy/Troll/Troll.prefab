@@ -144,7 +144,6 @@ GameObject:
   - component: {fileID: 1120508908474186410}
   - component: {fileID: 2107485059447858585}
   - component: {fileID: 3854974929808578457}
-  - component: {fileID: 3246083616355706857}
   - component: {fileID: 5758792290700784365}
   m_Layer: 0
   m_Name: Troll
@@ -256,19 +255,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &3246083616355706857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6948234551739620505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killOnDisable: 1
 --- !u!114 &5758792290700784365
 MonoBehaviour:
   m_ObjectHideFlags: 0
