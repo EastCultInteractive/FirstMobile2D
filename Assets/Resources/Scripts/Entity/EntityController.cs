@@ -47,17 +47,19 @@ namespace Resources.Scripts.Entity
 		}
 		#endregion
 
-        public void TakeDamage(EntityController from)
-        {
-            // if (isImmortal || isRolling || IsDead || drawingManager.IsDrawing || playerStats.TryEvade(transform.position))
-            //     return;
+		#region Public Methods
+		public void TakeDamage(EntityController from)
+		{
+			// if (isImmortal || isRolling || IsDead || drawingManager.IsDrawing || playerStats.TryEvade(transform.position))
+			//     return;
 
-            stats.Health -= from.stats.Damage;
-            ApplyDamageFlash();
-            ApplyPush((transform.position - from.transform.position) * from.stats.PushDistance);
+			stats.Health -= from.stats.Damage;
+			ApplyDamageFlash();
+			ApplyPush((transform.position - from.transform.position) * from.stats.PushDistance);
             
-            if (stats.Health <= 0) Die();
-        }
+			if (stats.Health <= 0) Die();
+		}
+		#endregion
         
         #region Other Effects
 		public void ApplyPush(Vector2 force) => RigidBodyInstance.AddForce(force, ForceMode2D.Impulse);

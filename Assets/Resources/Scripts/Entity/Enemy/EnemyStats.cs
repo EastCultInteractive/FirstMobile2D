@@ -1,9 +1,8 @@
-using Resources.Scripts.Entity;
 using UnityEngine;
 
-namespace Resources.Scripts.Enemy
+namespace Resources.Scripts.Entity.Enemy
 {
-    public class EnemyStatsHandler : EntityStats
+    public class EnemyStats : EntityStats
     {
         [Header("Arena Roam Stats")]
         [SerializeField] private float detectionRange = 5f;
@@ -16,6 +15,5 @@ namespace Resources.Scripts.Enemy
         
         public float PatrolSpeedMultiplier => patrolSpeedMultiplier;
         public float PatrolRadius => patrolRadius;
-
     }
 }

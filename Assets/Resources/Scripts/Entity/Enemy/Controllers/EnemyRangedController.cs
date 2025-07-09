@@ -1,7 +1,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Resources.Scripts.Enemy.Controllers
+namespace Resources.Scripts.Entity.Enemy.Controllers
 {
     public class EnemyRangedController : EnemyController
     {

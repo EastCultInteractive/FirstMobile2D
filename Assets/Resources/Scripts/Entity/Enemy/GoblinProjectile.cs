@@ -1,7 +1,7 @@
 using Resources.Scripts.Entity.Player;
 using UnityEngine;
 
-namespace Resources.Scripts.Enemy
+namespace Resources.Scripts.Entity.Enemy
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class GoblinProjectile : MonoBehaviour

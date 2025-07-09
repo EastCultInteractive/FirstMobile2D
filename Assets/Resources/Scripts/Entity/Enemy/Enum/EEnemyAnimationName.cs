@@ -1,4 +1,4 @@
-namespace Resources.Scripts.Enemy.Enum
+namespace Resources.Scripts.Entity.Enemy.Enum
 {
     public enum EEnemyAnimationName
     {

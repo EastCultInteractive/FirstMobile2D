@@ -1,4 +1,4 @@
-using Resources.Scripts.Enemy.Controllers;
+using Resources.Scripts.Entity.Enemy.Controllers;
 using UnityEngine;
 
 namespace Resources.Scripts.SpellMode.Skills

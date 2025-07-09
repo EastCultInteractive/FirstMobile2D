@@ -1,5 +1,5 @@
 
-namespace Resources.Scripts.Enemy.Controllers
+namespace Resources.Scripts.Entity.Enemy.Controllers
 {
     public class EnemyMeleeController : EnemyController
     {

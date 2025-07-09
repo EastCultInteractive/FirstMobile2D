@@ -2,14 +2,14 @@ using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
-using Resources.Scripts.Enemy.Enum;
 using Resources.Scripts.Entity;
+using Resources.Scripts.Entity.Enemy.Enum;
 using Spine;
 using Resources.Scripts.Labyrinth;
 using Resources.Scripts.Entity.Player;
 using Random = UnityEngine.Random;
 
-namespace Resources.Scripts.Enemy.Controllers
+namespace Resources.Scripts.Entity.Enemy.Controllers
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class EnemyController : EntityController
@@ -31,7 +31,7 @@ namespace Resources.Scripts.Enemy.Controllers
         private int pathIndex;
 
         private Vector3 moveDirection = Vector3.zero;
-        private EnemyStatsHandler enemyStats;
+        private EnemyStats enemyStats;
 
 
 
@@ -51,7 +51,7 @@ namespace Resources.Scripts.Enemy.Controllers
         #region Initialization Flow
         private void InitEnemy()
         {
-            enemyStats = GetComponent<EnemyStatsHandler>();
+            enemyStats = GetComponent<EnemyStats>();
             
             var player = GameObject.FindGameObjectWithTag("Player");
             if (player != null) Player = player.GetComponent<PlayerController>();
