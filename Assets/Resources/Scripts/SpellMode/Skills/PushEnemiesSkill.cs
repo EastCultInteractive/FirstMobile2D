@@ -26,7 +26,7 @@ namespace Resources.Scripts.SpellMode.Skills
                 if (!hit.CompareTag("Enemy"))
                     return;
                 
-                var enemy = hit.GetComponent<EnemyController>();
+                var enemy = hit.GetComponent<CEnemyController>();
                 Vector2 direction = (hit.transform.position - transform.position).normalized;
                 enemy.ApplyPush(direction * pushForce);
             }

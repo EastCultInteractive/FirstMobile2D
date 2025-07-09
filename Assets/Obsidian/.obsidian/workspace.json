@@ -1,0 +1,194 @@
+{
+  "main": {
+    "id": "6fdb55c9aaa0adb0",
+    "type": "split",
+    "children": [
+      {
+        "id": "f7af8ea22a9fd6ca",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "539f18edc3cf88ff",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Граф"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "85bb523fae4a7d25",
+    "type": "split",
+    "children": [
+      {
+        "id": "dc12ab0d521724b3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6bec54e87e9cbd34",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Файловый менеджер"
+            }
+          },
+          {
+            "id": "adca047f7e311b6f",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Поиск"
+            }
+          },
+          {
+            "id": "17a2340817359d4d",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Закладки"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "3a63797c001f5552",
+    "type": "split",
+    "children": [
+      {
+        "id": "8031cd202ddd04a3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c31ea28d7897e080",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Обратные ссылки"
+            }
+          },
+          {
+            "id": "2c6c8b39cfbe18f9",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Исходящие ссылки"
+            }
+          },
+          {
+            "id": "a02aa8ce3f244e2b",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Теги"
+            }
+          },
+          {
+            "id": "e81e9e407f50e248",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Структура"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Меню быстрого перехода": false,
+      "graph:Граф": false,
+      "canvas:Создать новый холст": false,
+      "daily-notes:Сегодняшняя заметка": false,
+      "templates:Вставить шаблон": false,
+      "command-palette:Открыть палитру команд": false
+    }
+  },
+  "active": "539f18edc3cf88ff",
+  "lastOpenFiles": [
+    "Scripts/Entity/Enemy/Enum/EEnemyAnimationName.cs.md.meta",
+    "Scripts/Entity/Enemy/Enum/EEnemyType.cs.md.meta",
+    "Scripts/Entity/Enemy/Controllers/CEnemyController.cs.md",
+    "Scripts/Entity/Enemy/Controllers/CEnemyMeleeController.cs.md",
+    "Scripts/Entity/Enemy/Controllers/CEnemyRangedController.cs.md",
+    "Scripts/Entity/Enemy/CGoblinProjectile.cs.md",
+    "Scripts/Entity/Enemy/CEnemyStats.cs.md",
+    "Scripts/Entity/Enemy/CEnemySpawner.cs.md",
+    "Scripts/Entity/Enemy/Enum/EEnemyAnimationName.cs.md",
+    "Scripts/Entity/Enemy/Enum/EEnemyType.cs.md",
+    "Шаблоны/Новая заметка.md",
+    "Scripts/Entity/Enemy/Controllers/Controllers.md",
+    "Scripts/Entity/Enemy/Enum/Enum.md",
+    "Scripts/Scripts.md",
+    "Scripts/Entity/Entity.md",
+    "Scripts/Entity/Enemy/Enemy.md",
+    "Scripts/Entity/Player/Player.md",
+    "EEnemyType.cs.md.meta",
+    "Scripts/Entity/Enemy/Controllers/CEnemyMeleeController.cs.md.meta",
+    "Scripts/Entity/Enemy/Controllers/CEnemyController.cs.md.meta",
+    "Scripts/Entity/Enemy/Controllers/CEnemyRangedController.cs.md.meta",
+    "Scripts/Entity/Enemy/Enum/Enum.md.meta",
+    "Scripts/Entity/Enemy/Controllers/Controllers.md.meta",
+    "Scripts/Entity/Enemy/Enum.meta",
+    "Scripts/Entity/Enemy/Controllers.meta",
+    "Scripts/Entity/Enemy/CGoblinProjectile.cs.md.meta",
+    "Bound By Flame.md"
+  ]
+}

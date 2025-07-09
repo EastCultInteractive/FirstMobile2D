@@ -1,0 +1,58 @@
+{
+  "collapse-filter": true,
+  "search": "",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "tag:class",
+      "color": {
+        "a": 1,
+        "rgb": 14048348
+      }
+    },
+    {
+      "query": "tag:folder",
+      "color": {
+        "a": 1,
+        "rgb": 14069084
+      }
+    },
+    {
+      "query": "tag:enum",
+      "color": {
+        "a": 1,
+        "rgb": 11392604
+      }
+    },
+    {
+      "query": "tag:interface",
+      "color": {
+        "a": 1,
+        "rgb": 5896173
+      }
+    },
+    {
+      "query": "tag:method",
+      "color": {
+        "a": 1,
+        "rgb": 16203999
+      }
+    }
+  ],
+  "collapse-display": true,
+  "showArrow": true,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 2.13807779947917,
+  "lineSizeMultiplier": 3.30565592447917,
+  "collapse-forces": true,
+  "centerStrength": 0.0677897135416667,
+  "repelStrength": 12.4576822916667,
+  "linkStrength": 0.788777669270833,
+  "linkDistance": 135,
+  "scale": 0.9799308653125565,
+  "close": false
+}

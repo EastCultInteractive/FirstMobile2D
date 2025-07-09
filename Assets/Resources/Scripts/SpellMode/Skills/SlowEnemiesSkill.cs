@@ -39,7 +39,7 @@ namespace Resources.Scripts.SpellMode.Skills
                 if (!hit.CompareTag("Enemy"))
                     continue;
 
-                var enemy = hit.GetComponent<EnemyController>();
+                var enemy = hit.GetComponent<CEnemyController>();
                 if (enemy == null)
                     continue;
 
