@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Spine.Unity;
 
-namespace Resources.Scripts.Player
+namespace Resources.Scripts.Entity.Player
 {
     [DisallowMultipleComponent]
     public class PlayerSortingKeeper : MonoBehaviour

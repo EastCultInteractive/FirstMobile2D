@@ -1,5 +1,5 @@
-using UnityEngine;
 using Resources.Scripts.Data;
+using UnityEngine;
 
 namespace Resources.Scripts.GameManagers
 {

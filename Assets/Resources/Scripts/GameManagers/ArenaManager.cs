@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using Resources.Scripts.Data;
-using UnityEngine.UI;
 using Resources.Scripts.Tilemap;
+using UnityEngine.UI;
 
 namespace Resources.Scripts.GameManagers
 {

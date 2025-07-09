@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using Resources.Scripts.Player;        // Доступ к playerStatsHandler
+using Resources.Scripts.Audio;
+// Доступ к playerStatsHandler
+// Для ManaSpendEffect
+using Resources.Scripts.Entity.Player;
 using Resources.Scripts.SpellMode.Skills;
-using Resources.Scripts.UI;            // Для ManaSpendEffect
-using Resources.Scripts.Audio;         // Для GlobalAudioManager
+using Resources.Scripts.UI; // Для GlobalAudioManager
 
 namespace Resources.Scripts.SpellMode
 {

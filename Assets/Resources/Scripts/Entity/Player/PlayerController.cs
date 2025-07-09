@@ -2,21 +2,21 @@ using UnityEngine;
 using System;
 using System.Collections;
 using AYellowpaper.SerializedCollections;
-using Resources.Scripts.Labyrinth;
+using Resources.Scripts.Entity;
+using Resources.Scripts.Entity.Player.Enum;
 using Spine;
 using Resources.Scripts.GameManagers;
-using Resources.Scripts.Player.Enum;
-using Resources.Scripts.Entity;
+using Resources.Scripts.Labyrinth;
 using Resources.Scripts.SpellMode;
 
-namespace Resources.Scripts.Player
+namespace Resources.Scripts.Entity.Player
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : EntityController
     {
         [Header("Animations")]
         [SerializedDictionary("Animation Code", "Value")]
-        public SerializedDictionary<PlayerAnimationName, string> animations;
+        public SerializedDictionary<EPlayerAnimationName, string> animations;
 
         [Header("Movement Settings")]
         [SerializeField] private PlayerJoystick joystick;
@@ -122,11 +122,11 @@ namespace Resources.Scripts.Player
 
             if (drawingManager.IsDrawing)
             {
-                PlayAnimation(animations, PlayerAnimationName.Draw);
+                PlayAnimation(animations, EPlayerAnimationName.Draw);
             }
             else
             {
-                PlayAnimation(animations, PlayerAnimationName.Run, true);
+                PlayAnimation(animations, EPlayerAnimationName.Run, true);
             }
 
             if (Mathf.Abs(dir.x) > 0.01f)
@@ -150,7 +150,7 @@ namespace Resources.Scripts.Player
             rollCooldownRemaining = rollCooldown;
             OnRollCooldownChanged?.Invoke(1f);
 
-            PlayAnimation(animations, PlayerAnimationName.Jump);
+            PlayAnimation(animations, EPlayerAnimationName.Jump);
 
             var baseSpeed = rollDistance / rollDuration;
             var effectiveRollSpeed = baseSpeed * rollSpeedMultiplier;
@@ -181,20 +181,20 @@ namespace Resources.Scripts.Player
         #region Other Effects
         protected override void Die()
         {
-            PlayAnimation(animations, PlayerAnimationName.Death);
+            PlayAnimation(animations, EPlayerAnimationName.Death);
         }
         #endregion
 
         #region Spine Helper
         private void HandleAnimationComplete(TrackEntry entry)
         {
-            if (entry.Animation.Name == animations[PlayerAnimationName.Death])
+            if (entry.Animation.Name == animations[EPlayerAnimationName.Death])
             {
                 StageProgressionManager.Instance.ShowGameOver();
                 Destroy(gameObject);
             }
             
-            PlayAnimation(animations, PlayerAnimationName.Idle);
+            PlayAnimation(animations, EPlayerAnimationName.Idle);
         }
         #endregion
     }

@@ -1,9 +1,9 @@
 ### Ссылки
-- [[CEnemySpawner.cs]]
-- [[CEnemyStats.cs]]
-- [[CGoblinProjectile.cs]]
+- [[EnemySpawner.cs]]
+- [[EnemyStats.cs]]
+- [[GoblinProjectile.cs]]
 - [[Controllers]]
-- [[Enum]]
+- [[Scripts/Entity/Enemy/Enum/Enum]]
 ### Теги
 - #folder
 ### Суть вопроса

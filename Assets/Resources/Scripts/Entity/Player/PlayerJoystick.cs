@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Resources.Scripts.Labyrinth;
 
-namespace Resources.Scripts.Player
+namespace Resources.Scripts.Entity.Player
 {
     /// <summary>
     /// Implements a fully “flexible” virtual joystick for mobile/touch input.

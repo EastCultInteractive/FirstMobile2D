@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-using Resources.Scripts.Player;
+using Resources.Scripts.Entity.Player;
 
 namespace Resources.Scripts.UI
 {

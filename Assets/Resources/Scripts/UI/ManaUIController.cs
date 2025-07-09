@@ -1,6 +1,6 @@
+using Resources.Scripts.Entity.Player;
 using UnityEngine;
 using UnityEngine.UI;
-using Resources.Scripts.Player;
 
 namespace Resources.Scripts.UI
 {

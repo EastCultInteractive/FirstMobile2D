@@ -1,5 +1,5 @@
-using UnityEngine;
 using Resources.Scripts.Enemy.Controllers;
+using UnityEngine;
 
 namespace Resources.Scripts.SpellMode.Skills
 {
@@ -26,7 +26,7 @@ namespace Resources.Scripts.SpellMode.Skills
                 if (!hit.CompareTag("Enemy"))
                     return;
                 
-                var enemy = hit.GetComponent<CEnemyController>();
+                var enemy = hit.GetComponent<EnemyController>();
                 Vector2 direction = (hit.transform.position - transform.position).normalized;
                 enemy.ApplyPush(direction * pushForce);
             }

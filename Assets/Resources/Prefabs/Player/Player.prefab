@@ -336,9 +336,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae4878589b7a14708bf25b0e2d6d9512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fairyCount: 0
   health: 100
   maxHealth: 100
+  movementSpeed: 15
+  slowMultiplier: 1
+  damage: 3
+  attackSpeedMultiplier: 1
+  pushDistance: 1
+  fairyCount: 0
   maxMana: 100
   currentMana: 50
   manaRegenRate: 1
@@ -362,6 +367,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a43795d082424d3f97d7fc559e4a940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  damageFlashDuration: 0.3
   animations:
     _serializedList:
     - Key: 0
@@ -376,23 +383,12 @@ MonoBehaviour:
       Value: relevant/Idle
     - Key: 5
       Value: relevant/magiy
-  slowThreshold: 0.5
-  idleThreshold: 0.1
   joystick: {fileID: 0}
   trapPrefab: {fileID: 726999753017517549, guid: 2883cba0652d4754ab1bd2e5e075b41d, type: 3}
   inputSmoothTime: 0.1
-  playerLight: {fileID: 0}
-  finishPoint: {fileID: 0}
-  baseLightRange: 1
-  maxLightRange: 2
-  isImmortal: 0
-  skeletonAnimation: {fileID: 1461745437943937123}
   rollDistance: 5
   rollCooldown: 2
   rollSpeedMultiplier: 1
-  flashColor: {r: 1, g: 0, b: 0, a: 1}
-  flashDuration: 0.3
-  maxDrawingTime: 5
 --- !u!114 &1957564526145093592
 MonoBehaviour:
   m_ObjectHideFlags: 0

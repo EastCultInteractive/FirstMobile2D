@@ -1,8 +1,7 @@
-using Resources.Scripts.Entity;
 using UnityEngine;
 using TMPro;
 
-namespace Resources.Scripts.Player
+namespace Resources.Scripts.Entity.Player
 {
     /// <summary>
     /// Хранит и обновляет состояние здоровья, маны и собранных фей.

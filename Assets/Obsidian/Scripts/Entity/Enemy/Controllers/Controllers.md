@@ -1,7 +1,7 @@
 ### Ссылки
-- [[CEnemyController.cs]]
-- [[CEnemyMeleeController.cs]]
-- [[CEnemyRangedController.cs]]
+- [[EnemyController.cs]]
+- [[EnemyMeleeController.cs]]
+- [[EnemyRangedController.cs]]
 ### Теги
 - #folder
 ### Суть вопроса

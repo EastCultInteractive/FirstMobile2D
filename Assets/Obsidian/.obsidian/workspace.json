@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "f7af8ea22a9fd6ca",
+        "id": "432f3ac3e60d583a",
         "type": "tabs",
         "children": [
           {
-            "id": "539f18edc3cf88ff",
+            "id": "5357f5b7db91ad98",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Граф"
+              "type": "markdown",
+              "state": {
+                "file": "Scripts/CameraTools/CameraFollow.cs.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "CameraFollow.cs"
             }
           }
         ]
@@ -90,6 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Scripts/CameraTools/CameraFollow.cs.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Обратные ссылки"
+              "title": "Обратные ссылки для CameraFollow.cs"
             }
           },
           {
@@ -108,11 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Scripts/CameraTools/CameraFollow.cs.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Исходящие ссылки"
+              "title": "Исходящие ссылки из CameraFollow.cs"
             }
           },
           {
@@ -136,12 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "Scripts/CameraTools/CameraFollow.cs.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Структура"
+              "title": "Структура CameraFollow.cs"
             }
           }
         ]
@@ -161,34 +168,43 @@
       "command-palette:Открыть палитру команд": false
     }
   },
-  "active": "539f18edc3cf88ff",
+  "active": "5357f5b7db91ad98",
   "lastOpenFiles": [
-    "Scripts/Entity/Enemy/Enum/EEnemyAnimationName.cs.md.meta",
-    "Scripts/Entity/Enemy/Enum/EEnemyType.cs.md.meta",
-    "Scripts/Entity/Enemy/Controllers/CEnemyController.cs.md",
-    "Scripts/Entity/Enemy/Controllers/CEnemyMeleeController.cs.md",
-    "Scripts/Entity/Enemy/Controllers/CEnemyRangedController.cs.md",
-    "Scripts/Entity/Enemy/CGoblinProjectile.cs.md",
-    "Scripts/Entity/Enemy/CEnemyStats.cs.md",
-    "Scripts/Entity/Enemy/CEnemySpawner.cs.md",
-    "Scripts/Entity/Enemy/Enum/EEnemyAnimationName.cs.md",
-    "Scripts/Entity/Enemy/Enum/EEnemyType.cs.md",
-    "Шаблоны/Новая заметка.md",
-    "Scripts/Entity/Enemy/Controllers/Controllers.md",
-    "Scripts/Entity/Enemy/Enum/Enum.md",
+    "Scripts/Entity/EntityController.cs.md",
+    "Scripts/SpellMode/Editor/Database/Database.md",
+    "Scripts/SpellMode/Editor/Editor.md",
+    "Scripts/SpellMode/Editor/Editor.md.meta",
+    "Scripts/SpellMode/Editor/Database.meta",
+    "Scripts/SpellMode/Editor/Database/Database.md.meta",
+    "Scripts/SpellMode/Editor/Database",
+    "Scripts/SpellMode/Skills/Skills.md",
+    "Scripts/SpellMode/Editor.meta",
+    "Scripts/SpellMode/Skills/Skills.md.meta",
+    "Scripts/SpellMode/Editor",
+    "Scripts/SpellMode/Skills.meta",
+    "Scripts/SpellMode/Skills.md.meta",
+    "Scripts/SpellMode/Skills",
+    "Scripts/SpellMode/SpellMode.md",
     "Scripts/Scripts.md",
-    "Scripts/Entity/Entity.md",
-    "Scripts/Entity/Enemy/Enemy.md",
-    "Scripts/Entity/Player/Player.md",
-    "EEnemyType.cs.md.meta",
-    "Scripts/Entity/Enemy/Controllers/CEnemyMeleeController.cs.md.meta",
-    "Scripts/Entity/Enemy/Controllers/CEnemyController.cs.md.meta",
-    "Scripts/Entity/Enemy/Controllers/CEnemyRangedController.cs.md.meta",
-    "Scripts/Entity/Enemy/Enum/Enum.md.meta",
-    "Scripts/Entity/Enemy/Controllers/Controllers.md.meta",
-    "Scripts/Entity/Enemy/Enum.meta",
-    "Scripts/Entity/Enemy/Controllers.meta",
-    "Scripts/Entity/Enemy/CGoblinProjectile.cs.md.meta",
-    "Bound By Flame.md"
+    "Scripts/UI/UI.md",
+    "Scripts/Tilemap/Tilemap.md",
+    "Scripts/Obtacles/Obtacles.md",
+    "Scripts/Labyrinth/Labyrinth.md",
+    "Scripts/CameraTools/CameraFollow.cs.md",
+    "Scripts/Data/StageData.cs.md",
+    "Scripts/Data/Data.md",
+    "Scripts/Data/ArenaSettings.cs.md",
+    "Scripts/Data/LabyrinthSettings.cs.md",
+    "Scripts/Data/PerkDefinition.cs.md",
+    "Scripts/GameManagers/GlobalAudioManager.cs.md",
+    "Scripts/GameManagers/GameManagers.md",
+    "Scripts/Menu/UIParallaxGyro.cs.md",
+    "Scripts/Menu/Menu.md",
+    "Scripts/Menu/MenuManager.cs.md",
+    "Scripts/Menu/PerkSelectionController.cs.md",
+    "Scripts/Menu/StageSelectionController.cs.md",
+    "Scripts/CameraTools/CameraTools.md",
+    "Scripts/Entity/EntitySpawner.cs.md",
+    "Scripts/Entity/Enemy/Enemy.md"
   ]
 }

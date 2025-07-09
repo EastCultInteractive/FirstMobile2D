@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8987010660842926879}
   - component: {fileID: 7095073650569991491}
-  - component: {fileID: 5872270528404876367}
   m_Layer: 0
   m_Name: Quad
   m_TagString: Untagged
@@ -49,16 +48,3 @@ MonoBehaviour:
   effectRadius: 5
   slowMultiplier: 0.5
   slowDuration: 3
---- !u!114 &5872270528404876367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4630345619926812247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accfaf7f1f9a3124d8d3b6ea2791a0d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killOnDisable: 1

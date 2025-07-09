@@ -41,11 +41,18 @@
         "a": 1,
         "rgb": 16203999
       }
+    },
+    {
+      "query": "Bound By Flame",
+      "color": {
+        "a": 1,
+        "rgb": 12720370
+      }
     }
   ],
-  "collapse-display": true,
+  "collapse-display": false,
   "showArrow": true,
-  "textFadeMultiplier": 0,
+  "textFadeMultiplier": -1.4,
   "nodeSizeMultiplier": 2.13807779947917,
   "lineSizeMultiplier": 3.30565592447917,
   "collapse-forces": true,
@@ -53,6 +60,6 @@
   "repelStrength": 12.4576822916667,
   "linkStrength": 0.788777669270833,
   "linkDistance": 135,
-  "scale": 0.9799308653125565,
-  "close": false
+  "scale": 1.1408529223203516,
+  "close": true
 }

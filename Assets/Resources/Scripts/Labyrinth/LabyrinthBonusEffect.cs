@@ -1,5 +1,5 @@
+using Resources.Scripts.Entity.Player;
 using UnityEngine;
-using Resources.Scripts.Player;
 
 namespace Resources.Scripts.Labyrinth
 {

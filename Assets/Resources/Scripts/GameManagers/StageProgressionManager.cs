@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using Resources.Scripts.Data;
-using Resources.Scripts.Player;
+using Resources.Scripts.Menu;
+using Resources.Scripts.Entity.Player;
 
 namespace Resources.Scripts.GameManagers
 {
@@ -162,7 +163,7 @@ namespace Resources.Scripts.GameManagers
                 .Take(3)
                 .ToArray();
 
-            var ctrl = panel.GetComponent<Resources.Scripts.Menu.PerkSelectionController>();
+            var ctrl = panel.GetComponent<PerkSelectionController>();
             ctrl.Setup(opts);
         }
 

@@ -1,5 +1,5 @@
-using UnityEngine;
 using Resources.Scripts.Enemy.Controllers;
+using UnityEngine;
 
 namespace Resources.Scripts.SpellMode.Skills
 {
@@ -39,7 +39,7 @@ namespace Resources.Scripts.SpellMode.Skills
                 if (!hit.CompareTag("Enemy"))
                     continue;
 
-                var enemy = hit.GetComponent<CEnemyController>();
+                var enemy = hit.GetComponent<EnemyController>();
                 if (enemy == null)
                     continue;
 
