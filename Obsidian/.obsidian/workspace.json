@@ -11,28 +11,27 @@
             "id": "5628bedd83143cb3",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Граф"
+              "type": "markdown",
+              "state": {
+                "file": "Scripts/Entity/Enemy/Enemy.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Enemy"
             }
           },
           {
             "id": "9f57d465851339b8",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolSpeedMultiplier.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "PatrolSpeedMultiplier"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Граф"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -105,7 +104,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolSpeedMultiplier.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -115,7 +113,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Обратные ссылки для PatrolSpeedMultiplier"
+              "title": "Обратные ссылки"
             }
           },
           {
@@ -124,12 +122,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolSpeedMultiplier.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Исходящие ссылки из PatrolSpeedMultiplier"
+              "title": "Исходящие ссылки"
             }
           },
           {
@@ -153,13 +150,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolSpeedMultiplier.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Структура PatrolSpeedMultiplier"
+              "title": "Структура"
             }
           }
         ]
@@ -179,23 +175,24 @@
       "command-palette:Открыть палитру команд": false
     }
   },
-  "active": "6bec54e87e9cbd34",
+  "active": "5628bedd83143cb3",
   "lastOpenFiles": [
-    "Scripts/Entity/Enemy/EnemyStats.cs.md",
-    "Scripts/Entity/Enemy/Methods/EnemyStats/public",
-    "Scripts/Entity/Enemy/Methods/EnemyStats/Без названия.md",
-    "Scripts/Entity/Enemy/Methods/EnemyStatsMethods.meta",
-    "PatrolRadius.md.meta",
-    "PatrolSpeedMultiplier.md.meta",
-    "DetectionRange.md.meta",
-    "Scripts/Entity/Enemy/Methods/EnemyStats",
-    "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolRadius.md",
-    "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolSpeedMultiplier.md",
-    "Scripts/Entity/Enemy/Methods/EnemyStats/public/DetectionRange.md",
-    "Scripts/Entity/Enemy/Methods.meta",
+    "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolRadius.md.meta",
+    "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolSpeedMultiplier.md.meta",
+    "Scripts/Entity/Enemy/Methods/EnemyStats/public.meta",
+    "Scripts/Entity/Enemy/Methods/EnemyStats.meta",
+    "Scripts/Entity/Methods/EntityStats.meta",
+    "Scripts/Entity/Methods/EntityController.meta",
+    "Scripts/Entity/Enemy/Methods/EnemyStats/public/DetectionRange.md.meta",
     "Scripts/Entity/Без названия",
     "Scripts/Entity/Без названия 1",
-    "Scripts/Entity/EntityControllerMethods",
+    "Scripts/Entity/Methods/EntityStatsMethods",
+    "Scripts/Entity/Methods/EntityControllerMethods",
+    "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolSpeedMultiplier.md",
+    "Scripts/Entity/Enemy/EnemyStats.cs.md",
+    "Scripts/Entity/Enemy/Methods/EnemyStats/Без названия.md",
+    "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolRadius.md",
+    "Scripts/Entity/Enemy/Methods/EnemyStats/public/DetectionRange.md",
     "Scripts/Entity/Enemy/Enemy.md",
     "Scripts/Entity/Enemy/Methods/Без названия.md",
     "Scripts/Entity/EntitySpawner.cs.md",
