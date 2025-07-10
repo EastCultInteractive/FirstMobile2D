@@ -23,27 +23,5 @@ namespace Resources.Scripts.Obstacles
             if (_renderer == null)
                 Debug.LogError($"{name}: не найден SpriteRenderer!");
         }
-
-        private void OnCollisionEnter2D(Collision2D col)
-        {
-            if (!col.collider.CompareTag("Player")) return;
-            var keeper = col.collider.GetComponent<PlayerSortingKeeper>()
-                         ?? col.collider.GetComponentInChildren<PlayerSortingKeeper>();
-            if (keeper == null) return;
-
-            int target = _renderer.sortingOrder + sideOffset;
-            keeper.EnterSide(target);
-        }
-
-        private void OnCollisionExit2D(Collision2D col)
-        {
-            if (!col.collider.CompareTag("Player")) return;
-            var keeper = col.collider.GetComponent<PlayerSortingKeeper>()
-                         ?? col.collider.GetComponentInChildren<PlayerSortingKeeper>();
-            if (keeper == null) return;
-
-            int target = _renderer.sortingOrder + sideOffset;
-            keeper.ExitSide(target);
-        }
     }
 }

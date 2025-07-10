@@ -1,4 +1,3 @@
-using Resources.Scripts.Entity.Player;
 using UnityEngine;
 
 namespace Resources.Scripts.Obstacles
@@ -22,28 +21,6 @@ namespace Resources.Scripts.Obstacles
                         ?? GetComponentInChildren<SpriteRenderer>();
             if (_renderer == null)
                 Debug.LogError($"{name}: не найден SpriteRenderer!");
-        }
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (!other.CompareTag("Player")) return;
-            var keeper = other.GetComponent<PlayerSortingKeeper>()
-                         ?? other.GetComponentInChildren<PlayerSortingKeeper>();
-            if (keeper == null) return;
-
-            int target = _renderer.sortingOrder + upOffset;
-            keeper.EnterUp(target);
-        }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (!other.CompareTag("Player")) return;
-            var keeper = other.GetComponent<PlayerSortingKeeper>()
-                         ?? other.GetComponentInChildren<PlayerSortingKeeper>();
-            if (keeper == null) return;
-
-            int target = _renderer.sortingOrder + upOffset;
-            keeper.ExitUp(target);
         }
     }
 }
