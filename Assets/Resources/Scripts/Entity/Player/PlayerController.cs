@@ -1,12 +1,9 @@
 using UnityEngine;
-using System;
 using System.Collections;
 using AYellowpaper.SerializedCollections;
-using Resources.Scripts.Entity;
 using Resources.Scripts.Entity.Player.Enum;
 using Spine;
 using Resources.Scripts.GameManagers;
-using Resources.Scripts.Labyrinth;
 using Resources.Scripts.SpellMode;
 
 namespace Resources.Scripts.Entity.Player
@@ -20,39 +17,14 @@ namespace Resources.Scripts.Entity.Player
 
         [Header("Movement Settings")]
         [SerializeField] private PlayerJoystick joystick;
-        [SerializeField] private GameObject trapPrefab;
-        [SerializeField] private float inputSmoothTime = 0.1f;
 
         [Header("Dodge Roll Settings")]
-        [SerializeField] private float rollDistance = 6f;
-        [SerializeField] private float rollCooldown = 2f;
-        [SerializeField, Range(0.1f, 3f)] private float rollSpeedMultiplier = 1f;
+        [SerializeField, Range(0.1f, 3f)] private float rollSpeedMultiplier = 2f;
 
-        #region Public Events & Properties
-        public event Action<float> OnRollCooldownChanged;
-        public float RollCooldownDuration => rollCooldown;
-        #endregion
 
         #region Private Fields
-
         private PlayerStatsHandler playerStats;
-        private bool bonusActive;
-
-        private Vector2 lastMoveDirection = Vector2.left;
-        private bool isRolling;
-        private bool canRoll = true;
-        private float rollCooldownRemaining;
-        private float rollDuration;
-
-        // Сохраняем исходный ScaleX скелета
-        private float initialScaleX;
-
-        // Rigidbody2D и ввод
-        private Vector2 moveInput;
-        private Vector2 inputSmoothVelocity;
-
         private DrawingManager drawingManager;
-        private LabyrinthMapController mapController;
         #endregion
 
         #region Unity Methods
@@ -63,8 +35,13 @@ namespace Resources.Scripts.Entity.Player
             InitAnimations();
         }
         
+        private void Update()
+        {
+            UpdateInput();
+            UpdateAnimations();
+        }
+        
         #region Init
-
         private void InitComponents()
         {
             playerStats = GetComponent<PlayerStatsHandler>();
@@ -75,106 +52,43 @@ namespace Resources.Scripts.Entity.Player
         {
             SkeletonAnimation.state.Complete += HandleAnimationComplete;
         }
-
-        private void InitLabyrinth()
-        {
-            mapController = LabyrinthMapController.Instance;
-        }
         #endregion
 
-        private void Update()
+        private void UpdateInput()
         {
-            if (IsDead) return;
+            var h = joystick ? joystick.InputVector.x : 0f;
+            var v = joystick ? joystick.InputVector.y : 0f;
 
-            if (!isRolling)
+            if (Mathf.Approximately(h + v, 0f))
             {
-                var h = joystick ? joystick.Horizontal : 0f;
-                var v = joystick ? joystick.Vertical : 0f;
-
-                if (Mathf.Approximately(h + v, 0f))
-                {
-                    h = Input.GetAxis("Horizontal");
-                    v = Input.GetAxis("Vertical");
-                }
-
-                var rawInput = new Vector2(h, v);
-
-                moveInput = Vector2.SmoothDamp(moveInput, rawInput, ref inputSmoothVelocity, inputSmoothTime);
-                UpdateMovementAnimation(moveInput);
+                h = Input.GetAxis("Horizontal");
+                v = Input.GetAxis("Vertical");
             }
-
-            if (Input.GetKeyDown(KeyCode.LeftShift)) TryRoll();
-        }
-
-        private void FixedUpdate()
-        {
-            if (IsDead || isRolling || mapController.IsMapActive) return;
-            var speed = playerStats.MovementSpeed * playerStats.SlowMultiplier;
-            var delta = moveInput.normalized * (speed * Time.fixedDeltaTime);
-            RigidBodyInstance.MovePosition(RigidBodyInstance.position + delta);
+            MoveDirection = new Vector2(h, v);
         }
         #endregion
 
         #region Movement & Animation Helpers
-        private void UpdateMovementAnimation(Vector2 dir)
+        private void UpdateAnimations()
         {
-            lastMoveDirection = dir.normalized;
-
-            if (drawingManager.IsDrawing)
-            {
-                PlayAnimation(animations, EPlayerAnimationName.Draw);
-            }
-            else
-            {
-                PlayAnimation(animations, EPlayerAnimationName.Run, true);
-            }
-
-            if (Mathf.Abs(dir.x) > 0.01f)
-                SkeletonAnimation.Skeleton.ScaleX = Mathf.Abs(initialScaleX) * -Mathf.Sign(dir.x);
-            
-            TurnToDirection(dir);
+            if (drawingManager.IsDrawing) PlayAnimation(animations, EPlayerAnimationName.Draw);
+            else if (GetCurrentVelocity() > 0f) PlayAnimation(animations, EPlayerAnimationName.Run, true);
+            else if (Mathf.Approximately(GetCurrentVelocity(), 0f)) PlayAnimation(animations, EPlayerAnimationName.Idle, true);
         }
         #endregion
 
         #region Dodge Roll
         public void TryRoll()
         {
-            if (canRoll && !isRolling && !IsDead && !drawingManager.IsDrawing)
-                StartCoroutine(RollCoroutine());
+            StartCoroutine(RollCoroutine());
         }
 
         private IEnumerator RollCoroutine()
         {
-            isRolling = true;
-            canRoll = false;
-            rollCooldownRemaining = rollCooldown;
-            OnRollCooldownChanged?.Invoke(1f);
-
             PlayAnimation(animations, EPlayerAnimationName.Jump);
 
-            var baseSpeed = rollDistance / rollDuration;
-            var effectiveRollSpeed = baseSpeed * rollSpeedMultiplier;
-            RigidBodyInstance.linearVelocity = Vector2.zero;
-
-            var elapsed = 0f;
-            while (elapsed < rollDuration)
-            {
-                var step = lastMoveDirection * (effectiveRollSpeed * Time.deltaTime);
-                RigidBodyInstance.MovePosition(RigidBodyInstance.position + step);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            isRolling = false;
-            yield return new WaitForSeconds(rollCooldownRemaining);
-            canRoll = true;
-        }
-
-        private void TickRollCooldown()
-        {
-            if (rollCooldownRemaining <= 0f) return;
-            rollCooldownRemaining = Mathf.Max(0f, rollCooldownRemaining - Time.deltaTime);
-            OnRollCooldownChanged?.Invoke(rollCooldownRemaining / rollCooldown);
+            ApplyPush(MoveDirection * rollSpeedMultiplier);
+            yield return null;
         }
         #endregion
 
@@ -188,13 +102,9 @@ namespace Resources.Scripts.Entity.Player
         #region Spine Helper
         private void HandleAnimationComplete(TrackEntry entry)
         {
-            if (entry.Animation.Name == animations[EPlayerAnimationName.Death])
-            {
-                StageProgressionManager.Instance.ShowGameOver();
-                Destroy(gameObject);
-            }
-            
-            PlayAnimation(animations, EPlayerAnimationName.Idle);
+            if (entry.Animation.Name != animations[EPlayerAnimationName.Death]) return;
+            StageProgressionManager.Instance.ShowGameOver();
+            Destroy(gameObject);
         }
         #endregion
     }

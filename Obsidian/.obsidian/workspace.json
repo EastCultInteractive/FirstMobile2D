@@ -11,14 +11,32 @@
             "id": "5628bedd83143cb3",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Граф"
+              "type": "markdown",
+              "state": {
+                "file": "Scripts/Entity/Enemy/Controllers/EnemyController.cs.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "EnemyController.cs"
             }
           },
           {
             "id": "9f57d465851339b8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Scripts/Entity/Player/Methods/PlayerController/private/UpdateAnimations.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "UpdateAnimations"
+            }
+          },
+          {
+            "id": "7b33f0df1d15dd54",
             "type": "leaf",
             "state": {
               "type": "graph",
@@ -27,7 +45,8 @@
               "title": "Граф"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -59,7 +78,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "bound",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -171,42 +190,43 @@
       "command-palette:Открыть палитру команд": false
     }
   },
-  "active": "5628bedd83143cb3",
+  "active": "7b33f0df1d15dd54",
   "lastOpenFiles": [
-    "Scripts/Entity/Enemy/Enemy.md",
-    "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolRadius.md.meta",
-    "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolSpeedMultiplier.md.meta",
-    "Scripts/Entity/Enemy/Methods/EnemyStats/public.meta",
-    "Scripts/Entity/Enemy/Methods/EnemyStats.meta",
-    "Scripts/Entity/Methods/EntityStats.meta",
-    "Scripts/Entity/Methods/EntityController.meta",
-    "Scripts/Entity/Enemy/Methods/EnemyStats/public/DetectionRange.md.meta",
-    "Scripts/Entity/Без названия",
-    "Scripts/Entity/Без названия 1",
-    "Scripts/Entity/Methods/EntityStatsMethods",
-    "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolSpeedMultiplier.md",
-    "Scripts/Entity/Enemy/EnemyStats.cs.md",
-    "Scripts/Entity/Enemy/Methods/EnemyStats/Без названия.md",
-    "Scripts/Entity/Enemy/Methods/EnemyStats/public/PatrolRadius.md",
-    "Scripts/Entity/Enemy/Methods/EnemyStats/public/DetectionRange.md",
-    "Scripts/Entity/Enemy/Methods/Без названия.md",
-    "Scripts/Entity/EntitySpawner.cs.md",
-    "Scripts/Entity/Methods/EntityStats/public/SlowMultiplier.md",
-    "Scripts/Entity/EntityStats.cs.md",
-    "Scripts/Entity/Methods/EntityStats/public/AttackSpeedMultiplier.md",
-    "Scripts/Entity/Methods/EntityStats/public/Damage.md",
-    "Scripts/Entity/Methods/EntityStats/public/PushDistance.md",
-    "Scripts/Entity/Methods/EntityStats/public/MovementSpeed.md",
-    "Scripts/Entity/Methods/EntityStats/public/Health.md",
-    "Scripts/Entity/EntityStatsMethods/Без названия.md",
-    "Scripts/Entity/Methods/EntityController/public/TakeDamage.md",
+    "Scripts/Entity/Player/Methods/PlayerJoystick/private/TouchPositionToRect.md",
+    "Scripts/Entity/Player/PlayerJoystick.cs.md",
+    "Scripts/Entity/Player/Methods/PlayerJoystick/public/InputVector.md",
+    "Scripts/Entity/Player/Methods/PlayerJoystick/private/ReleaseJoystick.md",
+    "Scripts/Entity/Player/Methods/PlayerJoystick/private/HandleDrag.md",
+    "Scripts/Entity/Player/Methods/PlayerJoystick/private/ActivateJoystick.md",
+    "Scripts/Entity/Player/Methods/PlayerJoystick/public",
+    "Scripts/Entity/Player/Methods/PlayerJoystick/private",
+    "Scripts/Entity/Player/Methods/PlayerJoystick",
+    "Scripts/Entity/Player/PlayerController.cs.md",
+    "Scripts/Entity/Player/Methods/PlayerController/private/HandleAnimationComplete.md",
+    "Scripts/Entity/Player/Methods/PlayerController/protected/Die.md",
+    "Scripts/Entity/Player/Methods/PlayerController/private/RollCoroutine.md",
+    "Scripts/Entity/Player/Methods/PlayerController/public/TryRoll.md",
+    "Scripts/Entity/Player/Methods/PlayerController/private/UpdateAnimations.md",
+    "Scripts/Entity/Player/Methods/PlayerController/private/UpdateInput.md",
+    "Scripts/Entity/Player/Methods/PlayerController/private/InitAnimations.md",
+    "Scripts/Entity/Player/Methods/PlayerController/private/InitComponents.md",
+    "Scripts/Entity/Player/Methods/PlayerController/protected",
+    "Scripts/Entity/Player/Methods/PlayerController/public",
+    "Scripts/Entity/Player/Methods/PlayerController/private",
+    "Scripts/Entity/Player/Methods/PlayerController",
+    "Scripts/Entity/Player/Methods",
+    "Scripts/Entity/Enemy/Controllers/EnemyController.cs.md",
     "Scripts/Entity/EntityController.cs.md",
-    "Scripts/Entity/Methods/EntityController/public/ApplyDamageFlash.md",
-    "Scripts/Entity/Methods/EntityController/public/ApplyStun.md",
-    "Scripts/Entity/Methods/EntityController/public/ApplySpeedBoost.md",
-    "Scripts/Entity/Methods/EntityController/public/ApplySlow.md",
-    "Scripts/Entity/Methods/EntityController/public/ApplyDash.md",
-    "Scripts/Entity/Methods/EntityController/public/ApplyPush.md",
-    "Scripts/Entity/Methods/EntityController/private/InitAnimations.md"
+    "Scripts/Entity/Enemy/Controllers/Methods/EnemyRangedController/private/SpawnProjectile.md",
+    "Scripts/Entity/Enemy/Controllers/EnemyRangedController.cs.md",
+    "Scripts/Entity/Enemy/Controllers/Methods/EnemyRangedController/protected/PerformAttack.md",
+    "Scripts/Entity/Enemy/Controllers/EnemyMeleeController.cs.md",
+    "Scripts/Entity/Enemy/Controllers/Methods/EnemyMeleeController/protected/PerformAttack.md",
+    "Scripts/Entity/Enemy/Controllers/Methods/EnemyRangedController/private",
+    "Scripts/Entity/Enemy/Controllers/Methods/EnemyRangedController/protected",
+    "Scripts/Entity/Methods/EntityController/protected/Die.md",
+    "Scripts/Entity/Methods/EntityController/protected/TurnToDirection.md",
+    "Scripts/Entity/Methods/EntityController/protected/UpdateAnimationSpeed.md",
+    "Scripts/Entity/Methods/EntityController/protected/GetAnimationByName.md"
   ]
 }

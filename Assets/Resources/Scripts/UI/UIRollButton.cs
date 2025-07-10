@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using DG.Tweening;
-using Resources.Scripts.Entity.Player;
 
 namespace Resources.Scripts.UI
 {
@@ -20,39 +18,12 @@ namespace Resources.Scripts.UI
         [Tooltip("TMP Text для отображения оставшихся секунд")]
         public TextMeshProUGUI cooldownText;
 
-        [Tooltip("Ссылка на PlayerController")]
-        public PlayerController player;
-
-        private Button btn;
-
-        private void Awake()
-        {
-            btn = GetComponent<Button>();
-        }
-
-        private void Start()
-        {
-            // Подписываемся на изменение кулдауна
-            if (player != null)
-                player.OnRollCooldownChanged += SetCooldownUI;
-        }
-
-        private void OnDestroy()
-        {
-            if (player != null)
-                player.OnRollCooldownChanged -= SetCooldownUI;
-        }
-
-        /// <summary>
-        /// value от 0 до 1: заполнение radial image
-        /// </summary>
         private void SetCooldownUI(float value)
         {
             cooldownImage.fillAmount = value;
 
             // Пересчитываем секунды
-            float seconds = value * player.RollCooldownDuration;
-            int secInt = Mathf.CeilToInt(seconds);
+            var secInt = Mathf.CeilToInt(value);
             cooldownText.text = secInt.ToString();
 
             // Скрываем текст, когда нет кулдауна

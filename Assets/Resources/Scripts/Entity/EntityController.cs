@@ -18,6 +18,7 @@ namespace Resources.Scripts.Entity
 		
 		protected SkeletonAnimation SkeletonAnimation;
 		protected Rigidbody2D RigidBodyInstance;
+		protected Vector3 MoveDirection = Vector3.zero;
 		
 		private float currentAnimationSpeed;
 		private const float AnimationSmoothing = 5f;
@@ -29,6 +30,11 @@ namespace Resources.Scripts.Entity
 		{
 			InitEntity();
 			InitAnimations();
+		}
+
+		private void FixedUpdate()
+		{
+			UpdateMove();
 		}
 
 		#region Init
@@ -47,6 +53,18 @@ namespace Resources.Scripts.Entity
 		}
 		#endregion
 
+		#region Updates
+		private void UpdateMove()
+		{
+			var speed = stats.MovementSpeed * stats.SlowMultiplier;
+            
+			RigidBodyInstance.AddForce(MoveDirection.normalized * (speed * Time.deltaTime), ForceMode2D.Force);
+			TurnToDirection(MoveDirection);
+            
+			UpdateAnimationSpeed(GetCurrentVelocity());
+		}
+		#endregion
+		
 		#region Public Methods
 		public void TakeDamage(EntityController from)
 		{
@@ -133,6 +151,11 @@ namespace Resources.Scripts.Entity
         
         #region Protected methods
         protected virtual void Die() {}
+        
+        protected float GetCurrentVelocity()
+        {
+	        return RigidBodyInstance.linearVelocity.magnitude;
+        }
         #endregion
 	}
 }

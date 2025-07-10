@@ -234,7 +234,6 @@ GameObject:
   - component: {fileID: 9034907166800464094}
   - component: {fileID: 1957564526145093592}
   - component: {fileID: 7490868119604115255}
-  - component: {fileID: 670601674399671987}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -383,10 +382,6 @@ MonoBehaviour:
     - Key: 5
       Value: relevant/magiy
   joystick: {fileID: 0}
-  trapPrefab: {fileID: 726999753017517549, guid: 2883cba0652d4754ab1bd2e5e075b41d, type: 3}
-  inputSmoothTime: 0.1
-  rollDistance: 5
-  rollCooldown: 2
   rollSpeedMultiplier: 1
 --- !u!114 &1957564526145093592
 MonoBehaviour:
@@ -433,15 +428,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pullSpeed: 7
   absorbRadius: 0.2
---- !u!114 &670601674399671987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7684459473974908381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44b13eb25f1aef9468bafa2306b151ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

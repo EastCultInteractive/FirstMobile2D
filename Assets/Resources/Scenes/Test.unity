@@ -127,6 +127,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1896303753}
     m_Modifications:
+    - target: {fileID: 1041390825261254572, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2094875851611427751, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -153,11 +157,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2094875851611427751, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 700.7881
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2094875851611427751, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 700.7881
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2094875851611427751, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_LocalPosition.x
@@ -193,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2094875851611427751, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1014
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2094875851611427751, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -206,6 +210,10 @@ PrefabInstance:
     - target: {fileID: 2094875851611427751, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397059006858561259, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6299401557340688970, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_Name
@@ -334,6 +342,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skull
       objectReference: {fileID: 0}
+    - target: {fileID: 5454972267272251233, guid: 96e315385965b1142af797f7f8e15b6d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6046244535853897246, guid: 96e315385965b1142af797f7f8e15b6d, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3190392342066876204, guid: 96e315385965b1142af797f7f8e15b6d, type: 3}
     m_RemovedGameObjects: []
@@ -395,6 +411,10 @@ PrefabInstance:
     - target: {fileID: 6948234551739620505, guid: 10433903692912845893fbc8030784d6, type: 3}
       propertyPath: m_Name
       value: Troll
+      objectReference: {fileID: 0}
+    - target: {fileID: 6948234551739620505, guid: 10433903692912845893fbc8030784d6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3246083616355706857, guid: 10433903692912845893fbc8030784d6, type: 3}

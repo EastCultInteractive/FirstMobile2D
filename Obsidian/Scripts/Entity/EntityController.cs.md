@@ -1,6 +1,8 @@
 ### Ссылки
 - [[InitEntity]]
-- [[InitAnimations]]
+- [[Scripts/Entity/Methods/EntityController/private/InitAnimations|InitAnimations]]
+- [[UpdateMove]]
+- ==Public==
 - [[TakeDamage]]
 - [[ApplyPush]]
 - [[ApplyDash]]
@@ -8,6 +10,17 @@
 - [[ApplySpeedBoost]]
 - [[ApplyStun]]
 - [[ApplyDamageFlash]]
+- ==Private==
+- [[MoveSpeedEffect]]
+- [[DamageFlash]]
+- ==Protected==
+- [[PlayAnimation]]
+- [[GetCurrentAnimation]]
+- [[GetAnimationByName]]
+- [[UpdateAnimationSpeed]]
+- [[TurnToDirection]]
+- [[Scripts/Entity/Methods/EntityController/protected/Die]]
+- [[GetCurrentVelocity]]
 ### Теги
 - #class
 ### Суть вопроса

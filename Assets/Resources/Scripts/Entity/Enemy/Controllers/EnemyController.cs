@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
-using Resources.Scripts.Entity;
 using Resources.Scripts.Entity.Enemy.Enum;
 using Spine;
 using Resources.Scripts.Labyrinth;
@@ -30,7 +29,6 @@ namespace Resources.Scripts.Entity.Enemy.Controllers
         private List<Vector3> currentPath = new();
         private int pathIndex;
 
-        private Vector3 moveDirection = Vector3.zero;
         private EnemyStats enemyStats;
 
 
@@ -85,21 +83,16 @@ namespace Resources.Scripts.Entity.Enemy.Controllers
             }
 
             UpdateAttack(distance);
-            UpdateRoam(out moveDirection);
-            UpdateChase(sees, out moveDirection);
-        }
-
-        private void FixedUpdate()
-        {
-            UpdateMove();
+            UpdateRoam(out MoveDirection);
+            UpdateChase(sees, out MoveDirection);
             UpdateAnimations();
         }
 
         #region UpdateFlow
         private void UpdateRoam(out Vector3 direction)
         {
-            direction = moveDirection;
-            if (moveDirection != Vector3.zero) return;
+            direction = MoveDirection;
+            if (MoveDirection != Vector3.zero) return;
 
             direction = labField == null ? RoamArena() : PatrolLabyrinth();
         }
@@ -112,21 +105,11 @@ namespace Resources.Scripts.Entity.Enemy.Controllers
 
         private void UpdateChase(bool sees, out Vector3 direction)
         {
-            direction = moveDirection;
-            if (moveDirection != Vector3.zero) return;
+            direction = MoveDirection;
+            if (MoveDirection != Vector3.zero) return;
             if (!sees) return;
             
             direction = ChaseBehavior();
-        }
-
-        private void UpdateMove()
-        {
-            var speed = enemyStats.MovementSpeed * enemyStats.SlowMultiplier;
-            
-            RigidBodyInstance.AddForce(moveDirection.normalized * (speed * Time.deltaTime), ForceMode2D.Force);
-            TurnToDirection(moveDirection);
-            
-            UpdateAnimationSpeed(GetCurrentVelocity());
         }
 
         private void UpdateAnimations()
@@ -144,10 +127,6 @@ namespace Resources.Scripts.Entity.Enemy.Controllers
             return roamDirection;
         }
 
-        private float GetCurrentVelocity()
-        {
-            return RigidBodyInstance.linearVelocity.magnitude;
-        }
 
         private Vector3 PatrolLabyrinth()
         {
@@ -220,19 +199,19 @@ namespace Resources.Scripts.Entity.Enemy.Controllers
 
             return !Physics2D.Raycast(origin, dir, dist, obstacleMask).collider;
         }
-
-        protected virtual void PerformAttack()
-        {
-            
-        }
-
+        
         private IEnumerator ResetMoveDirectionTimer()
         {
             while (true)
             {
                 yield return new WaitForSeconds(Random.Range(3f, 6f));
-                moveDirection = Vector3.zero;
+                MoveDirection = Vector3.zero;
             }
+        }
+
+        protected virtual void PerformAttack()
+        {
+            
         }
     }
 }
