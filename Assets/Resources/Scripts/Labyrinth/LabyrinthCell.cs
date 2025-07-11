@@ -1,4 +1,4 @@
-namespace Resources.Scripts.Labyrinth
+namespace Resources.Scripts.Entity.Labyrinth
 {
     /// <summary>
     /// Представляет отдельную ячейку лабиринта: содержит флаги границ,

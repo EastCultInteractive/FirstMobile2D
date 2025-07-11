@@ -4,6 +4,11 @@ namespace Resources.Scripts.Entity.Enemy
 {
     public class EnemyStats : EntityStats
     {
+        [Header("Combat")]
+        [SerializeField, Range(1f, 15f)] private float attackRange = 3f;
+
+        public float AttackRange => attackRange;
+        
         [Header("Arena Roam Stats")]
         [SerializeField] private float detectionRange = 5f;
 

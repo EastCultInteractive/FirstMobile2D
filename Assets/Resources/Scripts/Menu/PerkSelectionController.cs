@@ -2,10 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-using Resources.Scripts.Data;
-using Resources.Scripts.GameManagers;
+using Resources.Scripts.Entity.Data;
+using Resources.Scripts.Entity.GameManagers;
 
-namespace Resources.Scripts.Menu
+namespace Resources.Scripts.Entity.Menu
 {
     public class PerkSelectionController : MonoBehaviour
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Resources.Scripts.GameManagers
+namespace Resources.Scripts.Entity.GameManagers
 {
     [DefaultExecutionOrder(-100)]
     public class FontManager : MonoBehaviour

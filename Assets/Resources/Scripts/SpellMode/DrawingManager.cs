@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using Resources.Scripts.Audio;
+using Resources.Scripts.Entity.Audio;
+using Resources.Scripts.Entity.Player;
 // Доступ к playerStatsHandler
 // Для ManaSpendEffect
-using Resources.Scripts.Entity.Player;
-using Resources.Scripts.SpellMode.Skills;
-using Resources.Scripts.UI; // Для GlobalAudioManager
+using Resources.Scripts.Entity.SpellMode.Skills;
+using Resources.Scripts.Entity.UI;
 
-namespace Resources.Scripts.SpellMode
+// Для GlobalAudioManager
+
+namespace Resources.Scripts.Entity.SpellMode
 {
     /// <summary>
     /// Manages gesture drawing, recognition, and execution of spell skills.
@@ -58,7 +60,7 @@ namespace Resources.Scripts.SpellMode
 
         [Header("Player Stats")]
         [Tooltip("Управление маной игрока.")]
-        [SerializeField] private PlayerStatsHandler? playerStatsHandler;
+        [SerializeField] private PlayerStats? playerStatsHandler;
 
         [Header("Mana Spend FX")]
         [SerializeField] private GameObject? manaSpendEffectPrefab;

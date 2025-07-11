@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Resources.Scripts.SpellMode
+namespace Resources.Scripts.Entity.SpellMode
 {
     [CreateAssetMenu(fileName = "SignTemplateDatabaseIcon", menuName = "SignTemplates/Icon Template Database")]
     public class SignTemplateDatabaseIcon : ScriptableObject

@@ -3,11 +3,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-using Resources.Scripts.Data;
-using Resources.Scripts.GameManagers;
-using Resources.Scripts.UI;
+using Resources.Scripts.Entity.Data;
+using Resources.Scripts.Entity.GameManagers;
+using Resources.Scripts.Entity.UI;
 
-namespace Resources.Scripts.Menu
+namespace Resources.Scripts.Entity.Menu
 {
     public class StageSelectionController : MonoBehaviour
     {

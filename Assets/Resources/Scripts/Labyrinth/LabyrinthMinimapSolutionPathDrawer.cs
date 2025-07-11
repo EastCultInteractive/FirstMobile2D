@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Resources.Scripts.Labyrinth
+namespace Resources.Scripts.Entity.Labyrinth
 {
     /// <summary>
     /// Draws the solution path on the minimap using a LineRenderer.

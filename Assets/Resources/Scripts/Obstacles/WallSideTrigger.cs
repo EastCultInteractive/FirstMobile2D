@@ -1,7 +1,6 @@
-using Resources.Scripts.Entity.Player;
 using UnityEngine;
 
-namespace Resources.Scripts.Obstacles
+namespace Resources.Scripts.Entity.Obstacles
 {
     [RequireComponent(typeof(BoxCollider2D))]
     public class WallSideTrigger : MonoBehaviour

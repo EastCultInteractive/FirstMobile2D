@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 
-namespace Resources.Scripts.UI
+namespace Resources.Scripts.Entity.UI
 {
     /// <summary>
     /// Эффект вылетающего текста затрат маны, который летит к краю заполненной полоски маны.

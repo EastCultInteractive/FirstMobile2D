@@ -1,10 +1,10 @@
 using System.Collections;
-using Resources.Scripts.Data;
+using Resources.Scripts.Entity.Data;
+using Resources.Scripts.Entity.GameManagers;
 using UnityEngine;
 using UnityEngine.UI;
-using Resources.Scripts.GameManagers;
 
-namespace Resources.Scripts.Labyrinth
+namespace Resources.Scripts.Entity.Labyrinth
 {
     /// <summary>
     /// Manages the display of minimap icons: start, finish and dynamic player icon.

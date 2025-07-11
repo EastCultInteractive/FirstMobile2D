@@ -1,7 +1,7 @@
-using Resources.Scripts.GameManagers;
+using Resources.Scripts.Entity.GameManagers;
 using UnityEngine;
 
-namespace Resources.Scripts.Labyrinth
+namespace Resources.Scripts.Entity.Labyrinth
 {
     [RequireComponent(typeof(Collider2D))]
     public class LabyrinthFinishTrigger : MonoBehaviour

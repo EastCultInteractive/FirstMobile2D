@@ -4,11 +4,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
-using Resources.Scripts.Data;
-using Resources.Scripts.Menu;
+using Resources.Scripts.Entity.Data;
+using Resources.Scripts.Entity.Menu;
 using Resources.Scripts.Entity.Player;
 
-namespace Resources.Scripts.GameManagers
+namespace Resources.Scripts.Entity.GameManagers
 {
     [DefaultExecutionOrder(-100)]
     public class StageProgressionManager : MonoBehaviour
@@ -201,8 +201,6 @@ namespace Resources.Scripts.GameManagers
             if (!valid.Contains(scene.name))
             {
                 selectedPerks.Clear();
-                var stats = Object.FindFirstObjectByType<PlayerStatsHandler>();
-                stats?.ResetStats();
             }
             StartCoroutine(DelayedApplyAllPerks());
         }
@@ -215,9 +213,8 @@ namespace Resources.Scripts.GameManagers
 
         private void ApplyAllPerks()
         {
-            var stats = Object.FindFirstObjectByType<PlayerStatsHandler>();
+            var stats = Object.FindFirstObjectByType<PlayerStats>();
             if (stats == null) return;
-            stats.ResetStats();
             foreach (var p in selectedPerks)
                 p.Apply(stats);
         }

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Resources.Scripts.SpellMode.Skills
+namespace Resources.Scripts.Entity.SpellMode.Skills
 {
     /// <summary>
     /// ----------------------------------------------------------------------------

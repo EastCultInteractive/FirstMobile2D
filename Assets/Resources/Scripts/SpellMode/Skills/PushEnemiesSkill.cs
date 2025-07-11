@@ -1,7 +1,7 @@
 using Resources.Scripts.Entity.Enemy.Controllers;
 using UnityEngine;
 
-namespace Resources.Scripts.SpellMode.Skills
+namespace Resources.Scripts.Entity.SpellMode.Skills
 {
     /// <summary>
     /// ----------------------------------------------------------------------------

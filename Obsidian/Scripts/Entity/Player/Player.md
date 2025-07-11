@@ -1,8 +1,7 @@
 ### Ссылки
 - [[PlayerController.cs]]
 - [[PlayerJoystick.cs]]
-- [[PlayerSortingKeeper.cs]]
-- [[PlayerStatsHandler.cs]]
+- [[PlayerStats.cs]]
 - [[Scripts/Entity/Player/Enum/Enum|Enum]]
 ### Теги
 - #folder

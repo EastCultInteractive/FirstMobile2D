@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace Resources.Scripts.UI
+namespace Resources.Scripts.Entity.UI
 {
     /// <summary>
     /// Обновляет UI кнопки кувырка: radial fill + текст оставшегося времени.

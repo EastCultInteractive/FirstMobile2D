@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-namespace Resources.Scripts.UI
+namespace Resources.Scripts.Entity.UI
 {
     /// <summary>
     /// Manages the pause menu, allowing the game to be paused/resumed,

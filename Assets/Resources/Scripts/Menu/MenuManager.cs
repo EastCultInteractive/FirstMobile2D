@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-namespace Resources.Scripts.Menu
+namespace Resources.Scripts.Entity.Menu
 {
     public class MenuManager : MonoBehaviour
     {

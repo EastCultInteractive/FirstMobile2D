@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Resources.Scripts.Obstacles
+namespace Resources.Scripts.Entity.Obstacles
 {
 
     public class Tumbleweed : MonoBehaviour

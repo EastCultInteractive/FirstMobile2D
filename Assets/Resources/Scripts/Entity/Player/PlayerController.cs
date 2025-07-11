@@ -1,10 +1,10 @@
-using UnityEngine;
 using System.Collections;
 using AYellowpaper.SerializedCollections;
+using Resources.Scripts.Entity.GameManagers;
 using Resources.Scripts.Entity.Player.Enum;
+using Resources.Scripts.Entity.SpellMode;
 using Spine;
-using Resources.Scripts.GameManagers;
-using Resources.Scripts.SpellMode;
+using UnityEngine;
 
 namespace Resources.Scripts.Entity.Player
 {
@@ -23,8 +23,8 @@ namespace Resources.Scripts.Entity.Player
 
 
         #region Private Fields
-        private PlayerStatsHandler playerStats;
-        private DrawingManager drawingManager;
+        private PlayerStats _playerStats;
+        private DrawingManager _drawingManager;
         #endregion
 
         #region Unity Methods
@@ -44,8 +44,8 @@ namespace Resources.Scripts.Entity.Player
         #region Init
         private void InitComponents()
         {
-            playerStats = GetComponent<PlayerStatsHandler>();
-            drawingManager = GetComponent<DrawingManager>();
+            _playerStats = GetComponent<PlayerStats>();
+            _drawingManager = GetComponent<DrawingManager>();
         }
 
         private void InitAnimations()
@@ -71,7 +71,7 @@ namespace Resources.Scripts.Entity.Player
         #region Movement & Animation Helpers
         private void UpdateAnimations()
         {
-            if (drawingManager.IsDrawing) PlayAnimation(animations, EPlayerAnimationName.Draw);
+            if (_drawingManager.IsDrawing) PlayAnimation(animations, EPlayerAnimationName.Draw);
             else if (GetCurrentVelocity() > 0f) PlayAnimation(animations, EPlayerAnimationName.Run, true);
             else if (Mathf.Approximately(GetCurrentVelocity(), 0f)) PlayAnimation(animations, EPlayerAnimationName.Idle, true);
         }

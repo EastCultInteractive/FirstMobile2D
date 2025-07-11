@@ -1,7 +1,7 @@
-using Resources.Scripts.Data;
+using Resources.Scripts.Entity.Data;
 using UnityEngine;
 
-namespace Resources.Scripts.GameManagers
+namespace Resources.Scripts.Entity.GameManagers
 {
     [DefaultExecutionOrder(-200)]
     public class GameStageManager : MonoBehaviour

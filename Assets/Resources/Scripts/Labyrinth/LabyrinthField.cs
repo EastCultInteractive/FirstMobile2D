@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Resources.Scripts.Labyrinth
+namespace Resources.Scripts.Entity.Labyrinth
 {
     /// <summary>
     /// Генерирует и управляет полем лабиринта.

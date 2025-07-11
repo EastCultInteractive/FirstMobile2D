@@ -3,7 +3,7 @@ using TMPro;
 using System.Collections;
 using DG.Tweening;
 
-namespace Resources.Scripts.UI
+namespace Resources.Scripts.Entity.UI
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class LoadingPanelController : MonoBehaviour

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Resources.Scripts.Obstacles
+namespace Resources.Scripts.Entity.Obstacles
 {
     [RequireComponent(typeof(BoxCollider2D))]
     public class WallUpTriggerBehaviour : MonoBehaviour

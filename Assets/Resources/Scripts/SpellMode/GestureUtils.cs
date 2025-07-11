@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Resources.Scripts.SpellMode
+namespace Resources.Scripts.Entity.SpellMode
 {
     public static class GestureUtils
     {

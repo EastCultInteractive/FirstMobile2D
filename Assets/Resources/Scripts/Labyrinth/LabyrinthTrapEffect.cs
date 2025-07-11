@@ -1,7 +1,7 @@
 using Resources.Scripts.Entity.Player;
 using UnityEngine;
 
-namespace Resources.Scripts.Labyrinth
+namespace Resources.Scripts.Entity.Labyrinth
 {
     /// <summary>
     /// Applies a trap effect that stuns the player when triggered.

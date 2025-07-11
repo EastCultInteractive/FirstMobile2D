@@ -3,11 +3,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
-using Resources.Scripts.Data;
-using Resources.Scripts.Tilemap;
+using Resources.Scripts.Entity.Data;
+using Resources.Scripts.Entity.Tilemap;
 using UnityEngine.UI;
 
-namespace Resources.Scripts.GameManagers
+namespace Resources.Scripts.Entity.GameManagers
 {
     public class ArenaManager : MonoBehaviour
     {

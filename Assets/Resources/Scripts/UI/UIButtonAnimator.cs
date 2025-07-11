@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-namespace Resources.Scripts.UI
+namespace Resources.Scripts.Entity.UI
 {
     public class UIButtonAnimator : MonoBehaviour
     {

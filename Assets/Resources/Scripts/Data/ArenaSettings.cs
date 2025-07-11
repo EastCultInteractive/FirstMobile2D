@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Resources.Scripts.Data
+namespace Resources.Scripts.Entity.Data
 {
     [Serializable]
     public class ObstacleTypeSettings

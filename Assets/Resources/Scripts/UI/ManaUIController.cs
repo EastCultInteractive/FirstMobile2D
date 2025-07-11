@@ -2,7 +2,7 @@ using Resources.Scripts.Entity.Player;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Resources.Scripts.UI
+namespace Resources.Scripts.Entity.UI
 {
     /// <summary>
     /// Обновляет UI заполнения маны и текст.
@@ -17,7 +17,7 @@ namespace Resources.Scripts.UI
 
         [Header("Player Stats")]
         [SerializeField, Tooltip("Ссылка на PlayerStatsHandler")]
-        private PlayerStatsHandler playerStats;
+        private PlayerStats playerStats;
 
         private void Update()
         {

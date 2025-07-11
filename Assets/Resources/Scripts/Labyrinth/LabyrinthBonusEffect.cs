@@ -1,7 +1,7 @@
 using Resources.Scripts.Entity.Player;
 using UnityEngine;
 
-namespace Resources.Scripts.Labyrinth
+namespace Resources.Scripts.Entity.Labyrinth
 {
     public class LabyrinthBonusEffect : MonoBehaviour
     {

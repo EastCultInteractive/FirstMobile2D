@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Reflection;
-using Resources.Scripts.Data;
+using Resources.Scripts.Entity.Data;
+using Resources.Scripts.Entity.GameManagers;
+using Resources.Scripts.Entity.Tilemap;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using TMPro;
 using UnityEngine.SceneManagement;
-using Resources.Scripts.GameManagers;
-using Resources.Scripts.Tilemap;
 using Object = UnityEngine.Object;
 
-namespace Resources.Scripts.Labyrinth
+namespace Resources.Scripts.Entity.Labyrinth
 {
     public class LabyrinthGeneratorWithWalls : MonoBehaviour
     {

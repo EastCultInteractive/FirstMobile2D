@@ -8,22 +8,22 @@ namespace Resources.Scripts.Entity.Player
         [Header("Joystick Handle Settings")]
         [SerializeField, Range(50f, 500f)] private float handleRange = 50f;
 
-        private Canvas canvas;
-        private RectTransform canvasRect;
-        private RectTransform handleRect;
-        private RectTransform backgroundRect;
-        private RectTransform joystickRect;
+        private Canvas _canvas;
+        private RectTransform _canvasRect;
+        private RectTransform _handleRect;
+        private RectTransform _backgroundRect;
+        private RectTransform _joystickRect;
         
         private void Awake()
         {
-            canvas = transform.parent.GetComponent<Canvas>();
-            canvasRect = canvas.GetComponent<RectTransform>();
-            handleRect = transform.Find("Handle").GetComponent<RectTransform>();
-            backgroundRect = transform.Find("Background").GetComponent<RectTransform>();
-            joystickRect = transform.GetComponent<RectTransform>();
+            _canvas = transform.parent.GetComponent<Canvas>();
+            _canvasRect = _canvas.GetComponent<RectTransform>();
+            _handleRect = transform.Find("Handle").GetComponent<RectTransform>();
+            _backgroundRect = transform.Find("Background").GetComponent<RectTransform>();
+            _joystickRect = transform.GetComponent<RectTransform>();
             
-            handleRect.gameObject.SetActive(false);
-            backgroundRect.gameObject.SetActive(false);
+            _handleRect.gameObject.SetActive(false);
+            _backgroundRect.gameObject.SetActive(false);
         }
 
         private void Update()
@@ -54,7 +54,7 @@ namespace Resources.Scripts.Entity.Player
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
                     rect,
                     screenPosition,
-                    canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera,
+                    _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera,
                     out var localPoint))
             {
                 return localPoint;
@@ -65,24 +65,24 @@ namespace Resources.Scripts.Entity.Player
 
         private void ActivateJoystick(Vector2 screenPosition)
         {
-            handleRect.gameObject.SetActive(true);
-            backgroundRect.gameObject.SetActive(true);
+            _handleRect.gameObject.SetActive(true);
+            _backgroundRect.gameObject.SetActive(true);
             
-            joystickRect.anchoredPosition = TouchPositionToRect(canvasRect, screenPosition);
+            _joystickRect.anchoredPosition = TouchPositionToRect(_canvasRect, screenPosition);
         }
 
         private void HandleDrag(Vector2 screenPosition)
         {
-            var localPosition = TouchPositionToRect(joystickRect, screenPosition);
-            InputVector = localPosition - backgroundRect.anchoredPosition;
+            var localPosition = TouchPositionToRect(_joystickRect, screenPosition);
+            InputVector = localPosition - _backgroundRect.anchoredPosition;
             
-            handleRect.anchoredPosition = Vector3.ClampMagnitude(InputVector, handleRange);
+            _handleRect.anchoredPosition = Vector3.ClampMagnitude(InputVector, handleRange);
         }
 
         private void ReleaseJoystick()
         {
-            handleRect.gameObject.SetActive(false);
-            backgroundRect.gameObject.SetActive(false);
+            _handleRect.gameObject.SetActive(false);
+            _backgroundRect.gameObject.SetActive(false);
             InputVector = Vector2.zero;
         }
 

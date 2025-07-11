@@ -1,4 +1,3 @@
-using Resources.Scripts.Entity.Player;
 using UnityEngine;
 
 namespace Resources.Scripts.Entity.Enemy
@@ -6,10 +5,10 @@ namespace Resources.Scripts.Entity.Enemy
     [RequireComponent(typeof(Rigidbody2D))]
     public class GoblinProjectile : MonoBehaviour
     {
-        private Vector2 moveDirection;
-        private float speed;
-        private float bindingDuration;
-        private Rigidbody2D rb;
+        private Vector2 _moveDirection;
+        private float _speed;
+        private float _bindingDuration;
+        private Rigidbody2D _rb;
 
         [Tooltip("Lifetime of the projectile in seconds.")]
         [SerializeField]
@@ -20,9 +19,9 @@ namespace Resources.Scripts.Entity.Enemy
         /// </summary>
         public void SetParameters(Vector2 direction, float projectileSpeed, float bindDuration, float projectileLifeTime, float projectileDamage)
         {
-            moveDirection = direction;
-            speed = projectileSpeed;
-            bindingDuration = bindDuration;
+            _moveDirection = direction;
+            _speed = projectileSpeed;
+            _bindingDuration = bindDuration;
             lifeTime = projectileLifeTime;
 
             Destroy(gameObject, lifeTime);
@@ -30,22 +29,22 @@ namespace Resources.Scripts.Entity.Enemy
 
         private void Awake()
         {
-            rb = GetComponent<Rigidbody2D>();
-            rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            _rb = GetComponent<Rigidbody2D>();
+            _rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         }
 
         private void FixedUpdate()
         {
-            rb.linearVelocity = moveDirection * speed;
+            _rb.linearVelocity = _moveDirection * _speed;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (!collision.CompareTag("Player")) return;
             
-            var player = collision.GetComponent<PlayerController>();
+            var player = collision.GetComponent<EntityController>();
             if (player != null && !player.IsDead)
-                player.ApplyStun(bindingDuration);
+                player.ApplyStun(_bindingDuration);
             Destroy(gameObject);
         }
     }

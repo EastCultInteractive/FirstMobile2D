@@ -13,18 +13,19 @@ namespace Resources.Scripts.Entity
 		[SerializeField] private Color damageFlashColor = Color.red;	
 		[SerializeField, Range(0.1f, 1f)] private float damageFlashDuration = 0.3f;
 		
-		private Skeleton skeleton;
-		private EntityStats stats;
+		private Skeleton _skeleton;
+		private EntityStats _stats;
 		
 		protected SkeletonAnimation SkeletonAnimation;
 		protected Rigidbody2D RigidBodyInstance;
 		protected Vector3 MoveDirection = Vector3.zero;
 		
-		private float currentAnimationSpeed;
+		private float _currentAnimationSpeed;
+		private TrackEntry _currentTrack;
+		
 		private const float AnimationSmoothing = 5f;
-		private TrackEntry currentTrack;
 
-		public bool IsDead => stats.Health <= 0;
+		public bool IsDead => _stats.Health <= 0;
 
 		private void Awake()
 		{
@@ -42,21 +43,21 @@ namespace Resources.Scripts.Entity
 		private void InitEntity()
 		{
 			RigidBodyInstance = GetComponent<Rigidbody2D>();
-			stats = GetComponent<EntityStats>();
+			_stats = GetComponent<EntityStats>();
 		}
 		
 		private void InitAnimations()
 		{
             var spineChild = transform.Find("SpineVisual");
             SkeletonAnimation = spineChild.GetComponent<SkeletonAnimation>();
-            skeleton = SkeletonAnimation.Skeleton;
+            _skeleton = SkeletonAnimation.Skeleton;
 		}
 		#endregion
 
 		#region Updates
 		private void UpdateMove()
 		{
-			var speed = stats.MovementSpeed * stats.SlowMultiplier;
+			var speed = _stats.MovementSpeed * _stats.SlowMultiplier;
             
 			RigidBodyInstance.AddForce(MoveDirection.normalized * (speed * Time.deltaTime), ForceMode2D.Force);
 			TurnToDirection(MoveDirection);
@@ -71,11 +72,11 @@ namespace Resources.Scripts.Entity
 			// if (isImmortal || isRolling || IsDead || drawingManager.IsDrawing || playerStats.TryEvade(transform.position))
 			//     return;
 
-			stats.Health -= from.stats.Damage;
+			_stats.Health -= from._stats.Damage;
 			ApplyDamageFlash();
-			ApplyPush((transform.position - from.transform.position) * from.stats.PushDistance);
+			ApplyPush((transform.position - from.transform.position) * from._stats.PushDistance);
             
-			if (stats.Health <= 0) Die();
+			if (_stats.Health <= 0) Die();
 		}
 		#endregion
         
@@ -89,18 +90,18 @@ namespace Resources.Scripts.Entity
         
         private IEnumerator MoveSpeedEffect(float factor, float duration)
         {
-            var baseSlow = stats.SlowMultiplier;
-            stats.SlowMultiplier = factor;
+            var baseSlow = _stats.SlowMultiplier;
+            _stats.SlowMultiplier = factor;
             yield return new WaitForSeconds(duration);
-            stats.SlowMultiplier = baseSlow;
+            _stats.SlowMultiplier = baseSlow;
         }
         
 
         private IEnumerator DamageFlash()
         {
-            skeleton.SetColor(damageFlashColor);
+            _skeleton.SetColor(damageFlashColor);
             yield return new WaitForSeconds(damageFlashDuration);
-            skeleton.SetColor(Color.white);
+            _skeleton.SetColor(Color.white);
         }
 
         #endregion
@@ -118,8 +119,8 @@ namespace Resources.Scripts.Entity
 
         protected T GetCurrentAnimation<T>(SerializedDictionary<T, string> animations) where T : IConvertible
         {
-	        currentTrack = SkeletonAnimation.state.GetCurrent(0);
-	        return currentTrack == null ? default : GetAnimationByName(animations, currentTrack.Animation.Name);
+	        _currentTrack = SkeletonAnimation.state.GetCurrent(0);
+	        return _currentTrack == null ? default : GetAnimationByName(animations, _currentTrack.Animation.Name);
         }
 
         protected T GetAnimationByName<T>(SerializedDictionary<T, string> animations, string animName) where T : IConvertible
@@ -130,11 +131,11 @@ namespace Resources.Scripts.Entity
         
         protected void UpdateAnimationSpeed(float velocity)
         {
-	        currentAnimationSpeed = Mathf.Lerp(currentAnimationSpeed, velocity, Time.deltaTime * AnimationSmoothing);
+	        _currentAnimationSpeed = Mathf.Lerp(_currentAnimationSpeed, velocity, Time.deltaTime * AnimationSmoothing);
     
-	        if (currentTrack != null)
+	        if (_currentTrack != null)
 	        {
-		        currentTrack.TimeScale = currentAnimationSpeed;
+		        _currentTrack.TimeScale = _currentAnimationSpeed;
 	        }
         }
         #endregion

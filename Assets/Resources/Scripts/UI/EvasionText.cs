@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
-namespace Resources.Scripts.UI
+namespace Resources.Scripts.Entity.UI
 {
     /// <summary>
     /// Плавающий и исчезающий текст уклонения.

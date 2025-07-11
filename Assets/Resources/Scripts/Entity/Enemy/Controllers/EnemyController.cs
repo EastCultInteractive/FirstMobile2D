@@ -1,11 +1,13 @@
+using System;
 using System.Collections;
-using UnityEngine;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using Resources.Scripts.Entity.Enemy.Enum;
-using Spine;
-using Resources.Scripts.Labyrinth;
+using Resources.Scripts.Entity.Labyrinth;
 using Resources.Scripts.Entity.Player;
+using Resources.Scripts.Utils;
+using Spine;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Resources.Scripts.Entity.Enemy.Controllers
@@ -19,18 +21,16 @@ namespace Resources.Scripts.Entity.Enemy.Controllers
         
         [Header("Detection & Obstacles")] [SerializeField]
         private LayerMask obstacleMask;
-
-        [Header("Attack Settings")]
-        [SerializeField] private float attackRange = 1f;
-
+        
         protected PlayerController Player;
 
-        private LabyrinthField labField;
-        private List<Vector3> currentPath = new();
-        private int pathIndex;
+        private LabyrinthField _labField;
+        private List<Vector3> _currentPath = new();
+        private int _pathIndex;
 
-        private EnemyStats enemyStats;
+        private EnemyStats _enemyStats;
 
+        private Timer _moveDirectionTimer;
 
 
         private void Start()
@@ -38,7 +38,6 @@ namespace Resources.Scripts.Entity.Enemy.Controllers
             InitEnemy();
             InitAnimations();
             InitLabyrinthField();
-            InitCoroutines();
             
             // Добавляем настройки физики
             RigidBodyInstance.linearDamping = 5f; // Настройте значение
@@ -49,10 +48,15 @@ namespace Resources.Scripts.Entity.Enemy.Controllers
         #region Initialization Flow
         private void InitEnemy()
         {
-            enemyStats = GetComponent<EnemyStats>();
+            _enemyStats = GetComponent<EnemyStats>();
             
             var player = GameObject.FindGameObjectWithTag("Player");
             if (player != null) Player = player.GetComponent<PlayerController>();
+            
+            _moveDirectionTimer = new Timer(3f, 7f);
+            _moveDirectionTimer.OnTimerFinished += ResetMoveDirection;
+            
+            MoveDirection = Random.insideUnitCircle;
         }
 
         private void InitAnimations()
@@ -62,12 +66,7 @@ namespace Resources.Scripts.Entity.Enemy.Controllers
 
         private void InitLabyrinthField()
         {
-            labField = LabyrinthGeneratorWithWalls.CurrentField;
-        }
-
-        private void InitCoroutines()
-        {
-            StartCoroutine(ResetMoveDirectionTimer());
+            _labField = LabyrinthGeneratorWithWalls.CurrentField;
         }
         #endregion
         
@@ -79,27 +78,20 @@ namespace Resources.Scripts.Entity.Enemy.Controllers
             if (Player)
             {
                 distance = Vector3.Distance(transform.position, Player.transform.position);
-                sees = distance <= enemyStats.DetectionRange;
+                sees = distance <= _enemyStats.DetectionRange;
             }
 
             UpdateAttack(distance);
-            UpdateRoam(out MoveDirection);
             UpdateChase(sees, out MoveDirection);
             UpdateAnimations();
+            
+            _moveDirectionTimer.Tick(Time.deltaTime);
         }
 
         #region UpdateFlow
-        private void UpdateRoam(out Vector3 direction)
-        {
-            direction = MoveDirection;
-            if (MoveDirection != Vector3.zero) return;
-
-            direction = labField == null ? RoamArena() : PatrolLabyrinth();
-        }
-
         private void UpdateAttack(float distance)
         {
-            if (distance <= attackRange || !Player) return;
+            if (distance <= _enemyStats.AttackRange || !Player) return;
             PlayAnimation(animations, EEnemyAnimationName.Attack);
         }
 
@@ -120,22 +112,14 @@ namespace Resources.Scripts.Entity.Enemy.Controllers
         #endregion
         
         
-        private Vector3 RoamArena()
-        {
-            var dirAngle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-            var roamDirection = new Vector2(Mathf.Cos(dirAngle), Mathf.Sin(dirAngle)).normalized * Random.Range(0f, 10f);
-            return roamDirection;
-        }
-
-
         private Vector3 PatrolLabyrinth()
         {
-            if (currentPath.Count == 0 || pathIndex >= currentPath.Count)
+            if (_currentPath.Count == 0 || _pathIndex >= _currentPath.Count)
             {
                 var from = WorldToCell(transform.position);
                 var to = new Vector2Int(
-                    Random.Range(0, labField.Rows),
-                    Random.Range(0, labField.Cols)
+                    Random.Range(0, _labField.Rows),
+                    Random.Range(0, _labField.Cols)
                 );
 
                 BuildPath(from, to);
@@ -146,37 +130,37 @@ namespace Resources.Scripts.Entity.Enemy.Controllers
 
         private void BuildPath(Vector2Int from, Vector2Int to)
         {
-            var cells = labField.FindPath(from, to);
-            currentPath = labField.PathToWorld(cells);
-            pathIndex = 0;
+            var cells = _labField.FindPath(from, to);
+            _currentPath = _labField.PathToWorld(cells);
+            _pathIndex = 0;
         }
 
         private Vector3 FollowPath()
         {
-            if (pathIndex >= currentPath.Count)
+            if (_pathIndex >= _currentPath.Count)
             {
-                currentPath.Clear();
+                _currentPath.Clear();
                 return Vector3.zero;
             }
 
-            var goal = currentPath[pathIndex];
+            var goal = _currentPath[_pathIndex];
 
             if (Vector3.Distance(transform.position, goal) < 0.05f)
-                pathIndex++;
+                _pathIndex++;
             
             return goal;
         }
 
         private Vector2Int WorldToCell(Vector3 w) =>
             new(
-                Mathf.RoundToInt(-w.y / labField.CellSizeY),
-                Mathf.RoundToInt(w.x / labField.CellSizeX)
+                Mathf.RoundToInt(-w.y / _labField.CellSizeY),
+                Mathf.RoundToInt(w.x / _labField.CellSizeX)
             );
 
         private Vector3 ChaseBehavior()
         {
-            if (labField == null) return Player.transform.position;
-            if (pathIndex >= currentPath.Count)
+            if (_labField == null) return Player.transform.position;
+            if (_pathIndex >= _currentPath.Count)
                 BuildPath(WorldToCell(transform.position), WorldToCell(Player.transform.position));
             
             return FollowPath();
@@ -200,13 +184,9 @@ namespace Resources.Scripts.Entity.Enemy.Controllers
             return !Physics2D.Raycast(origin, dir, dist, obstacleMask).collider;
         }
         
-        private IEnumerator ResetMoveDirectionTimer()
+        private void ResetMoveDirection(object sender, EventArgs e)
         {
-            while (true)
-            {
-                yield return new WaitForSeconds(Random.Range(3f, 6f));
-                MoveDirection = Vector3.zero;
-            }
+            MoveDirection = _labField == null ? Random.insideUnitCircle : PatrolLabyrinth();
         }
 
         protected virtual void PerformAttack()

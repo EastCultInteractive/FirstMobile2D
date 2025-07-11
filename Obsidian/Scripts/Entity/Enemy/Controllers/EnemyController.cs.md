@@ -2,7 +2,6 @@
 - [[InitEnemy]]
 - [[Scripts/Entity/Enemy/Controllers/Methods/EnemyController/private/InitAnimations|InitAnimations]]
 - [[InitLabyrinthField]]
-- [[InitCoroutines]]
 - [[UpdateRoam]]
 - [[UpdateAttack]]
 - [[UpdateChase]]
@@ -16,7 +15,7 @@
 - [[ChaseBehaviour]]
 - [[Scripts/Entity/Enemy/Controllers/Methods/EnemyController/private/HandleAnimationComplete]]
 - [[HasLineOfSight]]
-- [[ResetMoveDirectionTimer]]
+- [[ResetMoveDirection]]
 - ==Protected==
 - [[Scripts/Entity/Enemy/Controllers/Methods/EnemyController/protected/PerformAttack|PerformAttack]]
 ### Теги

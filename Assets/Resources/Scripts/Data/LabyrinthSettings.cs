@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace Resources.Scripts.Data
+namespace Resources.Scripts.Entity.Data
 {
     [CreateAssetMenu(fileName = "LabyrinthSettings", menuName = "GameSettings/Labyrinth Settings")]
     public sealed class LabyrinthSettings : ScriptableObject

@@ -6,7 +6,7 @@ using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Resources.Scripts.Audio
+namespace Resources.Scripts.Entity.Audio
 {
     [DisallowMultipleComponent]
     public sealed class GlobalAudioManager : MonoBehaviour

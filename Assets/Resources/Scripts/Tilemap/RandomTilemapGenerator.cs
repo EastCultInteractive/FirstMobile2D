@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UT = UnityEngine.Tilemaps;
 
-namespace Resources.Scripts.Tilemap
+namespace Resources.Scripts.Entity.Tilemap
 {
     /// <summary>
     /// Генерирует рандомный Tilemap, выставляя тайл из списка floorTiles,

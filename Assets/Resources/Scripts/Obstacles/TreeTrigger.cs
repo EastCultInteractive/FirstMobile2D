@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Resources.Scripts.Obstacles
+namespace Resources.Scripts.Entity.Obstacles
 {
     [RequireComponent(typeof(CircleCollider2D))]
     public class TreeTrigger : MonoBehaviour
@@ -12,8 +12,6 @@ namespace Resources.Scripts.Obstacles
 
         private CircleCollider2D _trigger;
         private SpriteRenderer   _renderer;
-        private int              _aboveTarget;
-        private int              _belowTarget;
 
         private void Awake()
         {
@@ -22,15 +20,6 @@ namespace Resources.Scripts.Obstacles
 
             _renderer = GetComponent<SpriteRenderer>() 
                         ?? GetComponentInChildren<SpriteRenderer>();
-            if (_renderer == null)
-            {
-                Debug.LogError($"{name}: не найден SpriteRenderer!");
-                return;
-            }
-
-            // начальные заглушки, будут пересчитываться в триггерах
-            _aboveTarget = _renderer.sortingOrder + aboveOffset;
-            _belowTarget = _renderer.sortingOrder + belowOffset;
         }
     }
 }

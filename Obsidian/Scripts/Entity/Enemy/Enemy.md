@@ -1,5 +1,4 @@
 ### Ссылки
-- [[EnemySpawner.cs]]
 - [[EnemyStats.cs]]
 - [[GoblinProjectile.cs]]
 - [[Controllers]]

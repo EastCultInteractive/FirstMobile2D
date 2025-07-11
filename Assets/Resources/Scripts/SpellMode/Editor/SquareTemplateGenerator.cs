@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
-namespace Resources.Scripts.SpellMode.Editor
+namespace Resources.Scripts.Entity.SpellMode.Editor
 {
     /// <summary>
     /// Editor utility for generating a Square template asset.

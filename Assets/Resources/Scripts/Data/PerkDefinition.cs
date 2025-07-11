@@ -1,7 +1,7 @@
 using Resources.Scripts.Entity.Player;
 using UnityEngine;
 
-namespace Resources.Scripts.Data
+namespace Resources.Scripts.Entity.Data
 {
     public enum PerkType
     {
@@ -52,26 +52,8 @@ namespace Resources.Scripts.Data
             };
         }
 
-        public void Apply(PlayerStatsHandler stats)
+        public void Apply(PlayerStats stats)
         {
-            switch (Type)
-            {
-                case PerkType.ManaRegenAmountIncrease:
-                    stats.ModifyManaRegenRate(Value);
-                    break;
-                case PerkType.MaxManaIncrease:
-                    stats.ModifyMaxMana(Value);
-                    break;
-                case PerkType.MoveSpeedIncrease:
-                    stats.ModifyMoveSpeedPercent(Value);
-                    break;
-                case PerkType.EvasionChanceIncrease:
-                    stats.ModifyEvasion(Value);
-                    break;
-                case PerkType.FairyPullRangeIncrease:
-                    stats.ModifyPullRangePercent(Value);
-                    break;
-            }
         }
     }
 }
