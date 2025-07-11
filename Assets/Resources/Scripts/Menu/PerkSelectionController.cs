@@ -4,6 +4,7 @@ using TMPro;
 using DG.Tweening;
 using Resources.Scripts.Entity.Data;
 using Resources.Scripts.Entity.GameManagers;
+using Resources.Scripts.GameManagers;
 
 namespace Resources.Scripts.Entity.Menu
 {

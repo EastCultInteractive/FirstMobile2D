@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using DG.Tweening;
+using Resources.Scripts.Data;
 using Resources.Scripts.Entity.Data;
+using Resources.Scripts.Entity.GameManagers;
 using Resources.Scripts.Entity.Menu;
 using Resources.Scripts.Entity.Player;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
-namespace Resources.Scripts.Entity.GameManagers
+namespace Resources.Scripts.GameManagers
 {
     [DefaultExecutionOrder(-100)]
     public class StageProgressionManager : MonoBehaviour

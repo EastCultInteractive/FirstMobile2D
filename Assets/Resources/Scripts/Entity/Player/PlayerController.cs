@@ -3,6 +3,7 @@ using AYellowpaper.SerializedCollections;
 using Resources.Scripts.Entity.GameManagers;
 using Resources.Scripts.Entity.Player.Enum;
 using Resources.Scripts.Entity.SpellMode;
+using Resources.Scripts.GameManagers;
 using Spine;
 using UnityEngine;
 

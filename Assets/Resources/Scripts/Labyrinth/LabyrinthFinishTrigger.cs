@@ -1,4 +1,5 @@
 using Resources.Scripts.Entity.GameManagers;
+using Resources.Scripts.GameManagers;
 using UnityEngine;
 
 namespace Resources.Scripts.Entity.Labyrinth

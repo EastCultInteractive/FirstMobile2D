@@ -211,6 +211,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5294705017970882481, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 5294705017970882481, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 5333023467039656368, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 450
+      objectReference: {fileID: 0}
+    - target: {fileID: 5333023467039656368, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 450
+      objectReference: {fileID: 0}
     - target: {fileID: 5397059006858561259, guid: b9ce74a2d514fc842ab3de1eb5fc6c15, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -344,7 +360,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5454972267272251233, guid: 96e315385965b1142af797f7f8e15b6d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6046244535853897246, guid: 96e315385965b1142af797f7f8e15b6d, type: 3}
       propertyPath: m_Mesh
@@ -517,9 +533,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2458575810279814847, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: manaRegenDelay
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7684459473974908381, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684459473974908381, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8463691731995707409, guid: 5eaa2f8bdd6ce8544907c241d500a04d, type: 3}
       propertyPath: m_Mesh

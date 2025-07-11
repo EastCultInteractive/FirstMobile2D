@@ -1,4 +1,5 @@
 using System;
+using Resources.Scripts.Data;
 using UnityEngine;
 
 namespace Resources.Scripts.Entity.Data
